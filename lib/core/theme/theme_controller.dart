@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
-
 class AppTheme {
   static ThemeData get lightTheme {
     final base = ThemeData.light();
@@ -33,6 +32,11 @@ class AppTheme {
         headlineMedium: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
         bodyMedium: TextStyle(fontSize: 16, color: AppColors.onSurfaceLight),
         labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+      ).apply(
+        fontFamily: 'Roboto', // التحكم في fontFamily هنا
+      ),
+      primaryTextTheme: base.primaryTextTheme.apply(
+        fontFamily: 'Roboto',
       ),
 
       appBarTheme: const AppBarTheme(
@@ -153,6 +157,11 @@ class AppTheme {
         headlineMedium: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
         bodyMedium: TextStyle(fontSize: 16, color: AppColors.onSurfaceDark),
         labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+      ).apply(
+        fontFamily: 'Roboto',
+      ),
+      primaryTextTheme: base.primaryTextTheme.apply(
+        fontFamily: 'Roboto',
       ),
       cardTheme: CardTheme(
         color: const Color(0xFF2A292D),

@@ -1,7 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:igenius/Features/Auth/presentation/views/pages/create_account.dart';
+import 'package:igenius/Features/Auth/presentation/views/pages/login_screen.dart';
 import 'package:igenius/Features/home/presentation/views/pages/Home_screen.dart';
+import 'package:igenius/splash_screen.dart';
 import '../../injection/service_locator.dart';
 import '../constants/app_routes.dart';
 
@@ -12,14 +14,38 @@ class RoutesManager {
   static final GoRouter router = GoRouter(
     initialLocation: AppRoutes.inital,
     observers: [routeObserver],
-        navigatorKey: sl<GlobalKey<NavigatorState>>(),
+    navigatorKey: sl<GlobalKey<NavigatorState>>(),
     routes: [
       GoRoute(
         path: AppRoutes.inital,
-        builder: (context, state) =>  HomeScreen(),
+        builder: (context, state) => SplashScreen(),
         // HelperMethods.initalScreen(),
       ),
+      GoRoute(
+        path: AppRoutes.login,
+        builder: (context, state) => LoginScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.register,
+        builder: (context, state) => CreateAccountScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.home,
+        builder: (context, state) => HomeScreen(),
+      ),
 
+      // GoRoute(
+
+      //   path: AppRoutes.inital,
+      //   builder: (context, state) =>  HomeScreen(),
+      //   // HelperMethods.initalScreen(),
+      // ),
+      // GoRoute(
+
+      //   path: AppRoutes.inital,
+      //   builder: (context, state) =>  HomeScreen(),
+      //   // HelperMethods.initalScreen(),
+      // ),
 
       // GoRoute(
       //   path: AppRoutes.orderInfo,
@@ -33,7 +59,6 @@ class RoutesManager {
       //     );
       //   },
       // ),
-    
     ],
   );
 }

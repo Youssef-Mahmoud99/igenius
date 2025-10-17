@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color primary = Color(0xFF6750A4);
-  static const Color secondary = Color(0xFF625B71);
+  static const Color primary = Color(0xFF7D1C33);
+  static const Color secondary = Color(0xFF7D1C33);
   static const Color tertiary = Color(0xFF7D5260);
+  static const Color buttonGradient1 = Color(0xFF7D1C33);
+  static const Color buttonGradient2 = Color(0xFF53A1D2);
 
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
   static const Color transparent = Colors.transparent;
 
-  static const Color greyLight = Color(0xFFF5F5F5); 
-  static const Color grey = Color(0xFF9E9E9E); 
-  static const Color greyDark = Color(0xFF616161); 
+  static const Color greyLight = Color(0xFFF5F5F5);
+  static const Color grey = Color(0xFF9E9E9E);
+  static const Color greyDark = Color(0xFF616161);
   static const Color greyDarker = Color(0xFF424242);
+  static const Color borderGrey = Color(0xFFE5E7EB);
 
   static const Color success = Color(0xFF2E7D32);
   static const Color warning = Color(0xFFFBC02D);

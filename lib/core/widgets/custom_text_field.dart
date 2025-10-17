@@ -69,62 +69,52 @@ class _CustomTextFieldState extends State<CustomTextField> {
         decoration: InputDecoration(
           hintText: widget.hint,
           hintStyle: TextStyle(
-              color: AppColors.greyLight,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp),
+            color: AppColors.grey.withOpacity(0.5),
+            fontWeight: FontWeight.bold,
+            fontSize: 16.sp,
+          ),
           prefixIcon: widget.prefix,
           filled: true,
           fillColor: Colors.white,
-          suffixIcon: widget.obscureText
-              ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isPasswordVisible = !isPasswordVisible;
-                    });
-                  },
-                  icon: Icon(
-                    isPasswordVisible
-                        ? Icons.visibility_off_rounded
-                        : Icons.visibility_rounded,
-                  ),
-                )
-              : widget.suffix,
+          suffixIcon:
+              widget.obscureText
+                  ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isPasswordVisible = !isPasswordVisible;
+                      });
+                    },
+                    icon: Icon(
+                      isPasswordVisible
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                      color: AppColors.grey,
+                    ),
+                  )
+                  : widget.suffix,
           contentPadding: EdgeInsets.symmetric(
-              horizontal: 5, vertical: (widget.maxLines ?? 1) > 1 ? 10 : 0),
+            horizontal: 10,
+            vertical: (widget.maxLines ?? 1) > 1 ? 10 : 0,
+          ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              width: 1,
-              color: AppColors.primary,
-            ),
+            borderSide: const BorderSide(width: 1, color: AppColors.primary),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              width: 1,
-              color: AppColors.greyLight,
-            ),
+            borderSide: const BorderSide(width: 1, color: AppColors.borderGrey),
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              width: 1,
-              color: AppColors.greyLight,
-            ),
+            borderSide: const BorderSide(width: 1, color: AppColors.borderGrey),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              width: 1,
-              color: AppColors.error,
-            ),
+            borderSide: const BorderSide(width: 1, color: AppColors.error),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              width: 1,
-              color: AppColors.error,
-            ),
+            borderSide: const BorderSide(width: 1, color: AppColors.error),
           ),
         ),
         style: const TextStyle(color: Colors.black),

@@ -26,9 +26,11 @@ class Validators {
       return strings?.validationPasswordRequired ?? 'Password required';
     }
 
-    if (value.length < 6) {
+    if (value.length < 8) {
       return strings?.validationPasswordLength ?? 'Password too short';
     }
+
+
 
     return null;
   }

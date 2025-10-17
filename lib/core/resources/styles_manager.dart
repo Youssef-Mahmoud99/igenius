@@ -1,80 +1,89 @@
-// lib/core/resources/text_styles.dart
-
 import 'package:flutter/material.dart';
 
-class StylesManager {
-  // Sizes: 12, 14, 16, 18, 20, 24, 28, 32
-  // Weights: Light, Regular, Medium, SemiBold, Bold, ExtraBold
+import '../theme/app_colors.dart';
 
-  // Size 10
-  static const TextStyle s10Light = TextStyle(fontSize: 10, fontWeight: FontWeight.w300);
-  static const TextStyle s10Regular = TextStyle(fontSize: 10, fontWeight: FontWeight.w400);
-  static const TextStyle s10Medium = TextStyle(fontSize: 10, fontWeight: FontWeight.w500);
-  static const TextStyle s10SemiBold = TextStyle(fontSize: 10, fontWeight: FontWeight.w600);
-  static const TextStyle s10Bold = TextStyle(fontSize: 10, fontWeight: FontWeight.w700);
-  static const TextStyle s10ExtraBold = TextStyle(fontSize: 10, fontWeight: FontWeight.w800);
-  // Size 12
-  static const TextStyle s12Light = TextStyle(fontSize: 12, fontWeight: FontWeight.w300);
-  static const TextStyle s12Regular = TextStyle(fontSize: 12, fontWeight: FontWeight.w400);
-  static const TextStyle s12Medium = TextStyle(fontSize: 12, fontWeight: FontWeight.w500);
-  static const TextStyle s12SemiBold = TextStyle(fontSize: 12, fontWeight: FontWeight.w600);
-  static const TextStyle s12Bold = TextStyle(fontSize: 12, fontWeight: FontWeight.w700);
-  static const TextStyle s12ExtraBold = TextStyle(fontSize: 12, fontWeight: FontWeight.w800);
+class AppsStyles {
+  static const String fontFamily = 'Roboto'; // غيرها حسب المشروع
 
-  // Size 14
-  static const TextStyle s14Light = TextStyle(fontSize: 14, fontWeight: FontWeight.w300);
-  static const TextStyle s14Regular = TextStyle(fontSize: 14, fontWeight: FontWeight.w400);
-  static const TextStyle s14Medium = TextStyle(fontSize: 14, fontWeight: FontWeight.w500);
-  static const TextStyle s14SemiBold = TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
-  static const TextStyle s14Bold = TextStyle(fontSize: 14, fontWeight: FontWeight.w700);
-  static const TextStyle s14ExtraBold = TextStyle(fontSize: 14, fontWeight: FontWeight.w800);
+  /// Generate TextStyle dynamically
+  static TextStyle text({
+    double size = 14,
+    FontWeight weight = FontWeight.w400,
+    Color? color,
+    double? letterSpacing,
+    double? height,
+  }) {
+    return TextStyle(
+      fontFamily: fontFamily,
+      fontSize: size,
+      fontWeight: weight,
+      color: color ?? AppColors.black,
+      letterSpacing: letterSpacing,
+      height: height,
+    );
+  }
 
-  // Size 16
-  static const TextStyle s16Light = TextStyle(fontSize: 16, fontWeight: FontWeight.w300);
-  static const TextStyle s16Regular = TextStyle(fontSize: 16, fontWeight: FontWeight.w400);
-  static const TextStyle s16Medium = TextStyle(fontSize: 16, fontWeight: FontWeight.w500);
-  static const TextStyle s16SemiBold = TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
-  static const TextStyle s16Bold = TextStyle(fontSize: 16, fontWeight: FontWeight.w700);
-  static const TextStyle s16ExtraBold = TextStyle(fontSize: 16, fontWeight: FontWeight.w800);
+  // Quick predefined sizes
+  static TextStyle get s10Light => text(size: 10, weight: FontWeight.w300);
+  static TextStyle get s10Regular => text(size: 10, weight: FontWeight.w400);
+  static TextStyle get s10Medium => text(size: 10, weight: FontWeight.w500);
+  static TextStyle get s10SemiBold => text(size: 10, weight: FontWeight.w600);
+  static TextStyle get s10Bold => text(size: 10, weight: FontWeight.w700);
+  static TextStyle get s10ExtraBold => text(size: 10, weight: FontWeight.w800);
 
-  // Size 18
-  static const TextStyle s18Light = TextStyle(fontSize: 18, fontWeight: FontWeight.w300);
-  static const TextStyle s18Regular = TextStyle(fontSize: 18, fontWeight: FontWeight.w400);
-  static const TextStyle s18Medium = TextStyle(fontSize: 18, fontWeight: FontWeight.w500);
-  static const TextStyle s18SemiBold = TextStyle(fontSize: 18, fontWeight: FontWeight.w600);
-  static const TextStyle s18Bold = TextStyle(fontSize: 18, fontWeight: FontWeight.w700);
-  static const TextStyle s18ExtraBold = TextStyle(fontSize: 18, fontWeight: FontWeight.w800);
+  static TextStyle get s12Light => text(size: 12, weight: FontWeight.w300);
+  static TextStyle get s12Regular => text(size: 12, weight: FontWeight.w400);
+  static TextStyle get s12Medium => text(size: 12, weight: FontWeight.w500);
+  static TextStyle get s12SemiBold => text(size: 12, weight: FontWeight.w600);
+  static TextStyle get s12Bold => text(size: 12, weight: FontWeight.w700);
+  static TextStyle get s12ExtraBold => text(size: 12, weight: FontWeight.w800);
 
-  // Size 20
-  static const TextStyle s20Light = TextStyle(fontSize: 20, fontWeight: FontWeight.w300);
-  static const TextStyle s20Regular = TextStyle(fontSize: 20, fontWeight: FontWeight.w400);
-  static const TextStyle s20Medium = TextStyle(fontSize: 20, fontWeight: FontWeight.w500);
-  static const TextStyle s20SemiBold = TextStyle(fontSize: 20, fontWeight: FontWeight.w600);
-  static const TextStyle s20Bold = TextStyle(fontSize: 20, fontWeight: FontWeight.w700);
-  static const TextStyle s20ExtraBold = TextStyle(fontSize: 20, fontWeight: FontWeight.w800);
+  static TextStyle get s14Light => text(size: 14, weight: FontWeight.w300);
+  static TextStyle get s14Regular => text(size: 14, weight: FontWeight.w400);
+  static TextStyle get s14Medium => text(size: 14, weight: FontWeight.w500);
+  static TextStyle get s14SemiBold => text(size: 14, weight: FontWeight.w600);
+  static TextStyle get s14Bold => text(size: 14, weight: FontWeight.w700);
+  static TextStyle get s14ExtraBold => text(size: 14, weight: FontWeight.w800);
 
-  // Size 24
-  static const TextStyle s24Light = TextStyle(fontSize: 24, fontWeight: FontWeight.w300);
-  static const TextStyle s24Regular = TextStyle(fontSize: 24, fontWeight: FontWeight.w400);
-  static const TextStyle s24Medium = TextStyle(fontSize: 24, fontWeight: FontWeight.w500);
-  static const TextStyle s24SemiBold = TextStyle(fontSize: 24, fontWeight: FontWeight.w600);
-  static const TextStyle s24Bold = TextStyle(fontSize: 24, fontWeight: FontWeight.w700);
-  static const TextStyle s24ExtraBold = TextStyle(fontSize: 24, fontWeight: FontWeight.w800);
+  static TextStyle get s16Light => text(size: 16, weight: FontWeight.w300);
+  static TextStyle get s16Regular => text(size: 16, weight: FontWeight.w400);
+  static TextStyle get s16Medium => text(size: 16, weight: FontWeight.w500);
+  static TextStyle get s16SemiBold => text(size: 16, weight: FontWeight.w600);
+  static TextStyle get s16Bold => text(size: 16, weight: FontWeight.w700);
+  static TextStyle get s16ExtraBold => text(size: 16, weight: FontWeight.w800);
 
-  // Size 28
-  static const TextStyle s28Light = TextStyle(fontSize: 28, fontWeight: FontWeight.w300);
-  static const TextStyle s28Regular = TextStyle(fontSize: 28, fontWeight: FontWeight.w400);
-  static const TextStyle s28Medium = TextStyle(fontSize: 28, fontWeight: FontWeight.w500);
-  static const TextStyle s28SemiBold = TextStyle(fontSize: 28, fontWeight: FontWeight.w600);
-  static const TextStyle s28Bold = TextStyle(fontSize: 28, fontWeight: FontWeight.w700);
-  static const TextStyle s28ExtraBold = TextStyle(fontSize: 28, fontWeight: FontWeight.w800);
+  static TextStyle get s18Light => text(size: 18, weight: FontWeight.w300);
+  static TextStyle get s18Regular => text(size: 18, weight: FontWeight.w400);
+  static TextStyle get s18Medium => text(size: 18, weight: FontWeight.w500);
+  static TextStyle get s18SemiBold => text(size: 18, weight: FontWeight.w600);
+  static TextStyle get s18Bold => text(size: 18, weight: FontWeight.w700);
+  static TextStyle get s18ExtraBold => text(size: 18, weight: FontWeight.w800);
 
-  // Size 32
-  static const TextStyle s32Light = TextStyle(fontSize: 32, fontWeight: FontWeight.w300);
-  static const TextStyle s32Regular = TextStyle(fontSize: 32, fontWeight: FontWeight.w400);
-  static const TextStyle s32Medium = TextStyle(fontSize: 32, fontWeight: FontWeight.w500);
-  static const TextStyle s32SemiBold = TextStyle(fontSize: 32, fontWeight: FontWeight.w600);
-  static const TextStyle s32Bold = TextStyle(fontSize: 32, fontWeight: FontWeight.w700);
-  static const TextStyle s32ExtraBold = TextStyle(fontSize: 32, fontWeight: FontWeight.w800);
+  static TextStyle get s20Light => text(size: 20, weight: FontWeight.w300);
+  static TextStyle get s20Regular => text(size: 20, weight: FontWeight.w400);
+  static TextStyle get s20Medium => text(size: 20, weight: FontWeight.w500);
+  static TextStyle get s20SemiBold => text(size: 20, weight: FontWeight.w600);
+  static TextStyle get s20Bold => text(size: 20, weight: FontWeight.w700);
+  static TextStyle get s20ExtraBold => text(size: 20, weight: FontWeight.w800);
 
+  static TextStyle get s24Light => text(size: 24, weight: FontWeight.w300);
+  static TextStyle get s24Regular => text(size: 24, weight: FontWeight.w400);
+  static TextStyle get s24Medium => text(size: 24, weight: FontWeight.w500);
+  static TextStyle get s24SemiBold => text(size: 24, weight: FontWeight.w600);
+  static TextStyle get s24Bold => text(size: 24, weight: FontWeight.w700);
+  static TextStyle get s24ExtraBold => text(size: 24, weight: FontWeight.w800);
+
+  static TextStyle get s28Light => text(size: 28, weight: FontWeight.w300);
+  static TextStyle get s28Regular => text(size: 28, weight: FontWeight.w400);
+  static TextStyle get s28Medium => text(size: 28, weight: FontWeight.w500);
+  static TextStyle get s28SemiBold => text(size: 28, weight: FontWeight.w600);
+  static TextStyle get s28Bold => text(size: 28, weight: FontWeight.w700);
+  static TextStyle get s28ExtraBold => text(size: 28, weight: FontWeight.w800);
+
+  static TextStyle get s32Light => text(size: 32, weight: FontWeight.w300);
+  static TextStyle get s32Regular => text(size: 32, weight: FontWeight.w400);
+  static TextStyle get s32Medium => text(size: 32, weight: FontWeight.w500);
+  static TextStyle get s32SemiBold => text(size: 32, weight: FontWeight.w600);
+  static TextStyle get s32Bold => text(size: 32, weight: FontWeight.w700);
+  static TextStyle get s32ExtraBold => text(size: 32, weight: FontWeight.w800);
 }

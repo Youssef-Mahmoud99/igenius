@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:igenius/core/theme/app_colors.dart';
 
-class CustomText extends StatelessWidget {
+class AppText extends StatelessWidget {
   final String text;
   final double? fontSize;
   final Color? color;
@@ -11,8 +12,9 @@ class CustomText extends StatelessWidget {
   final TextDecoration? decoration;
   final double? height;
   final String? fontFamily;
+  final TextStyle? style;
 
-  const CustomText({
+  const AppText({
     super.key,
     required this.text,
     this.fontSize,
@@ -24,6 +26,7 @@ class CustomText extends StatelessWidget {
     this.decoration,
     this.height,
     this.fontFamily,
+    this.style,
   });
 
   @override
@@ -33,14 +36,16 @@ class CustomText extends StatelessWidget {
       textAlign: textAlign,
       maxLines: maxLines,
       overflow: overflow ?? TextOverflow.ellipsis,
-      style: TextStyle(
-        fontSize: fontSize ?? 14,
-        color: color ?? Colors.black,
-        fontWeight: fontWeight ?? FontWeight.normal,
-        decoration: decoration,
-        height: height,
-        fontFamily: fontFamily,
-      ),
+      style:
+          style ??
+          TextStyle(
+            fontSize: fontSize ?? 14,
+            color: color ?? AppColors.primary,
+            fontWeight: fontWeight ?? FontWeight.normal,
+            decoration: decoration,
+            height: height,
+            fontFamily: fontFamily,
+          ),
     );
   }
 }

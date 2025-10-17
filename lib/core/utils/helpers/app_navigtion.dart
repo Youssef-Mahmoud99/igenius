@@ -3,9 +3,9 @@ import 'package:go_router/go_router.dart';
 import '../../../injection/service_locator.dart';
 import '../../constants/app_routes.dart';
 
-class NavigationHelper {
-  // GlobalKey مسجلة في service locator
-  static final GlobalKey<NavigatorState> navigatorKey = sl<GlobalKey<NavigatorState>>();
+class AppNavaigation {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      sl<GlobalKey<NavigatorState>>();
 
   static BuildContext get context => navigatorKey.currentContext!;
 
@@ -24,6 +24,6 @@ class NavigationHelper {
 
   // Predefined routes
   static void goToLogin() => goToPage(AppRoutes.login);
-  static void goToSignUp() => goToPage(AppRoutes.register);
+  static void goToSignUp() => push(AppRoutes.register);
   static void goToHome() => goToPage(AppRoutes.layout);
 }

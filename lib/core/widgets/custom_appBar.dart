@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 
 import '../resources/styles_manager.dart';
 
@@ -29,17 +30,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         title,
-        style:
-            StylesManager.s20Bold.copyWith(color: titleColor ?? Colors.black),
+        style: AppsStyles.s20Bold.copyWith(
+          color: titleColor ?? Colors.black,
+        ),
       ),
       centerTitle: true,
-      leading: showBack == true
-          ? IconButton(
-              icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-              onPressed: onBack ?? () => Navigator.of(context).pop(),
-            )
-          : null,
-      actions: actions,
+      leading:
+          showBack == true
+              ? IconButton(
+                icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                onPressed: onBack ?? () => AppNavaigation.pop(),
+              )
+              : null,
+      actions: actions ?? [],
       backgroundColor: backgroundColor ?? Colors.white,
       elevation: elevation,
       bottom: bottom,

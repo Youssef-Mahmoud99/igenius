@@ -11,6 +11,8 @@ import '../core/services/localization_service.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
+
+    
   // Network
   sl.registerLazySingleton<Connectivity>(() => Connectivity());
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
