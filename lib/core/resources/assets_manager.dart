@@ -14,6 +14,12 @@ class AppImages {
   //Icons
 
   static const String _iconsPath = "assets/icons";
+  static const String calculator = "$_iconsPath/calculator.png";
+  static const String chart = "$_iconsPath/chart.png";
+  static const String courses = "$_iconsPath/courses.png";
+  static const String lock = "$_iconsPath/lock.png";
+  static const String privacy = "$_iconsPath/privacy.png";
+  static const String time = "$_iconsPath/time.png";
 
   //logos
 

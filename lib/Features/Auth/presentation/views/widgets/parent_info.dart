@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:igenius/Features/Auth/presentation/views/widgets/code_picker.dart';
 import 'package:igenius/core/resources/assets_manager.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
 import '../../../../../core/widgets/required_field_text.dart';
@@ -56,38 +59,27 @@ class _ParentInfoState extends State<ParentInfo> {
           10.verticalSpace,
           RequiredFieldText(text: 'Parent Phone'),
           5.verticalSpace,
-          CustomTextField(
-            onChanged: (value) {
+          CustomPhoneField(
+            onInputChanged: (value) {
               setState(() {
-                parentPhoneNumber = value;
+                parentPhoneNumber = value.toString();
               });
+              log(parentPhoneNumber ?? "");
             },
             hint: '+20 123 456 7890',
-            inputType: TextInputType.phone,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Phone number is required';
-              }
-              return null;
-            },
           ),
           10.verticalSpace,
           RequiredFieldText(text: 'Parent Whatsapp'),
           5.verticalSpace,
-          CustomTextField(
-            onChanged: (value) {
+          CustomPhoneField(
+            
+            onInputChanged: (value) {
               setState(() {
-                parentWhatsappNumber = value;
+                parentWhatsappNumber = value.toString();
               });
+              log(parentWhatsappNumber ?? "");
             },
             hint: '+20 123 456 7890',
-            inputType: TextInputType.phone,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Whatsapp number is required';
-              }
-              return null;
-            },
           ),
         ],
       ),

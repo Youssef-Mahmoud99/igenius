@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 abstract class BaseStatelessWidget extends StatelessWidget {
   const BaseStatelessWidget({Key? key}) : super(key: key);
 
-  /// AppBar افتراضي
   PreferredSizeWidget? buildAppBar(BuildContext context) => null;
 
-  /// Background color افتراضي
   Color backgroundColor() => Colors.white;
 
-  /// Padding افتراضي
   EdgeInsetsGeometry padding() => const EdgeInsets.all(16.0);
 
-  /// الـ body فاضي
   Widget buildBody(BuildContext context) => const SizedBox.shrink();
 
   @override
   Widget build(BuildContext context) {
+    // 👇 ضبط الـ Status Bar
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, // خلي الخلفية شفافة
+        statusBarIconBrightness: Brightness.dark, // أيقونات سوداء
+        statusBarBrightness: Brightness.light, // في حالة iOS
+      ),
+    );
+
     return Scaffold(
       appBar: buildAppBar(context),
-      backgroundColor: backgroundColor(),
+      // backgroundColor: backgroundColor(),
       body: buildBody(context),
     );
   }

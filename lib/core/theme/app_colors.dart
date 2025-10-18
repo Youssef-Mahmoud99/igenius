@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color primary = Color(0xFF7D1C33);
   static const Color secondary = Color(0xFF7D1C33);
+  static const Color scafoldColor = Color(0xFFF4F4F4);
   static const Color tertiary = Color(0xFF7D5260);
   static const Color buttonGradient1 = Color(0xFF7D1C33);
   static const Color buttonGradient2 = Color(0xFF53A1D2);

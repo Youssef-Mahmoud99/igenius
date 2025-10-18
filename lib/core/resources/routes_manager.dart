@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:igenius/Features/Auth/presentation/views/pages/create_account.dart';
 import 'package:igenius/Features/Auth/presentation/views/pages/login_screen.dart';
 import 'package:igenius/Features/home/presentation/views/pages/Home_screen.dart';
+import 'package:igenius/Features/layout/layout_screen.dart';
 import 'package:igenius/splash_screen.dart';
 import '../../injection/service_locator.dart';
 import '../constants/app_routes.dart';
@@ -30,8 +31,12 @@ class RoutesManager {
         builder: (context, state) => CreateAccountScreen(),
       ),
       GoRoute(
-        path: AppRoutes.home,
-        builder: (context, state) => HomeScreen(),
+        path: AppRoutes.layout,
+        builder: (context, state) {
+          Map<String, dynamic> args = state.extra! as Map<String, dynamic>;
+          final isGuest = args['isGuest'] as bool;
+          return LayoutScreen(isGuest: isGuest);
+        },
       ),
 
       // GoRoute(
@@ -47,18 +52,18 @@ class RoutesManager {
       //   // HelperMethods.initalScreen(),
       // ),
 
-      // GoRoute(
-      //   path: AppRoutes.orderInfo,
-      //   pageBuilder: (context, state) {
-      //     final data = state.extra as Map<String, dynamic>;
-      //     final order = data["order"] as OrderModel;
-      //     final fromMakingOrder = data["fromMakingOrder"] as bool?;
-      //     return ScaleTransitionPage(
-      //       child: OrderInfoScreen(
-      //           orderParams: order, fromMakingOrder: fromMakingOrder),
-      //     );
-      //   },
-      // ),
+      //     GoRoute(
+      //       path: AppRoutes.orderInfo,
+      //       pageBuilder: (context, state) {
+      //         final data = state.extra as Map<String, dynamic>;
+      //         final order = data["order"] as OrderModel;
+      //         final fromMakingOrder = data["fromMakingOrder"] as bool?;
+      //         return ScaleTransitionPage(
+      //           child: OrderInfoScreen(
+      //               orderParams: order, fromMakingOrder: fromMakingOrder),
+      //         );
+      //       },
+      //     ),
     ],
   );
 }

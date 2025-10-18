@@ -34,7 +34,7 @@ class AppText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
-      maxLines: maxLines,
+      maxLines: maxLines ?? 4,
       overflow: overflow ?? TextOverflow.ellipsis,
       style:
           style ??

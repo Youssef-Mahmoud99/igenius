@@ -29,7 +29,7 @@ class _PreviousNextButtonsState extends State<PreviousNextButtons> {
     return Row(
       children: [
         Expanded(
-          child: PrimaryButton(
+          child: Appbutton(
             height: 60,
             borderRadius: 16,
             needBorder: true,

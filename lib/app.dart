@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Al Forsan',
         theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
+        // darkTheme: AppTheme.darkTheme,
+        // themeMode: AppTheme.lightTheme,
         // app fontfamily are in theme_controller  and styles_manager
         supportedLocales: const [Locale('en', ''), Locale('ar', '')],
         localizationsDelegates: const [

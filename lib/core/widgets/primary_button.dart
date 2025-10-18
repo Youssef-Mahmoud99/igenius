@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:igenius/core/theme/app_colors.dart';
 import '../resources/styles_manager.dart';
 
-class PrimaryButton extends StatelessWidget {
+class Appbutton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
   final bool isLoading;
@@ -14,7 +14,7 @@ class PrimaryButton extends StatelessWidget {
   final bool needBorder;
   final double? borderRadius;
 
-  const PrimaryButton({
+  const Appbutton({
     Key? key,
     required this.text,
     required this.onPressed,

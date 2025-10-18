@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class BaseGradient extends StatelessWidget {
-  const BaseGradient({Key? key, required this.child}) : super(key: key);
+  const BaseGradient({Key? key, required this.child, this.height, this.width})
+    : super(key: key);
   final Widget child;
-
+  final double? height;
+  final double? width;
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
+      width: width ?? MediaQuery.of(context).size.width,
+      height: height ?? MediaQuery.of(context).size.height,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,

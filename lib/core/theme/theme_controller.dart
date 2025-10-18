@@ -9,7 +9,7 @@ class AppTheme {
     return base.copyWith(
       useMaterial3: true,
       primaryColor: AppColors.primary,
-      scaffoldBackgroundColor: AppColors.backgroundLight,
+      scaffoldBackgroundColor: AppColors.scafoldColor,
       canvasColor: AppColors.surfaceLight,
       cardColor: Colors.white,
       colorScheme: const ColorScheme.light(

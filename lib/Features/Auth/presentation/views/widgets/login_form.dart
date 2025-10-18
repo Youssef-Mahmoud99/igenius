@@ -41,15 +41,13 @@ class LoginForm extends StatelessWidget {
                     email = value;
                   });
                 },
-                obscureText: true,
                 hint: 'your.email@example.com',
                 inputType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Email is required';
-                  }
-                  else if (!value.contains("@")){
-                      return 'Invalid email address';
+                  } else if (!value.contains("@")) {
+                    return 'Invalid email address';
                   }
                   return null;
                 },
@@ -107,7 +105,7 @@ class LoginForm extends StatelessWidget {
                 text: 'Login to Account',
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
-                    AppNavaigation.push(AppRoutes.home);
+                    AppNavaigation.goToHome(isGuest: false);
                   }
                 },
               ),

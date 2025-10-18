@@ -25,5 +25,6 @@ class AppNavaigation {
   // Predefined routes
   static void goToLogin() => goToPage(AppRoutes.login);
   static void goToSignUp() => push(AppRoutes.register);
-  static void goToHome() => goToPage(AppRoutes.layout);
+  static void goToHome({bool isGuest = false}) =>
+      goToPageWithParams(AppRoutes.layout, {'isGuest': isGuest});
 }

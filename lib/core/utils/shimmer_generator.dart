@@ -568,7 +568,6 @@ class _FormShimmer extends StatelessWidget {
   }
 }
 
-// ==================== Extension للاستخدام السهل ====================
 
 extension SmartShimmerExtension on Widget {
   /// يحول أي Widget لـ Shimmer Loading
