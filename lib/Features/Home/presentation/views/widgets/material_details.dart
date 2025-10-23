@@ -8,12 +8,13 @@ class MaterialDetails extends StatelessWidget {
     required this.color,
     required this.backgroundColor,
     required this.name,
-    this.padding,
+    this.padding, this.style,
   }) : super(key: key);
   final Color color;
   final Color backgroundColor;
   final String name;
   final EdgeInsetsGeometry? padding;
+  final TextStyle? style;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,7 +26,7 @@ class MaterialDetails extends StatelessWidget {
       ),
       child: Text(
         name,
-        style: AppsStyles.s14Regular.copyWith(color: backgroundColor),
+        style:  style ?? AppsStyles.s14SemiBold.copyWith(color: Colors.white),
       ),
     );
   }

@@ -5,7 +5,7 @@ import '../../injection/service_locator.dart';
 class GetStorageService {
     static GetStorage storage = sl<GetStorage>();
  static Future<void> write(String key, dynamic value) async {
-    await storage .write(key, value);
+    await storage .write( key, value);
   }
 
   /// Read value

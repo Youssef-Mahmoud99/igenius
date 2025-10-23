@@ -29,4 +29,5 @@ class AppImages {
   static const String logo2 = "$_logosPath/logo2.png";
   static const String logo3 = "$_logosPath/logo3.png";
   static const String logo4 = "$_logosPath/logo4.png";
+  static const String newLogo = "$_logosPath/new_logo.png";
 }

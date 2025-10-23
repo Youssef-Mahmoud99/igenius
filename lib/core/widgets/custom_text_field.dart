@@ -17,6 +17,7 @@ class CustomTextField extends StatefulWidget {
   final int? maxLines;
   final String? initialValue;
   final bool readOnly;
+  final Color? fillColor;
 
   CustomTextField({
     super.key,
@@ -33,6 +34,7 @@ class CustomTextField extends StatefulWidget {
     this.maxLines,
     this.initialValue,
     this.readOnly = false,
+    this.fillColor,
   });
 
   @override
@@ -56,7 +58,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: TextFormField(
         cursorErrorColor: AppColors.error,
         readOnly: widget.readOnly,
-        initialValue: widget.initialValue ?? "",
+        initialValue: widget.initialValue,
         maxLines: widget.maxLines ?? 1,
         cursorColor: AppColors.primary,
         onChanged: widget.onChanged,
@@ -75,7 +77,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           ),
           prefixIcon: widget.prefix,
           filled: true,
-          fillColor: Colors.white,
+          fillColor: widget.fillColor ?? AppColors.white,
           suffixIcon:
               widget.obscureText
                   ? IconButton(

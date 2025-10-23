@@ -25,6 +25,8 @@ class CustomGridViewBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      cacheExtent: 1000,
+
       itemCount: itemCount,
       itemBuilder: itemBuilder,
       gridDelegate: gridDelegate,

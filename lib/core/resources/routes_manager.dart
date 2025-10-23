@@ -5,7 +5,13 @@ import 'package:igenius/Features/Auth/presentation/views/pages/login_screen.dart
 import 'package:igenius/Features/home/presentation/views/pages/Home_screen.dart';
 import 'package:igenius/Features/layout/layout_screen.dart';
 import 'package:igenius/splash_screen.dart';
+import '../../Features/Courses/presentation/views/pages/courses_screen.dart';
+import '../../Features/Courses/presentation/views/pages/filters_screen.dart';
+import '../../Features/Teachers/presentation/views/pages/teachers_screen.dart';
+import '../../Features/Teachers/presentation/views/widgets/teacher_profile.dart';
+import '../../app.dart';
 import '../../injection/service_locator.dart';
+import '../animations/page_transitions.dart';
 import '../constants/app_routes.dart';
 
 final RouteObserver<ModalRoute<void>> routeObserver =
@@ -22,6 +28,9 @@ class RoutesManager {
         builder: (context, state) => SplashScreen(),
         // HelperMethods.initalScreen(),
       ),
+
+     
+
       GoRoute(
         path: AppRoutes.login,
         builder: (context, state) => LoginScreen(),
@@ -35,9 +44,20 @@ class RoutesManager {
         builder: (context, state) {
           Map<String, dynamic> args = state.extra! as Map<String, dynamic>;
           final isGuest = args['isGuest'] as bool;
-          return LayoutScreen(isGuest: isGuest);
+          return LayoutScreen(isGuest: isGuest, key: layoutKey);
         },
       ),
+            GoRoute(
+        path: AppRoutes.filtersScreen,
+        pageBuilder: (context, state) {
+          return SlideFadeTransition(child: FiltersScreen());
+        },
+      ),
+            GoRoute(
+        path: AppRoutes.teacherProfile,
+        builder: (context, state) => TeacherProfileScreen(),
+      ),
+
 
       // GoRoute(
 

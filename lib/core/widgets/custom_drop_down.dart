@@ -6,14 +6,14 @@ import 'package:igenius/core/theme/app_colors.dart';
 class CustomSmallDropdown extends StatefulWidget {
   const CustomSmallDropdown({
     super.key,
-    required this.itemsMap, // 👈 changed from List to Map
+    required this.items,
     this.onChanged,
     this.value,
     this.hint,
     this.height,
   });
 
-  final Map<String, String> itemsMap; // 👈 key: display, value: code
+  final List<String> items;
   final Function(String?)? onChanged;
   final String? value;
   final String? hint;
@@ -26,29 +26,22 @@ class CustomSmallDropdown extends StatefulWidget {
 class _CustomSmallDropdownState extends State<CustomSmallDropdown> {
   @override
   Widget build(BuildContext context) {
-    // Reverse lookup: find the name (key) for the selected code (value)
-    String? selectedKey =
-        widget.itemsMap.entries
-            .firstWhere(
-              (entry) => entry.value == widget.value,
-              orElse: () => const MapEntry('', ''),
-            )
-            .key;
-
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
         isExpanded: true,
-        hint: Text(widget.hint ?? 'Select item', style: AppsStyles.s18Regular),
-        items:
-            widget.itemsMap.entries.map((entry) {
-              return DropdownMenuItem<String>(
-                value: entry.value, // 👈 actual value (e.g., "01")
-                child: Text(
-                  entry.key, // 👈 shown name (e.g., "Cairo")
-                  style: AppsStyles.s14Regular,
-                ),
-              );
-            }).toList(),
+        hint: Text(
+          widget.hint ?? 'Select item',
+          style: AppsStyles.s18Regular,
+        ),
+        items: widget.items.map((item) {
+          return DropdownMenuItem<String>(
+            value: item,
+            child: Text(
+              item,
+              style: AppsStyles.s14Regular,
+            ),
+          );
+        }).toList(),
         value: widget.value,
         onChanged: widget.onChanged,
         buttonStyleData: ButtonStyleData(
@@ -56,9 +49,10 @@ class _CustomSmallDropdownState extends State<CustomSmallDropdown> {
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.borderGrey),
+            border: Border.all(color: AppColors.borderGrey, width: 2),
             color: Colors.white,
           ),
+          elevation: 7,
         ),
         dropdownStyleData: DropdownStyleData(
           maxHeight: 200,
@@ -68,10 +62,10 @@ class _CustomSmallDropdownState extends State<CustomSmallDropdown> {
           ),
         ),
         iconStyleData: const IconStyleData(
-          icon: Icon(Icons.arrow_drop_down),
+          icon: Icon(Icons.keyboard_arrow_down_rounded),
           iconSize: 20,
         ),
-        menuItemStyleData: MenuItemStyleData(
+        menuItemStyleData: const MenuItemStyleData(
           height: 36,
           padding: EdgeInsets.symmetric(horizontal: 12),
         ),

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Home/presentation/views/widgets/continue_learning.dart';
 import 'package:igenius/core/widgets/base/base_stateless.dart';
+import '../../../../../app.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/widgets/custom_text.dart';
 import '../widgets/get_started.dart';
 import '../widgets/head_line.dart';
 import '../widgets/popular_courses.dart';
 import '../widgets/ready_to_start.dart';
-import '../widgets/teachers_view.dart';
+import '../../../../Teachers/presentation/views/widgets/teachers_view.dart';
 import '../widgets/upcoming_deadlines.dart';
 import '../widgets/user_courses_details.dart';
 import '../widgets/view_all.dart';
@@ -41,7 +43,13 @@ class HomePage extends BaseStatelessWidget {
                     WhyChooseIgenius(),
 
                     10.verticalSpace,
-                    ViewAll(title: 'Popular Courses', viewallTitle: 'View All'),
+                    ViewAll(
+                      title: 'Popular Courses',
+                      viewallTitle: 'View All',
+                      onViewAllTap: () {
+                        layoutKey.currentState?.setIndex(1);
+                      },
+                    ),
 
                     PopularCourses(isGuest: true),
                     10.verticalSpace,
@@ -49,15 +57,21 @@ class HomePage extends BaseStatelessWidget {
                       title: 'Meet Our Teachers',
                       viewallTitle: 'View All',
                     ),
-                    TeachersView(isGuest: true),
+                    TeachersView(isGuest: true, inHome: true),
                     ReadyToStart(),
                   ]
                   : [
                     HeadLine(isGuest: false),
                     ContinueLearningCard(),
                     UserCoursesDetails(),
-                    ViewAll(title: 'Explore Courses', viewallTitle: 'See All'),
-                    TeachersView(isGuest: false),
+                    ViewAll(
+                      title: 'Explore Courses',
+                      viewallTitle: 'See All',
+                      onViewAllTap: () {
+                        layoutKey.currentState?.setIndex(1);
+                      },
+                    ),
+                    TeachersView(isGuest: false, inHome: true),
                     ViewAll(title: 'Explore Teachers', viewallTitle: 'See All'),
                     PopularCourses(isGuest: false),
                     10.verticalSpace,

@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:igenius/core/constants/app_routes.dart';
 import 'package:igenius/core/widgets/custom_text_button.dart';
 import 'package:igenius/core/widgets/gradient_button.dart';
+import 'package:igenius/splash_screen.dart';
 
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
@@ -97,6 +98,7 @@ class LoginForm extends StatelessWidget {
                   CustomTextButton(
                     text: "Forget password?",
                     color: AppColors.buttonGradient2,
+                    onPressed: () {},
                   ),
                 ],
               ),

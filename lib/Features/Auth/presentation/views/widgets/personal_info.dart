@@ -95,7 +95,7 @@ class PersonalInfo extends StatelessWidget {
                 value: grade,
                 height: 50,
                 hint: 'Select your grade',
-                itemsMap: {'1': '1', '2': '2', '3': '3', '4': '4'},
+                items: ['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4'],
                 onChanged: (value) {
                   setState(() {
                     grade = value;

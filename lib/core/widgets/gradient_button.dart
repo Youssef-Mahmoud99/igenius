@@ -37,7 +37,7 @@ class GradientButton extends StatelessWidget {
         child:
             isLoading == true
                 ? const Center(
-                  child: CircularProgressIndicator(color: AppColors.secondary),
+                  child: CircularProgressIndicator(color: AppColors.primary),
                 )
                 : Text(
                   text,

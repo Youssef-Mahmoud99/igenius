@@ -12,6 +12,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double elevation;
   final PreferredSizeWidget? bottom;
   final void Function()? onBack;
+  final bool? centerTitle;
 
   const CustomAppBar({
     super.key,
@@ -23,6 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.elevation = 0,
     this.bottom,
     this.onBack,
+    this.centerTitle,
   });
 
   @override
@@ -30,11 +32,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         title,
-        style: AppsStyles.s20Bold.copyWith(
-          color: titleColor ?? Colors.black,
-        ),
+        style: AppsStyles.s20Bold.copyWith(color: titleColor ?? Colors.black),
       ),
-      centerTitle: true,
+      centerTitle: centerTitle ?? true,
       leading:
           showBack == true
               ? IconButton(

@@ -14,6 +14,7 @@ import '../widgets/login_form.dart';
 import '../widgets/signin_with_google.dart';
 
 class LoginScreen extends BaseStatelessWidget {
+
   @override
   Widget buildBody(BuildContext context) {
     return BaseGradient(

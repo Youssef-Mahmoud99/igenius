@@ -7,6 +7,10 @@ class AppRoutes {
   static const String forgotPassword = '/forgot_password';
   static const String otpScreen = '/otp_screen';
   static const String createNewPassword = '/create_new_password';
+  static const String coursesScreen = '/courses_screen';
+  static const String teachersScreen = '/teachers_screen';
+    static const String teacherProfile = '/teacher_profile';
+  static const String filtersScreen = '/filtersScreen';
 
 }
 
