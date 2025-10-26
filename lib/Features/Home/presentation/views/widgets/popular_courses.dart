@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Courses/presentation/views/widgets/home_course_card.dart';
 
@@ -7,8 +8,15 @@ import '../../../../Courses/data/models/courses_model.dart';
 
 class PopularCourses extends StatelessWidget {
   final bool isGuest;
+  final Axis scrollDirection;
+  final bool inHome;
 
-  PopularCourses({Key? key, this.isGuest = false}) : super(key: key);
+  PopularCourses({
+    Key? key,
+    this.isGuest = false,
+    this.inHome = true,
+    this.scrollDirection = Axis.horizontal,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,18 +67,32 @@ class PopularCourses extends StatelessWidget {
             ? courses.take(2).toList()
             : courses.sublist(courses.length - 2); // آخر اتنين
 
-    return SizedBox(
-      height: 300.h,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        itemCount: filteredCourses.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 16),
-        itemBuilder: (context, index) {
-          final course = filteredCourses[index];
-          return SizedBox(width: 260.w, child: HomeCourseCard(course: course));
-        },
-      ),
+    return ListView.separated(
+      physics:
+          scrollDirection == Axis.vertical
+              ? const NeverScrollableScrollPhysics()
+              : AlwaysScrollableScrollPhysics(),
+      shrinkWrap: true,
+      scrollDirection: scrollDirection,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      itemCount: filteredCourses.length,
+      separatorBuilder: (_, __) => 15.horizontalSpace,
+      itemBuilder: (context, index) {
+        final course = filteredCourses[index];
+        return scrollDirection == Axis.horizontal
+            ? SizedBox(
+              width: 200.w,
+              height: 250.h,
+              child: HomeCourseCard(course: course, inHome: inHome),
+            )
+            : SizedBox(
+              height: 290.h,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: HomeCourseCard(course: course, inHome: inHome),
+              ),
+            );
+      },
     );
   }
 }

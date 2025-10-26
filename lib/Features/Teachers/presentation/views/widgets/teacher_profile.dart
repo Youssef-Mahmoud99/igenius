@@ -7,32 +7,59 @@ import 'package:igenius/core/widgets/gradient_button.dart';
 
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../Home/presentation/views/widgets/popular_courses.dart';
 import 'teacher_info_card.dart';
 
 class TeacherProfileScreen extends BaseStatelessWidget {
-  const TeacherProfileScreen({Key? key}) : super(key: key);
+  TeacherProfileScreen({Key? key}) : super(key: key);
+  List<Map<String, dynamic>> qualifiacations = [
+    {
+      'certificate': 'PhD in Mathematics',
+      'university': 'Cambridge University',
+      "color": Colors.lightBlue.withOpacity(0.7),
+      'bacgroundColor': Colors.lightBlueAccent.withOpacity(0.3),
+    },
+    {
+      'certificate': 'PhD in Mathematics',
+      'university': 'Cambridge University',
+      "color": Colors.purple.withOpacity(0.7),
+      'bacgroundColor': Colors.purpleAccent.withOpacity(0.3),
+    },
+    {
+      'certificate': 'PhD in Mathematics',
+      'university': 'Cambridge University',
+      "color": Colors.green.withOpacity(0.7),
+      'bacgroundColor': Colors.greenAccent.withOpacity(0.3),
+    },
+  ];
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context) {
     return CustomAppBar(
       centerTitle: false,
       title: 'Teacher Profile',
       showBack: true,
-      actions: [IconButton(onPressed: () {}, icon: Icon(Icons.share))],
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.share, color: Colors.black),
+        ),
+      ],
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildBody(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TeacherInfoCard(),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0).copyWith(top: 0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  20.verticalSpace,
                   GradientButton(
                     text: 'Contact Teacher',
                     onTap: () {},
@@ -40,8 +67,42 @@ class TeacherProfileScreen extends BaseStatelessWidget {
                   ),
                   20.verticalSpace,
                   aboutCard(),
+                  Card(
+                    elevation: 10,
+                    shadowColor: Colors.grey.withOpacity(0.4),
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 4,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Qualifications', style: AppsStyles.s16Bold),
+                          ...qualifiacations.map(
+                            (qualification) => qualificationTile(
+                              qualification['certificate'],
+                              qualification['university'],
+                              qualification['color'],
+                              qualification['bacgroundColor'],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
+            ),
+            PopularCourses(
+              isGuest: true,
+              scrollDirection: Axis.vertical,
+              inHome: false,
             ),
           ],
         ),
@@ -74,17 +135,41 @@ class TeacherProfileScreen extends BaseStatelessWidget {
             10.verticalSpace,
             AppText(
               text:
-                  "His teaching approach focuses on building strong foundational concepts while makingcomplex topics accessible and engaging. Dr.Williams is known for his ability to identify individual learning needs and providepersonalized guidance to each student.",
+                  "His teaching approach focuses on building strong foundational concepts while making complex topics accessible and engaging. Dr. Williams is known for his ability to identify individual learning needs and provide personalized guidance to each student.",
               color: AppColors.black,
             ),
             10.verticalSpace,
             AppText(
               text:
-                  "He has developed innovative teaching methods that combine traditional instructionwith modern technology, ensuring studentsare well-prepared for both their exams andreal-world applications of mathematical andphysical concepts.",
+                  "He has developed innovative teaching methods that combine traditional instruction with modern technology, ensuring students are well-prepared for both their exams and real-world applications of mathematical and physical concepts.",
               color: AppColors.black,
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget qualificationTile(
+    String certificate,
+    String university,
+    Color color,
+    Color backgroundColor,
+  ) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          color: backgroundColor,
+          padding: EdgeInsets.all(15),
+          child: Icon(Icons.verified, color: color),
+        ),
+      ),
+      title: Text(certificate, style: AppsStyles.s14Bold),
+      subtitle: Text(
+        university,
+        style: AppsStyles.s14Regular.copyWith(color: AppColors.grey),
       ),
     );
   }

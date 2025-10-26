@@ -6,16 +6,20 @@ import '../resources/styles_manager.dart';
 class GradientButton extends StatelessWidget {
   const GradientButton({
     Key? key,
-    required this.text,
+    this.text,
     this.onTap,
     this.isLoading,
     this.height,
+    this.child,
+    this.gradientColors,
   }) : super(key: key);
 
   final VoidCallback? onTap;
-  final String text;
+  final String? text;
   final bool? isLoading;
   final double? height;
+  final Widget? child;
+  final List<Color>? gradientColors;
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +31,12 @@ class GradientButton extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          gradient: const LinearGradient(
+          gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [AppColors.buttonGradient1, AppColors.buttonGradient2],
+            colors:
+                gradientColors ??
+                [AppColors.buttonGradient1, AppColors.buttonGradient2],
           ),
           color: isLoading == true ? Colors.white : null,
         ),
@@ -39,10 +45,11 @@ class GradientButton extends StatelessWidget {
                 ? const Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                 )
-                : Text(
-                  text,
-                  style: AppsStyles.s18Bold.copyWith(color: Colors.white),
-                ),
+                : child ??
+                    Text(
+                      text!,
+                      style: AppsStyles.s18Bold.copyWith(color: Colors.white),
+                    ),
       ),
     );
   }

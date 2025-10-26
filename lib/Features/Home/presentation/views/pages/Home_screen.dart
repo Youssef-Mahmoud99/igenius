@@ -51,7 +51,10 @@ class HomePage extends BaseStatelessWidget {
                       },
                     ),
 
-                    PopularCourses(isGuest: true),
+                    SizedBox(
+                      height: 270.h,
+                      child: PopularCourses(isGuest: true),
+                    ),
                     10.verticalSpace,
                     ViewAll(
                       title: 'Meet Our Teachers',
@@ -73,7 +76,10 @@ class HomePage extends BaseStatelessWidget {
                     ),
                     TeachersView(isGuest: false, inHome: true),
                     ViewAll(title: 'Explore Teachers', viewallTitle: 'See All'),
-                    PopularCourses(isGuest: false),
+                    SizedBox(
+                      height: 270.h,
+                      child: PopularCourses(isGuest: false ),
+                    ),
                     10.verticalSpace,
                     ViewAll(
                       title: 'Upcoming Deadlines',

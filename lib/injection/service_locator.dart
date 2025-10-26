@@ -11,6 +11,7 @@ import '../core/services/localization_service.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
+    
   // Network
   sl.registerLazySingleton<Connectivity>(() => Connectivity());
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
@@ -19,11 +20,12 @@ Future<void> init() async {
   final dioClient = await DioClient.create(); // هنا بيتبني مرة واحدة فقط
   sl.registerLazySingleton<DioClient>(() => dioClient);
   // to use dio :
-    // final dio = sl<DioClient>().dio;
-  
+  // final dio = sl<DioClient>().dio;
 
-// Navigation
-  sl.registerLazySingleton<GlobalKey<NavigatorState>>(() => GlobalKey<NavigatorState>());
+  // Navigation
+  sl.registerLazySingleton<GlobalKey<NavigatorState>>(
+    () => GlobalKey<NavigatorState>(),
+  );
   // Storage
   sl.registerLazySingleton<GetStorage>(() => GetStorage());
   sl.registerLazySingleton<FlutterSecureStorage>(
@@ -31,13 +33,11 @@ Future<void> init() async {
   );
 
   // Localization
-    sl.registerLazySingleton<LocalizationService>(() => LocalizationService());
+  sl.registerLazySingleton<LocalizationService>(() => LocalizationService());
 
-    // to use these: 
-    //   final languageCode = sl<LocalizationService>().languageCode;
-    //   final strings = sl<LocalizationService>().strings;
-
-
+  // to use these:
+  //   final languageCode = sl<LocalizationService>().languageCode;
+  //   final strings = sl<LocalizationService>().strings;
 
   // -------------------------------
   // ✳️ Example: Register APIs & Repos

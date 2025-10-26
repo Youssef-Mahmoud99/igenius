@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:igenius/Features/Courses/presentation/views/widgets/courses_view.dart';
+import 'package:igenius/Features/Home/presentation/views/widgets/material_details.dart';
 import 'package:igenius/core/widgets/custom_text.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
@@ -11,6 +13,8 @@ class TeacherInfoCard extends StatelessWidget {
     {"title": "Students", "value": "1,234"},
     {"title": "Reviews", "value": "243"},
   ];
+
+  List<String> materialNames = ["Mathematics", "Physics"];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,16 +60,41 @@ class TeacherInfoCard extends StatelessWidget {
               style: AppsStyles.s14Regular.copyWith(color: AppColors.greyLight),
             ),
           ),
-          20.verticalSpace,
+          10.verticalSpace,
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ...data.map((e) {
-                return titleandValue(e["title"], e["value"], data.indexOf(e));
+              ...data.map((item) {
+                return titleandValue(
+                  item["title"],
+                  item["value"],
+                  data.indexOf(item),
+                );
               }).toList(),
             ],
           ),
+          20.verticalSpace,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ...materialNames.map((material) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: MaterialDetails(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    color: AppColors.white.withOpacity(0.2),
+                    backgroundColor: AppColors.white,
+                    name: material,
+                  ),
+                );
+              }).toList(),
+            ],
+          ),
+
         ],
       ),
     );

@@ -25,7 +25,6 @@ abstract class BaseStatelessWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: buildAppBar(context),
-      // backgroundColor: backgroundColor(),
       body: buildBody(context),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Courses/presentation/views/pages/courses_screen.dart';
 import 'package:igenius/Features/Teachers/presentation/views/pages/teachers_screen.dart';
 import 'package:igenius/core/theme/app_colors.dart';
+import '../Account/presentation/views/pages/about_us_screen.dart';
 import '../Home/presentation/views/pages/Home_screen.dart';
 
 class LayoutScreen extends StatefulWidget {
@@ -26,7 +27,7 @@ class LayoutScreenState extends State<LayoutScreen> {
       HomePage(isGuest: widget.isGuest),
       CoursesScreen(),
       TeachersScreen(),
-      const Center(child: Text('Account Screen')),
+      AboutUsScreen(),
     ];
 
     return ValueListenableBuilder<int>(

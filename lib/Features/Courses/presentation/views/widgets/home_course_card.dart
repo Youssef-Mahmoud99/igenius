@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Courses/data/models/courses_model.dart';
+import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 
+import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/widgets/primary_button.dart';
 import '../../../../Home/presentation/views/widgets/material_details.dart';
 
 class HomeCourseCard extends StatelessWidget {
-  const HomeCourseCard({Key? key, required this.course}) : super(key: key);
+  const HomeCourseCard({Key? key, required this.course, required this.inHome})
+    : super(key: key);
   final CoursesModel course;
+  final bool inHome;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,10 +31,9 @@ class HomeCourseCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Gradient Header
           Container(
-            width: double.infinity, // ياخد العرض كله
-            height: 140,
+            width: double.infinity,
+            height: 110.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -47,8 +52,8 @@ class HomeCourseCard extends StatelessWidget {
                   left: 12,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
+                      horizontal: 15,
+                      vertical: 2,
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -78,11 +83,9 @@ class HomeCourseCard extends StatelessWidget {
               ],
             ),
           ),
-
-          // Body content
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(15.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -91,60 +94,90 @@ class HomeCourseCard extends StatelessWidget {
                     backgroundColor: course.categoryColor ?? Colors.grey,
                     name: course.category ?? "",
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    course.title ?? "",
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
+                  5.verticalSpace,
+                  Text(course.title ?? "", style: AppsStyles.s16Bold),
+                  5.verticalSpace,
                   Text(
                     course.subtitle ?? "",
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                      height: 1.4,
+                    style: AppsStyles.s14Regular.copyWith(
+                      color: AppColors.grey,
                     ),
                   ),
-                  const Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+                  Spacer(),
+                  inHome ? SizedBox.shrink() : statistics(),
+                  inHome
+                      ? ratingandPrice()
+                      : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Icon(
-                            Icons.star,
-                            color: Color(0xFFFBBF24),
-                            size: 18,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            course.rating.toString(),
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black87,
-                            ),
+                          price(),
+                          Appbutton(
+                            height: 30.h,
+                            width: 80.w,
+                            color: AppColors.secondary,
+                            borderRadius: 12,
+                            text: 'View Course',
+                            onPressed: () {
+                              AppNavaigation.push(AppRoutes.courseDetails);
+                            },
                           ),
                         ],
                       ),
-                      Text(
-                        course.price ?? "",
-                        style: AppsStyles.s18Bold.copyWith(
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget ratingandPrice() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [rating(), price()],
+    );
+  }
+
+  Widget rating() {
+    return Row(
+      children: [
+        Icon(Icons.star, color: Color(0xFFFBBF24), size: 18),
+        const SizedBox(width: 4),
+        Text(course.rating.toString(), style: AppsStyles.s16Bold),
+      ],
+    );
+  }
+
+  Widget price() {
+    return Text(
+      course.price ?? "",
+      style: AppsStyles.s14Bold.copyWith(color: AppColors.primary),
+    );
+  }
+
+  Widget statistics() {
+    return Row(
+      children: [
+        rating(),
+        10.horizontalSpace,
+        details("847 Students", Icons.group_sharp),
+        10.horizontalSpace,
+        details('24 Weeks', Icons.access_time_outlined),
+      ],
+    );
+  }
+
+  Widget details(String data, IconData icon) {
+    return Row(
+      children: [
+        Icon(icon, color: AppColors.grey, size: 15),
+        5.horizontalSpace,
+        Text(
+          data,
+          style: AppsStyles.s12Regular.copyWith(color: AppColors.grey),
+        ),
+      ],
     );
   }
 }

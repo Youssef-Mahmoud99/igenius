@@ -5,8 +5,10 @@ import 'package:igenius/Features/Auth/presentation/views/pages/login_screen.dart
 import 'package:igenius/Features/home/presentation/views/pages/Home_screen.dart';
 import 'package:igenius/Features/layout/layout_screen.dart';
 import 'package:igenius/splash_screen.dart';
+import '../../Features/Courses/presentation/views/pages/course_details_screen.dart';
 import '../../Features/Courses/presentation/views/pages/courses_screen.dart';
 import '../../Features/Courses/presentation/views/pages/filters_screen.dart';
+import '../../Features/Notifications/presentation/views/pages/notifications_screen.dart';
 import '../../Features/Teachers/presentation/views/pages/teachers_screen.dart';
 import '../../Features/Teachers/presentation/views/widgets/teacher_profile.dart';
 import '../../app.dart';
@@ -24,12 +26,11 @@ class RoutesManager {
     navigatorKey: sl<GlobalKey<NavigatorState>>(),
     routes: [
       GoRoute(
+  
         path: AppRoutes.inital,
         builder: (context, state) => SplashScreen(),
         // HelperMethods.initalScreen(),
       ),
-
-     
 
       GoRoute(
         path: AppRoutes.login,
@@ -47,17 +48,25 @@ class RoutesManager {
           return LayoutScreen(isGuest: isGuest, key: layoutKey);
         },
       ),
-            GoRoute(
+      GoRoute(
         path: AppRoutes.filtersScreen,
         pageBuilder: (context, state) {
           return SlideFadeTransition(child: FiltersScreen());
         },
       ),
-            GoRoute(
+      GoRoute(
         path: AppRoutes.teacherProfile,
         builder: (context, state) => TeacherProfileScreen(),
       ),
+      GoRoute(
+        path: AppRoutes.courseDetails,
+        builder: (context, state) => CourseDetailsScreen(),
+      ),
 
+      GoRoute(
+        path: AppRoutes.notificationsScreen,
+        builder: (context, state) => NotificationsScreen(),
+      ),
 
       // GoRoute(
 

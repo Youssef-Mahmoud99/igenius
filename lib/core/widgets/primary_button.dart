@@ -13,6 +13,7 @@ class Appbutton extends StatelessWidget {
   final bool enabled;
   final bool needBorder;
   final double? borderRadius;
+  final Color? borderColor;
 
   const Appbutton({
     Key? key,
@@ -26,6 +27,7 @@ class Appbutton extends StatelessWidget {
     this.enabled = true,
     this.needBorder = false,
     this.borderRadius,
+    this.borderColor,
   }) : super(key: key);
 
   @override
@@ -52,7 +54,10 @@ class Appbutton extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius ?? 40),
           side:
               needBorder == true
-                  ? BorderSide(color: AppColors.primary, width: 2)
+                  ? BorderSide(
+                    color: borderColor ?? AppColors.primary,
+                    width: 2,
+                  )
                   : BorderSide.none,
         ),
         child:

@@ -39,7 +39,9 @@ class HeadLine extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      AppNavaigation.push(AppRoutes.notificationsScreen);
+                    },
                     icon: Icon(
                       Icons.notifications_none,
                       color: AppColors.black,
