@@ -13,6 +13,9 @@ class AppRoutes {
     static const String teacherProfile = '/teacher_profile';
   static const String filtersScreen = '/filtersScreen';
     static const String notificationsScreen = '/notifications';
+    static const String lessonViewScreen = '/lesson_view_screen';
+    static const String assignmentViewScreen = '/assignment_view_screen';
+    static const String aboutUsScreen = '/about_us_screen';
 
 }
 

@@ -12,7 +12,10 @@ import 'package:igenius/core/widgets/primary_button.dart';
 
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/widgets/dialogs/custom_dialoge.dart';
 import '../widgets/course_content.dart';
+import '../widgets/enroll_to_course_dialoge.dart';
+import '../widgets/free_session_dialoge.dart';
 
 class CourseDetailsScreen extends BaseStatelessWidget {
   CourseDetailsScreen({Key? key}) : super(key: key);
@@ -147,8 +150,8 @@ class CourseDetailsScreen extends BaseStatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 15,
-                                height: 15,
+                                width: 10.w,
+                                height: 10.h,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.circle,
@@ -168,7 +171,12 @@ class CourseDetailsScreen extends BaseStatelessWidget {
                               ),
                             ],
                           ),
-                          onTap: () {},
+                          onTap: () {
+                            CustomDialogHelper.showCustomBaseDialog(
+                              context: context,
+                              body: FreeSessionDialoge(),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -255,7 +263,12 @@ class CourseDetailsScreen extends BaseStatelessWidget {
                 Expanded(
                   child: GradientButton(
                     text: 'Enroll Now',
-                    onTap: () {},
+                    onTap: () {
+                      CustomDialogHelper.showCustomBaseDialog(
+                        context: context,
+                        body: EnrollToCourseDialoge(),
+                      );
+                    },
                     height: 50,
                   ),
                 ),

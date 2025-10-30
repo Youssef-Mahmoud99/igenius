@@ -4,7 +4,7 @@ import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 import '../resources/styles_manager.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
+  final String? title;
   final bool showBack;
   final List<Widget>? actions;
   final Color? backgroundColor;
@@ -13,10 +13,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
   final void Function()? onBack;
   final bool? centerTitle;
+  final Widget? titleChild;
 
   const CustomAppBar({
     super.key,
-    required this.title,
+    this.title,
     this.showBack = true,
     this.actions,
     this.backgroundColor,
@@ -25,15 +26,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottom,
     this.onBack,
     this.centerTitle,
+    this.titleChild,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
-        title,
-        style: AppsStyles.s20Bold.copyWith(color: titleColor ?? Colors.black),
-      ),
+      title:
+          titleChild ??
+          Text(
+            title ?? "",
+            style: AppsStyles.s20Bold.copyWith(
+              color: titleColor ?? Colors.black,
+            ),
+          ),
       centerTitle: centerTitle ?? true,
       leading:
           showBack == true

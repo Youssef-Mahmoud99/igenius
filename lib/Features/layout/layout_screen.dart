@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:igenius/Features/Account/presentation/views/pages/account_screen.dart';
 import 'package:igenius/Features/Courses/presentation/views/pages/courses_screen.dart';
 import 'package:igenius/Features/Teachers/presentation/views/pages/teachers_screen.dart';
 import 'package:igenius/core/theme/app_colors.dart';
@@ -27,7 +28,7 @@ class LayoutScreenState extends State<LayoutScreen> {
       HomePage(isGuest: widget.isGuest),
       CoursesScreen(),
       TeachersScreen(),
-      AboutUsScreen(),
+      AccountScreen(),
     ];
 
     return ValueListenableBuilder<int>(

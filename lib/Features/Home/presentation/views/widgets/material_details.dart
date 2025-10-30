@@ -8,7 +8,8 @@ class MaterialDetails extends StatelessWidget {
     required this.color,
     required this.backgroundColor,
     required this.name,
-    this.padding, this.style,
+    this.padding,
+    this.style,
   }) : super(key: key);
   final Color color;
   final Color backgroundColor;
@@ -26,7 +27,7 @@ class MaterialDetails extends StatelessWidget {
       ),
       child: Text(
         name,
-        style:  style ?? AppsStyles.s14SemiBold.copyWith(color: Colors.white),
+        style: style ?? AppsStyles.s14SemiBold.copyWith(color: backgroundColor),
       ),
     );
   }

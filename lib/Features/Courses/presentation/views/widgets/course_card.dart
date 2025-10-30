@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../Home/presentation/views/widgets/material_details.dart';
-import '../../../../Home/presentation/views/widgets/rating_view.dart';
 import '../../../data/models/courses_model.dart';
 
 class CourseCard extends StatelessWidget {

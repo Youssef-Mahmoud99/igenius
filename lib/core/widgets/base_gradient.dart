@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 
 class BaseGradient extends StatelessWidget {
-  const BaseGradient({Key? key, required this.child, this.height, this.width})
-    : super(key: key);
+  const BaseGradient({
+    Key? key,
+    required this.child,
+    this.height,
+    this.width,
+    this.padding,
+  }) : super(key: key);
   final Widget child;
   final double? height;
   final double? width;
+  final EdgeInsets? padding;
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width ?? MediaQuery.of(context).size.width,
-      height: height ?? MediaQuery.of(context).size.height,
+      width:
+          padding != null ? width ?? MediaQuery.of(context).size.width : null,
+      height:
+          padding != null ? height ?? MediaQuery.of(context).size.height : null,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,

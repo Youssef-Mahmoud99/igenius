@@ -65,6 +65,7 @@ dependencies:
   flutter_local_notifications: ^19.3.1
   flutter_secure_storage: ^9.2.4
   intl_phone_number_input:
+  dotted_border:
   package_info_plus: ^9.0.0
 
   font_awesome_flutter:

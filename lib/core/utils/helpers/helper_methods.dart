@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:igenius/core/utils/helpers/toast_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:share_plus/share_plus.dart';
@@ -10,11 +11,15 @@ class HelperMethods {
   HelperMethods._();
 
   // ======== Date & Time ========
-  static Future<String?> selectDate(BuildContext context, String? currentDateStr) async {
+  static Future<String?> selectDate(
+    BuildContext context,
+    String? currentDateStr,
+  ) async {
     DateTime now = DateTime.now();
-    DateTime initialDate = currentDateStr != null && currentDateStr.isNotEmpty
-        ? DateTime.tryParse(currentDateStr) ?? now
-        : now;
+    DateTime initialDate =
+        currentDateStr != null && currentDateStr.isNotEmpty
+            ? DateTime.tryParse(currentDateStr) ?? now
+            : now;
 
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -38,12 +43,18 @@ class HelperMethods {
     return currentDateStr;
   }
 
-  static Future<String?> selectTime(BuildContext context, String? currentTimeStr) async {
+  static Future<String?> selectTime(
+    BuildContext context,
+    String? currentTimeStr,
+  ) async {
     TimeOfDay initialTime;
     if (currentTimeStr != null && currentTimeStr.isNotEmpty) {
       final parts = currentTimeStr.split(":");
       if (parts.length == 2) {
-        initialTime = TimeOfDay(hour: int.tryParse(parts[0]) ?? 12, minute: int.tryParse(parts[1]) ?? 0);
+        initialTime = TimeOfDay(
+          hour: int.tryParse(parts[0]) ?? 12,
+          minute: int.tryParse(parts[1]) ?? 0,
+        );
       } else {
         initialTime = TimeOfDay.now();
       }
@@ -83,14 +94,40 @@ class HelperMethods {
     return null;
   }
 
-  // ======== File Picker ========
-  static Future<File?> pickFile({List<String>? allowedExtensions}) async {
-    final result = await FilePicker.platform.pickFiles(
-      type: allowedExtensions != null ? FileType.custom : FileType.any,
-      allowedExtensions: allowedExtensions,
-    );
-    if (result != null && result.files.single.path != null) return File(result.files.single.path!);
-    return null;
+ static Future<File?> pickAssignmentFile(BuildContext context) async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'doc', 'docx'],
+        withData: true,
+      );
+
+      if (result != null && result.files.isNotEmpty) {
+        final file = result.files.first;
+        final fileSizeInMB = (file.size / (1024 * 1024));
+
+        if (fileSizeInMB > 5) {
+          ToastHelper.showWarning("File size must be less than 5 MB");
+          return null;
+        }
+
+        final fileExtension = file.extension?.toLowerCase();
+        if (fileExtension != 'pdf' &&
+            fileExtension != 'doc' &&
+            fileExtension != 'docx') {
+          ToastHelper.showError("Only PDF or Word files are allowed");
+          return null;
+        }
+
+        return File(file.path!);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      debugPrint("File pick error: $e");
+      ToastHelper.showError("Failed to pick file");
+      return null;
+    }
   }
 
   // ======== Share ========
