@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:igenius/core/resources/assets_manager.dart';
+import 'package:igenius/core/resources/styles_manager.dart';
+import 'package:igenius/core/theme/app_colors.dart';
 import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 
 import '../../../../../core/constants/app_routes.dart';
+import 'preview_button.dart';
 
 class LessonView extends StatelessWidget {
   final String title;
@@ -24,9 +29,9 @@ class LessonView extends StatelessWidget {
       opacity: isLocked ? 0.6 : 1,
       child: GestureDetector(
         onTap: () {
-          if (isQuiz) {
+          if (isQuiz && !isLocked) {
             AppNavaigation.push(AppRoutes.assignmentViewScreen);
-          } else {
+          } else if (!isQuiz && !isLocked) {
             AppNavaigation.push(AppRoutes.lessonViewScreen);
           }
         },
@@ -39,58 +44,49 @@ class LessonView extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(
-                isQuiz ? Icons.quiz_outlined : Icons.play_circle_fill,
-                color:
-                    isLocked
-                        ? Colors.grey
-                        : isQuiz
-                        ? Colors.purple
-                        : Colors.blueAccent,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  color:
+                      isLocked || isQuiz
+                          ? Color(0xffE5E7EB)
+                          : Color(0xffBFDBFE),
+                  padding: const EdgeInsets.all(10),
+                  child:
+                      isQuiz
+                          ? ImageIcon(
+                            AssetImage(AppImages.answer),
+                            color: Colors.grey,
+                          )
+                          : Icon(
+                            isLocked
+                                ? Icons.lock_outline
+                                : Icons.play_circle_outlined,
+
+                            color: isLocked ? Colors.grey : Colors.blueAccent,
+                            size: 20.r,
+                          ),
+                ),
               ),
-              const SizedBox(width: 10),
+              10.horizontalSpace,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
+                    Text(title, style: AppsStyles.s12Bold),
+                    5.verticalSpace,
                     Text(
                       duration,
-                      style: TextStyle(
+                      style: AppsStyles.s10Regular.copyWith(
                         color: isQuiz ? Colors.redAccent : Colors.grey[600],
-                        fontSize: 13,
                       ),
                     ),
                   ],
                 ),
               ),
-              if (isPreview)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.redAccent.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Text(
-                    "PREVIEW",
-                    style: TextStyle(
-                      color: Colors.redAccent,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              if (isLocked) const Icon(Icons.lock_outline, color: Colors.grey),
+              if (isPreview) PreviewButton(),
+              if (isLocked)
+                Icon(Icons.lock_outline, color: Colors.grey, size: 20.r),
             ],
           ),
         ),

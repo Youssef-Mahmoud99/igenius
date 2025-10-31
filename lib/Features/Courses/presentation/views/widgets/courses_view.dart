@@ -35,7 +35,7 @@ class CoursesView extends StatelessWidget {
         },
 
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: 0.6,
+          childAspectRatio: 0.62,
           crossAxisCount: 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,

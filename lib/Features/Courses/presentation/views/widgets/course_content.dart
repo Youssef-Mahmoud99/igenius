@@ -32,7 +32,7 @@ class CourseContent extends StatelessWidget {
             LessonView(
               title: "Number Systems Quiz",
               duration: "Due: Oct 25, 2025",
-              isLocked: true,
+              isLocked: false,
               isQuiz: true,
             ),
           ],

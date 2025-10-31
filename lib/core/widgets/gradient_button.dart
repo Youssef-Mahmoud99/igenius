@@ -48,7 +48,7 @@ class GradientButton extends StatelessWidget {
                 : child ??
                     Text(
                       text!,
-                      style: AppsStyles.s18Bold.copyWith(color: Colors.white),
+                      style: AppsStyles.s16Bold.copyWith(color: Colors.white),
                     ),
       ),
     );

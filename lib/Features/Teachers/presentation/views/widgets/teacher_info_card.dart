@@ -36,7 +36,7 @@ class TeacherInfoCard extends StatelessWidget {
               padding: const EdgeInsets.all(25.0),
               child: Text(
                 'DR',
-                style: AppsStyles.s28Bold.copyWith(color: AppColors.white),
+                style: AppsStyles.s24Bold.copyWith(color: AppColors.white),
               ),
             ),
           ),
@@ -57,7 +57,7 @@ class TeacherInfoCard extends StatelessWidget {
             child: AppText(
               textAlign: TextAlign.center,
               text: 'Mathematics & Physics Expert',
-              style: AppsStyles.s14Regular.copyWith(color: AppColors.greyLight),
+              style: AppsStyles.s12Regular.copyWith(color: AppColors.greyLight),
             ),
           ),
           10.verticalSpace,
@@ -94,7 +94,6 @@ class TeacherInfoCard extends StatelessWidget {
               }).toList(),
             ],
           ),
-
         ],
       ),
     );
@@ -109,7 +108,7 @@ class TeacherInfoCard extends StatelessWidget {
           children: [
             AppText(
               text: value,
-              style: AppsStyles.s24Bold.copyWith(color: AppColors.white),
+              style: AppsStyles.s20Bold.copyWith(color: AppColors.white),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),

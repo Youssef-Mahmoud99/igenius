@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:igenius/Features/Account/presentation/views/widgets/account_tile.dart';
+import 'package:igenius/Features/Account/presentation/views/widgets/settings_item.dart';
+import 'package:igenius/core/constants/app_routes.dart';
+import 'package:igenius/core/resources/assets_manager.dart';
 import 'package:igenius/core/widgets/base/base_stateless.dart';
-import 'package:igenius/core/widgets/custom_appBar.dart';
-import 'package:igenius/core/widgets/custom_listtile.dart';
-import 'package:igenius/core/widgets/custom_text.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/base_gradient.dart';
@@ -13,25 +13,37 @@ class AccountScreen extends BaseStatelessWidget {
   AccountScreen({Key? key}) : super(key: key);
   List<Map<String, dynamic>> courseDetails = [
     {
-      'title': 'Lessons',
-      'data': '48',
-      'icon': Icons.menu_book,
+      'title': 'My Profile',
+      'data': 'View and edit your personal information',
+      'icon': AppImages.editprofile,
       "color": Colors.blue,
-      'colors': [Color(0xFF8B5CF6), Color(0xFF6366F1)],
+      'colors': [Color(0xFFDCFCE7), Color(0xFFBFDBFE)],
+      'route': AppRoutes.editProfileScreen,
     },
     {
-      'title': 'Duration',
-      'data': '24 Weeks',
-      'icon': Icons.access_time_rounded,
-      "color": Colors.red[900],
-      'colors': [Color(0xFF8B5CF6), Color(0xFF6366F1)],
+      'title': 'My Courses',
+      'data': 'Access your enrolled courses and progress',
+      'icon': AppImages.mycourses,
+      "color": Colors.purple,
+      'colors': [Color(0xFFFEFCE8), Color(0xFFFFEDD5)],
+      'route': AppRoutes.myCoursesScreen,
     },
     {
-      'title': 'Certificate',
-      'data': 'Yes',
-      'icon': Icons.verified_outlined,
-      "color": Colors.green,
-      'colors': [Color(0xFF8B5CF6), Color(0xFF6366F1)],
+      'title': 'Notification Center',
+      'data': 'View your alerts and updates',
+      'icon': AppImages.notifications,
+      "color": Color(0xffEA580C),
+      'colors': [Color(0xFFFFEDD5), Color(0xFFFED7AA)],
+      'isNotifications': true,
+      'route': AppRoutes.notificationsScreen,
+    },
+    {
+      'title': 'About Us',
+      'data': 'Learn more about iGenius platform',
+      'icon': AppImages.aboutus,
+      "color": Color(0xffDB2777),
+      'colors': [Color(0xFFFEFCE8), Color(0xFFFBCFE8)],
+      'route': AppRoutes.aboutUsScreen,
     },
   ];
   List<String> userInfo = [
@@ -43,8 +55,6 @@ class AccountScreen extends BaseStatelessWidget {
   Widget buildBody(BuildContext context) {
     return SafeArea(
       child: BaseGradient(
-        height: double.infinity,
-        width: double.infinity,
         child: Column(
           children: [
             Expanded(
@@ -69,67 +79,62 @@ class AccountScreen extends BaseStatelessWidget {
                       child: accountDetails(),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(20.0).copyWith(bottom: 0),
                       child: Column(
                         children: [
                           ...courseDetails.map(
-                            (item) => accountScreenTile(
-                              item['icon'],
-                              item['title'],
-                              item['data'],
-                              item['color'],
-                              item['colors'],
+                            (item) => AccountTile(
+                              title: item['title'],
+                              subTitle: item['data'],
+                              leadingIcon: item['icon'],
+                              iconColor: item['color'],
+                              colors: item['colors'],
+                              route: item['route'],
+                              isNotifications: item['isNotifications'],
                             ),
                           ),
                         ],
                       ),
                     ),
-                    30.verticalSpace,
+
+                    Padding(
+                      padding: const EdgeInsets.all(20.0).copyWith(top: 0),
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 10,
+                        shadowColor: Colors.grey.withOpacity(0.4),
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 4,
+                        ),
+                        child: Column(
+                          children: [
+                            SettingsItem(
+                              title: 'Help & Support',
+                              icon: Icons.help_outline,
+                              route: AppRoutes.helpAndSupportScreen,
+                            ),
+                            Divider(color: Colors.grey),
+                            SettingsItem(
+                              title: 'Privacy Policy',
+                              icon: Icons.description_outlined,
+                              route: AppRoutes.privacyPolicyScreen,
+                            ),
+                            Divider(color: Colors.grey),
+                            SettingsItem(
+                              title: 'Logout',
+                              icon: Icons.logout,
+                              index: 3,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget accountScreenTile(
-    IconData leadingIcon,
-    String title,
-    String subTitle,
-    Color iconColor,
-    List<Color> colors,
-  ) {
-    return Card(
-      color: Colors.white,
-
-      elevation: 10,
-      shadowColor: Colors.grey.withOpacity(0.4),
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: CustomListTile(
-          padding: EdgeInsets.zero,
-          leading: Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: colors,
-              ),
-            ),
-            child: Icon(leadingIcon, color: iconColor),
-          ),
-          title: Text(title, style: AppsStyles.s14Bold),
-          subtitle: Text(subTitle, style: AppsStyles.s12Light),
-          trailing: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Icon(Icons.arrow_forward_ios, color: Colors.grey),
-          ),
         ),
       ),
     );
@@ -144,10 +149,10 @@ class AccountScreen extends BaseStatelessWidget {
           children: [
             Text(
               "My Account",
-              style: AppsStyles.s18Bold.copyWith(color: Colors.white),
+              style: AppsStyles.s16Bold.copyWith(color: Colors.white),
             ),
-            Spacer(),
-            Icon(Icons.settings, color: Colors.white, size: 20.r),
+            // Spacer(),
+            // Icon(Icons.settings, color: Colors.white, size: 20.r),
           ],
         ),
         10.verticalSpace,
@@ -161,7 +166,7 @@ class AccountScreen extends BaseStatelessWidget {
               ),
               child: Text(
                 "JD",
-                style: AppsStyles.s20Bold.copyWith(color: Colors.white),
+                style: AppsStyles.s18Bold.copyWith(color: Colors.white),
               ),
             ),
             20.horizontalSpace,
@@ -174,10 +179,10 @@ class AccountScreen extends BaseStatelessWidget {
                         item,
                         style:
                             userInfo.indexOf(item) == 0
-                                ? AppsStyles.s18Bold.copyWith(
+                                ? AppsStyles.s14Bold.copyWith(
                                   color: Colors.white,
                                 )
-                                : AppsStyles.s14Regular.copyWith(
+                                : AppsStyles.s12Regular.copyWith(
                                   color: Colors.white,
                                 ),
                       ),

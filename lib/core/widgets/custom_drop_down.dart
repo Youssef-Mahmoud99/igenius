@@ -29,19 +29,14 @@ class _CustomSmallDropdownState extends State<CustomSmallDropdown> {
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
         isExpanded: true,
-        hint: Text(
-          widget.hint ?? 'Select item',
-          style: AppsStyles.s18Regular,
-        ),
-        items: widget.items.map((item) {
-          return DropdownMenuItem<String>(
-            value: item,
-            child: Text(
-              item,
-              style: AppsStyles.s14Regular,
-            ),
-          );
-        }).toList(),
+        hint: Text(widget.hint ?? 'Select item', style: AppsStyles.s12Regular),
+        items:
+            widget.items.map((item) {
+              return DropdownMenuItem<String>(
+                value: item,
+                child: Text(item, style: AppsStyles.s14Regular),
+              );
+            }).toList(),
         value: widget.value,
         onChanged: widget.onChanged,
         buttonStyleData: ButtonStyleData(

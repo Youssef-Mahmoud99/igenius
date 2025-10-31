@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 
 import '../resources/styles_manager.dart';
@@ -36,7 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           titleChild ??
           Text(
             title ?? "",
-            style: AppsStyles.s20Bold.copyWith(
+            style: AppsStyles.s16Bold.copyWith(
               color: titleColor ?? Colors.black,
             ),
           ),
@@ -44,7 +45,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading:
           showBack == true
               ? IconButton(
-                icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black,
+                  size: 20.r,
+                ),
                 onPressed: onBack ?? () => AppNavaigation.pop(),
               )
               : null,

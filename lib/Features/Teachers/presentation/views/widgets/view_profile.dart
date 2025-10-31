@@ -14,14 +14,14 @@ class ViewProfile extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(50),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           color: AppColors.secondary,
           width: 100.w,
           child: Center(
             child: Text(
               textAlign: TextAlign.center,
               'View Profile',
-              style: AppsStyles.s16Bold.copyWith(
+              style: AppsStyles.s12Bold.copyWith(
                 color: AppColors.white,
                 height: 1.25,
               ),

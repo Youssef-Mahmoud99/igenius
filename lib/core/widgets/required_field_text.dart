@@ -7,9 +7,6 @@ class RequiredFieldText extends StatelessWidget {
   final String text;
   @override
   Widget build(BuildContext context) {
-    return AppText(
-      text: '$text *',
-      style: AppsStyles.s16Regular,
-    );
+    return AppText(text: '$text *', style: AppsStyles.s12Bold);
   }
 }

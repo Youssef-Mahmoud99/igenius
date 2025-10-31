@@ -67,7 +67,7 @@ class _CreateAccountScreenState
                   alignment: Alignment.center,
                   child: AppText(
                     text: currentHeadline(),
-                    style: AppsStyles.s24Bold.copyWith(
+                    style: AppsStyles.s20Bold.copyWith(
                       color: AppColors.primary,
                     ),
                   ),
@@ -77,6 +77,7 @@ class _CreateAccountScreenState
                 20.verticalSpace,
                 currentStep == 1
                     ? GradientButton(
+                      height: 50.h,
                       text: 'Continue',
                       onTap: () {
                         if (personalKey.currentState!.validate()) {

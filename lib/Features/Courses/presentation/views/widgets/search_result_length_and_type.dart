@@ -41,12 +41,12 @@ class _SearchResultLengthAndTypeState extends State<SearchResultLengthAndType> {
               children: [
                 TextSpan(
                   text: '${widget.resultsLength ?? 12} ',
-                  style: AppsStyles.s14Bold.copyWith(color: AppColors.black),
+                  style: AppsStyles.s12Bold.copyWith(color: AppColors.black),
                 ),
                 TextSpan(
                   text:
                       '${widget.type == 'courses' ? 'Courses' : 'Teachers'} found',
-                  style: AppsStyles.s14Regular.copyWith(color: AppColors.grey),
+                  style: AppsStyles.s12Regular.copyWith(color: AppColors.grey),
                 ),
               ],
             ),

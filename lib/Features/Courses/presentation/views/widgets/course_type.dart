@@ -55,7 +55,7 @@ class _CourseTypeState extends State<CourseType> {
         child: Center(
           child: Text(
             type,
-            style: AppsStyles.s14SemiBold.copyWith(
+            style: AppsStyles.s12SemiBold.copyWith(
               height: 1,
               color: selectedType != type ? AppColors.black : AppColors.white,
             ),

@@ -64,17 +64,10 @@ class HomeCourseCard extends StatelessWidget {
                       children: [
                         Text(
                           course.tagIcon.toString(),
-                          style: const TextStyle(fontSize: 13),
+                          style: AppsStyles.s12Regular,
                         ),
-                        const SizedBox(width: 4),
-                        Text(
-                          course.tag ?? "",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
-                          ),
-                        ),
+                        5.horizontalSpace,
+                        Text(course.tag ?? "", style: AppsStyles.s10Bold),
                       ],
                     ),
                   ),
@@ -95,11 +88,11 @@ class HomeCourseCard extends StatelessWidget {
                     name: course.category ?? "",
                   ),
                   5.verticalSpace,
-                  Text(course.title ?? "", style: AppsStyles.s16Bold),
+                  Text(course.title ?? "", style: AppsStyles.s14Bold),
                   5.verticalSpace,
                   Text(
                     course.subtitle ?? "",
-                    style: AppsStyles.s14Regular.copyWith(
+                    style: AppsStyles.s12Regular.copyWith(
                       color: AppColors.grey,
                     ),
                   ),
@@ -142,9 +135,9 @@ class HomeCourseCard extends StatelessWidget {
   Widget rating() {
     return Row(
       children: [
-        Icon(Icons.star, color: Color(0xFFFBBF24), size: 18),
+        Icon(Icons.star, color: Color(0xFFFBBF24), size: 16.r),
         const SizedBox(width: 4),
-        Text(course.rating.toString(), style: AppsStyles.s16Bold),
+        Text(course.rating.toString(), style: AppsStyles.s14Bold),
       ],
     );
   }

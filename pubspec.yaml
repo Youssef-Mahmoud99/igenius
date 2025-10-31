@@ -67,7 +67,7 @@ dependencies:
   intl_phone_number_input:
   dotted_border:
   package_info_plus: ^9.0.0
-
+  device_preview: ^1.2.0
   font_awesome_flutter:
   flutter_localizations:
     sdk: flutter

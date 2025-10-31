@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/core/resources/styles_manager.dart';
 import 'package:igenius/core/utils/extensions/extensions.dart';
 import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 import 'package:igenius/core/widgets/base/base_stateless.dart';
 import 'package:igenius/core/widgets/custom_text_button.dart';
-
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../Courses/presentation/views/widgets/course_type.dart';
 import '../../../data/models/notifications_model.dart';
@@ -115,10 +113,7 @@ class NotificationsScreen extends BaseStatelessWidget {
         icon: Icon(Icons.arrow_back_ios),
         color: Colors.grey,
       ),
-      title: Text(
-        'Notifications',
-        style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-      ),
+      title: Text('Notifications', style: AppsStyles.s16Bold),
       subtitle: Text(
         '5 unread',
         style: AppsStyles.s12Regular.copyWith(color: Colors.grey),

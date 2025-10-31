@@ -8,13 +8,16 @@ class CustomPhoneField extends StatefulWidget {
   final Function(PhoneNumber)? onInputChanged;
   final String? hint;
   final String? initialCountry;
+  final String? initialValue;
 
   const CustomPhoneField({
+    
     super.key,
     this.controller,
     this.onInputChanged,
     this.hint,
     this.initialCountry = 'EG',
+    this.initialValue,
   });
 
   static const List<String> arabCountries = [
@@ -48,7 +51,7 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
   @override
   void initState() {
     super.initState();
-    _currentNumber = PhoneNumber(isoCode: widget.initialCountry);
+    _currentNumber = PhoneNumber(isoCode: widget.initialCountry , phoneNumber: widget.initialValue);
   }
 
   @override
@@ -61,6 +64,7 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
       ),
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       child: InternationalPhoneNumberInput(
+        
         maxLength: 11,
         validator: (value) {
           if (value == null || value.isEmpty) {

@@ -31,12 +31,6 @@ class _ParentInfoState extends State<ParentInfo> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(
-            AppImages.infoInstructions,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
-          10.verticalSpace,
           RequiredFieldText(text: 'Parent Email'),
           5.verticalSpace,
           CustomTextField(
@@ -72,7 +66,6 @@ class _ParentInfoState extends State<ParentInfo> {
           RequiredFieldText(text: 'Parent Whatsapp'),
           5.verticalSpace,
           CustomPhoneField(
-            
             onInputChanged: (value) {
               setState(() {
                 parentWhatsappNumber = value.toString();

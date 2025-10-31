@@ -5,6 +5,7 @@ import 'package:igenius/Features/Teachers/presentation/views/widgets/teachers_vi
 import 'package:igenius/core/theme/app_colors.dart';
 import 'package:igenius/core/utils/extensions/extensions.dart';
 import 'package:igenius/core/utils/helpers/app_navigtion.dart';
+import 'package:igenius/core/widgets/base_gradient.dart';
 import 'package:igenius/core/widgets/custom_appBar.dart';
 import 'package:igenius/core/widgets/custom_text_field.dart';
 import '../../../../../core/constants/app_routes.dart';
@@ -32,7 +33,7 @@ class TeachersScreen extends BaseStatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: GestureDetector(
-            onTap: () => AppNavaigation.push(AppRoutes.filtersScreen),
+            onTap: () => AppNavaigation.pushToPageWithParams(AppRoutes.filtersScreen , {"isCourses": false}),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -51,50 +52,52 @@ class TeachersScreen extends BaseStatelessWidget {
   Widget buildBody(BuildContext context) {
     return StatefulBuilder(
       builder: (context, setState) {
-        return SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 20.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: 10.rPadding,
-                  color: AppColors.white,
-                  child: Column(
-                    children: [
-                      CustomTextField(
-                        onChanged: (value) {
-                          setState(() {
-                            searchText = value;
-                          });
-                        },
-                        fillColor: AppColors.borderGrey,
-                        hint: 'Search teachers...',
-                        prefix: const Icon(
-                          Icons.search,
-                          color: AppColors.grey,
-                          size: 20,
+        return BaseGradient(
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 20.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: 10.rPadding,
+                    color: AppColors.white,
+                    child: Column(
+                      children: [
+                        CustomTextField(
+                          onChanged: (value) {
+                            setState(() {
+                              searchText = value;
+                            });
+                          },
+                          fillColor: AppColors.borderGrey,
+                          hint: 'Search teachers...',
+                          prefix: const Icon(
+                            Icons.search,
+                            color: AppColors.grey,
+                            size: 20,
+                          ),
                         ),
-                      ),
-                      10.verticalSpace,
-                      CourseType(
-                        courseTypes: courseTypes,
-                        onTypeSelected: (type) {},
-                      ),
-                    ],
+                        10.verticalSpace,
+                        CourseType(
+                          courseTypes: courseTypes,
+                          onTypeSelected: (type) {},
+                        ),
+                      ],
+                    ),
                   ),
-                ),
 
-                10.verticalSpace,
-                SearchResultLengthAndType(
-                  type: 'teachers',
-                  onChanged: (value) {},
-                ),
-                10.verticalSpace,
+                  10.verticalSpace,
+                  SearchResultLengthAndType(
+                    type: 'teachers',
+                    onChanged: (value) {},
+                  ),
+                  10.verticalSpace,
 
-                TeachersView(isGuest: true, inHome: false),
-              ],
+                  TeachersView(isGuest: true, inHome: false),
+                ],
+              ),
             ),
           ),
         );

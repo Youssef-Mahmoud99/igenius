@@ -29,7 +29,7 @@ class _SetPasswordState extends State<SetPassword> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppText(text: 'Password', style: AppsStyles.s16Regular),
+          AppText(text: 'Password', style: AppsStyles.s12Bold),
           5.verticalSpace,
           CustomTextField(
             onChanged: (value) {
@@ -58,7 +58,7 @@ class _SetPasswordState extends State<SetPassword> {
             },
           ),
           10.verticalSpace,
-          AppText(text: 'Confirm Password', style: AppsStyles.s16Regular),
+          AppText(text: 'Confirm Password', style: AppsStyles.s12Bold),
           5.verticalSpace,
           CustomTextField(
             onChanged: (value) {
@@ -78,13 +78,6 @@ class _SetPasswordState extends State<SetPassword> {
               }
               return null;
             },
-          ),
-          10.verticalSpace,
-
-          Image.asset(
-            AppImages.passwordInstructions,
-            width: double.infinity,
-            fit: BoxFit.cover,
           ),
 
           20.verticalSpace,

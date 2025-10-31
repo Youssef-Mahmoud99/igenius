@@ -11,7 +11,8 @@ class PreviousNextButtons extends StatefulWidget {
     Key? key,
     required this.onBack,
     required this.currentStep,
-    required this.onContinue, required this.formKey,
+    required this.onContinue,
+    required this.formKey,
   }) : super(key: key);
 
   final VoidCallback onBack;
@@ -30,7 +31,7 @@ class _PreviousNextButtonsState extends State<PreviousNextButtons> {
       children: [
         Expanded(
           child: Appbutton(
-            height: 60,
+            height: 50.h,
             borderRadius: 16,
             needBorder: true,
             textColor: AppColors.primary,
@@ -42,15 +43,16 @@ class _PreviousNextButtonsState extends State<PreviousNextButtons> {
         20.horizontalSpace,
         Expanded(
           child: GradientButton(
-            height: 60,
+            height: 50.h,
             text: widget.currentStep < 3 ? "Continue" : "Create Account",
-            onTap: widget.currentStep < 3 ? widget.onContinue : () {
-              if (widget.formKey.currentState!.validate()){
-                            AppNavaigation.goToLogin();
-
-              }
-
-            },
+            onTap:
+                widget.currentStep < 3
+                    ? widget.onContinue
+                    : () {
+                      if (widget.formKey.currentState!.validate()) {
+                        AppNavaigation.goToLogin();
+                      }
+                    },
           ),
         ),
       ],

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:igenius/Features/Home/presentation/views/widgets/material_details.dart';
+import 'package:igenius/core/constants/app_routes.dart';
 import 'package:igenius/core/resources/styles_manager.dart';
+import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 import 'package:igenius/core/widgets/custom_listtile.dart';
-
-import '../../../../../core/theme/app_colors.dart';
 
 class UpcomingDeadlines extends StatelessWidget {
   UpcomingDeadlines({Key? key}) : super(key: key);
@@ -49,7 +49,7 @@ class UpcomingDeadlines extends StatelessWidget {
                 leading: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
-                    vertical: 5,
+                    vertical: 10,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -65,14 +65,14 @@ class UpcomingDeadlines extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: e["day"],
-                          style: AppsStyles.s28Bold.copyWith(
+                          style: AppsStyles.s20Bold.copyWith(
                             color: Colors.white,
                           ),
                         ),
                         TextSpan(text: "\n"),
                         TextSpan(
                           text: e["month"],
-                          style: AppsStyles.s16Regular.copyWith(
+                          style: AppsStyles.s12Regular.copyWith(
                             color: Colors.white,
                           ),
                         ),
@@ -82,9 +82,9 @@ class UpcomingDeadlines extends StatelessWidget {
                 ),
                 title: SizedBox(
                   width: 130,
-                  child: Text(e["title"], style: AppsStyles.s16Bold),
+                  child: Text(e["title"], style: AppsStyles.s12Bold),
                 ),
-                subtitle: Text(e["subtitle"], style: AppsStyles.s14Regular),
+                subtitle: Text(e["subtitle"], style: AppsStyles.s10Regular),
                 trailing: MaterialDetails(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
@@ -94,7 +94,9 @@ class UpcomingDeadlines extends StatelessWidget {
                   backgroundColor: e['statusColor'],
                   name: e["status"],
                 ),
-                onTap: () {},
+                onTap: () {
+                  AppNavaigation.push(AppRoutes.myCoursesScreen);
+                },
               ),
             );
           }),

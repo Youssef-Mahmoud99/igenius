@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:igenius/core/utils/helpers/helper_methods.dart';
+import 'package:igenius/core/utils/url_launcher_utils.dart';
 import 'package:igenius/core/widgets/base/base_stateless.dart';
+import 'package:igenius/core/widgets/base_gradient.dart';
 import 'package:igenius/core/widgets/custom_appBar.dart';
 import 'package:igenius/core/widgets/custom_text.dart';
 import 'package:igenius/core/widgets/gradient_button.dart';
@@ -40,7 +43,9 @@ class TeacherProfileScreen extends BaseStatelessWidget {
       showBack: true,
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            HelperMethods.shareText('Share this teacher profile');
+          },
           icon: const Icon(Icons.share, color: Colors.black),
         ),
       ],
@@ -50,61 +55,73 @@ class TeacherProfileScreen extends BaseStatelessWidget {
   @override
   Widget buildBody(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TeacherInfoCard(),
-            Padding(
-              padding: const EdgeInsets.all(20.0).copyWith(top: 0),
-              child: Column(
-                children: [
-                  20.verticalSpace,
-                  GradientButton(
-                    text: 'Contact Teacher',
-                    onTap: () {},
-                    height: 50,
-                  ),
-                  20.verticalSpace,
-                  aboutCard(),
-                  Card(
-                    elevation: 10,
-                    shadowColor: Colors.grey.withOpacity(0.4),
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 4,
+      child: BaseGradient(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TeacherInfoCard(),
+              Padding(
+                padding: const EdgeInsets.all(20.0).copyWith(top: 0),
+                child: Column(
+                  children: [
+                    20.verticalSpace,
+                    GradientButton(
+                      text: 'Contact Teacher',
+                      onTap: () {
+                        UrlLauncherUtils.openWhatsApp('+201234567890');
+                      },
+                      height: 40.h,
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Qualifications', style: AppsStyles.s16Bold),
-                          ...qualifiacations.map(
-                            (qualification) => qualificationTile(
-                              qualification['certificate'],
-                              qualification['university'],
-                              qualification['color'],
-                              qualification['bacgroundColor'],
+                    20.verticalSpace,
+                    aboutCard(),
+                    Card(
+                      elevation: 10,
+                      shadowColor: Colors.grey.withOpacity(0.4),
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 4,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Qualifications', style: AppsStyles.s14Bold),
+                            ...qualifiacations.map(
+                              (qualification) => qualificationTile(
+                                qualification['certificate'],
+                                qualification['university'],
+                                qualification['color'],
+                                qualification['bacgroundColor'],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            PopularCourses(
-              isGuest: true,
-              scrollDirection: Axis.vertical,
-              inHome: false,
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Courses by Dr. Robert Williams',
+                  style: AppsStyles.s14Bold,
+                ),
+              ),
+
+              PopularCourses(
+                isGuest: true,
+                scrollDirection: Axis.vertical,
+                inHome: false,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -124,25 +141,28 @@ class TeacherProfileScreen extends BaseStatelessWidget {
           children: [
             AppText(
               text: 'About',
-              style: AppsStyles.s16Bold.copyWith(color: AppColors.black),
+              style: AppsStyles.s14Bold.copyWith(color: AppColors.black),
             ),
             10.verticalSpace,
             AppText(
               text:
                   'Dr. Robert Williams is a highly experienced educator with over 15 years of teaching IGCSE Mathematics and Physics. He holds a PhD in Mathematics from Cambridge University and has helped over 1,000 students achieve outstanding results in their IGCSE examinations.',
               color: AppColors.black,
+              style: AppsStyles.s12Regular,
             ),
             10.verticalSpace,
             AppText(
               text:
                   "His teaching approach focuses on building strong foundational concepts while making complex topics accessible and engaging. Dr. Williams is known for his ability to identify individual learning needs and provide personalized guidance to each student.",
               color: AppColors.black,
+              style: AppsStyles.s12Regular,
             ),
             10.verticalSpace,
             AppText(
               text:
                   "He has developed innovative teaching methods that combine traditional instruction with modern technology, ensuring students are well-prepared for both their exams and real-world applications of mathematical and physical concepts.",
               color: AppColors.black,
+              style: AppsStyles.s12Regular,
             ),
           ],
         ),
@@ -163,7 +183,7 @@ class TeacherProfileScreen extends BaseStatelessWidget {
         child: Container(
           color: backgroundColor,
           padding: EdgeInsets.all(15),
-          child: Icon(Icons.verified, color: color),
+          child: Icon(Icons.verified, color: color, size: 20.r),
         ),
       ),
       title: Text(certificate, style: AppsStyles.s14Bold),

@@ -63,8 +63,8 @@ class WhyChooseIgenius extends StatelessWidget {
                     ),
                   ),
                 ),
-                title: Text(e["title"], style: AppsStyles.s16Bold),
-                subtitle: Text(e["subtitle"], style: AppsStyles.s14Light),
+                title: Text(e["title"], style: AppsStyles.s14Bold),
+                subtitle: Text(e["subtitle"], style: AppsStyles.s12Light),
                 onTap: () {},
               ),
             );

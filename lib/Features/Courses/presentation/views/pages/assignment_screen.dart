@@ -7,10 +7,13 @@ import 'package:igenius/core/widgets/base/base_stateless.dart';
 import 'package:igenius/core/widgets/custom_appBar.dart';
 import 'package:igenius/core/widgets/custom_listtile.dart';
 import 'package:igenius/core/widgets/custom_text.dart';
+import '../../../../../core/resources/assets_manager.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/helpers/helper_methods.dart';
 import '../../../../../core/widgets/base_gradient.dart';
+import '../widgets/course_material.dart';
+import '../widgets/upload_assignment_widget.dart';
 
 class AssignmentScreen extends BaseStatelessWidget {
   AssignmentScreen({Key? key}) : super(key: key);
@@ -53,7 +56,7 @@ class AssignmentScreen extends BaseStatelessWidget {
         children: [
           Text(
             'Unit 1: Number Systems',
-            style: AppsStyles.s12Light.copyWith(color: AppColors.grey),
+            style: AppsStyles.s12Regular.copyWith(color: AppColors.grey),
           ),
           Text(
             'Assignment 1',
@@ -68,250 +71,191 @@ class AssignmentScreen extends BaseStatelessWidget {
   @override
   Widget buildBody(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BaseGradient(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: limitTimeandInstructions(),
-              ),
-            ),
+      child: BaseGradient(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                limitTimeandInstructions(),
+                10.verticalSpace,
 
-            10.verticalSpace,
-            BaseGradient(
-              width: double.infinity,
-              height: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Assignment Materials', style: AppsStyles.s16Bold),
-                    10.verticalSpace,
-                    Text(
-                      'Exercise 1: Natural Numbers',
-                      style: AppsStyles.s14Regular,
-                    ),
-                    5.verticalSpace,
-                    cardDisplay(
-                      materialDisplay(
-                        FontAwesomeIcons.file,
-                        Icons.download,
-                        'Exercise_1.pdf',
-                        'PDF • 2.4 MB',
-                        Color(0xffF0FDF4),
-                        AppColors.red,
-                      ),
-                    ),
-                    10.verticalSpace,
-                    uploadWidget(context),
-                    10.verticalSpace,
-                    MaterialDetails(
+                Text('Assignment Materials', style: AppsStyles.s16Bold),
+                10.verticalSpace,
+                Text(
+                  'Exercise 1: Natural Numbers',
+                  style: AppsStyles.s14Regular,
+                ),
+                5.verticalSpace,
+                CourseMaterial(
+                  title: 'Exercise_1.pdf',
+                  subTitle: 'PDF • 2.4 MB',
+                  backgroundColor: Color(0xffF0FDF4),
+                  iconColor: AppColors.red,
+                  leadingImage: AppImages.assignment,
+                  trailingIcon: Icons.file_download_outlined,
+                ),
+                10.verticalSpace,
+                UploadAssignmentWidget(),
+                10.verticalSpace,
+                MaterialDetails(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 5,
+                  ),
+                  color: Color(0xffFEF9C3),
+                  backgroundColor: Color(0xff92400E),
+                  name: 'Not Submitted',
+                ),
+                10.verticalSpace,
+
+                Text('Exercise 3: Integers', style: AppsStyles.s12Regular),
+                5.verticalSpace,
+                CourseMaterial(
+                  title: 'Exercise_3.pdf',
+                  subTitle: 'PDF • 2.4 MB',
+                  backgroundColor: Color(0xffF0FDF4),
+                  iconColor: AppColors.red,
+                  leadingImage: AppImages.assignment,
+                  trailingIcon: Icons.file_download_outlined,
+                ),
+                10.verticalSpace,
+                CourseMaterial(
+                  title: 'My_Answer_3.pdf',
+                  subTitle: 'DOCX • 856 KB',
+                  backgroundColor: AppColors.blue.withOpacity(0.1),
+                  iconColor: AppColors.blue,
+                  leadingImage: AppImages.assignment,
+                  trailingIcon: Icons.file_download_outlined,
+                ),
+                10.verticalSpace,
+                AppDottedBorder(
+                  child: GestureDetector(
+                    behavior:
+                        HitTestBehavior.opaque, // ← تلتقط الضغط في أي مكان
+                    onTap: () async {
+                      final file = await HelperMethods.pickAssignmentFile(
+                        context,
+                      );
+                      if (file != null) {
+                        print("Picked file path: ${file.path}");
+                      }
+                    },
+                    child: Container(
+                      width:
+                          double
+                              .infinity, // ← ده اللي بيخلي المساحة كلها clickable
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,
-                        vertical: 5,
+                        vertical: 15,
                       ),
-                      color: Color(0xffFEF9C3),
-                      backgroundColor: Color(0xff92400E),
-                      name: 'Not Submitted',
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.refresh,
+                            color: AppColors.grey,
+                            size: 20,
+                          ),
+                          10.horizontalSpace,
+                          AppText(
+                            text: 'Re-upload Answer',
+                            style: AppsStyles.s12Bold,
+                          ),
+                        ],
+                      ),
                     ),
-                    10.verticalSpace,
+                  ),
+                ),
 
-                    Text('Exercise 3: Integers', style: AppsStyles.s14Regular),
-                    5.verticalSpace,
-                    cardDisplay(
-                      materialDisplay(
-                        FontAwesomeIcons.file,
-                        Icons.download,
-                        'Exercise_3.pdf',
-                        'PDF • 2.4 MB',
-                        Color(0xffF0FDF4),
-                        AppColors.red,
-                      ),
-                    ),
-                    5.verticalSpace,
-                    cardDisplay(
-                      materialDisplay(
-                        FontAwesomeIcons.fileWord,
-                        Icons.download,
-                        'My_Answer_3.pdf',
-                        'DOCX • 856 KB',
-                        AppColors.blue.withOpacity(0.1),
-                        AppColors.blue,
-                      ),
-                    ),
-                    10.verticalSpace,
-                    AppDottedBorder(
-                      child: GestureDetector(
-                        behavior:
-                            HitTestBehavior.opaque, // ← تلتقط الضغط في أي مكان
-                        onTap: () async {
-                          final file = await HelperMethods.pickAssignmentFile(
-                            context,
-                          );
-                          if (file != null) {
-                            print("Picked file path: ${file.path}");
-                          }
-                        },
-                        child: Container(
-                          width:
-                              double
-                                  .infinity, // ← ده اللي بيخلي المساحة كلها clickable
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 15,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.refresh,
-                                color: AppColors.grey,
-                                size: 20,
-                              ),
-                              10.horizontalSpace,
-                              AppText(
-                                text: 'Re-upload Answer',
-                                style: AppsStyles.s14Bold,
-                              ),
-                            ],
-                          ),
+                10.verticalSpace,
+                MaterialDetails(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 5,
+                  ),
+                  color: Color(0xffDCFCE7),
+                  backgroundColor: Color(0xff1E40AF),
+                  name: 'Under Review',
+                ),
+                10.verticalSpace,
+                Text('Exercise 4: Real Numbers', style: AppsStyles.s14Regular),
+                5.verticalSpace,
+                CourseMaterial(
+                  title: 'Exercise_4.pdf',
+                  subTitle: 'PDF • 2.4 MB',
+                  backgroundColor: Color(0xffF0FDF4),
+                  iconColor: AppColors.red,
+                  leadingImage: AppImages.assignment,
+                  trailingIcon: Icons.file_download_outlined,
+                ),
+                10.verticalSpace,
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xffBBF7D0).withOpacity(0.85),
+
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.green),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        CourseMaterial(
+                          title: 'My_Answer_4.pdf',
+                          subTitle: 'Submitted on Oct 18, 2025',
+                          backgroundColor: Color(0xffDCFCE7),
+                          iconColor: AppColors.green,
+                          leadingImage: AppImages.assignment,
+                          trailingIcon: Icons.visibility,
+                          needBorder: false,
                         ),
-                      ),
+                        10.verticalSpace,
+                        yourGrade(),
+                        10.verticalSpace,
+                        CourseMaterial(
+                          tileColor: Colors.white,
+                          title: 'Teacher_Comments.pdf',
+                          subTitle: 'Feedback from Dr. Williams',
+                          backgroundColor: Color(0xffDCFCE7),
+                          iconColor: AppColors.green,
+                          leadingIcon: Icons.message,
+                          trailingIcon: Icons.file_download_outlined,
+                        ),
+                      ],
                     ),
+                  ),
+                ),
 
-                    10.verticalSpace,
+                10.verticalSpace,
+                Row(
+                  children: [
                     MaterialDetails(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 5,
                       ),
                       color: Color(0xffDCFCE7),
-                      backgroundColor: Color(0xff1E40AF),
-                      name: 'Under Review',
+                      backgroundColor: AppColors.green,
+                      name: 'Graded',
                     ),
-                    10.verticalSpace,
-                    Text(
-                      'Exercise 4: Real Numbers',
-                      style: AppsStyles.s14Regular,
-                    ),
-                    5.verticalSpace,
-                    cardDisplay(
-                      materialDisplay(
-                        FontAwesomeIcons.file,
-                        Icons.download,
-                        'Exercise_4.pdf',
-                        'PDF • 2.4 MB',
-                        Color(0xffF0FDF4),
-                        AppColors.red,
+                    10.horizontalSpace,
+                    AppText(
+                      text: 'Graded on Oct 21, 2025',
+                      style: AppsStyles.s12Regular.copyWith(
+                        color: AppColors.grey,
                       ),
-                    ),
-                    10.verticalSpace,
-                    cardDisplay(
-                      color: Color(0xffBBF7D0).withOpacity(0.85),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          children: [
-                            materialDisplay(
-                              FontAwesomeIcons.file,
-                              Icons.visibility,
-                              'My_Answer_4.pdf',
-                              'Submitted on Oct 18, 2025',
-                              Color(0xffDCFCE7),
-                              AppColors.green,
-                            ),
-                            10.verticalSpace,
-                            cardDisplay(
-                              color: Colors.white,
-                              materialDisplay(
-                                Icons.message,
-                                Icons.download,
-                                'Teacher_Comments.pdf',
-                                'Feedback from Dr. Williams',
-                                Color(0xffDCFCE7),
-                                AppColors.green,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    10.verticalSpace,
-                    Row(
-                      children: [
-                        MaterialDetails(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 5,
-                          ),
-                          color: Color(0xffDCFCE7),
-                          backgroundColor: AppColors.green,
-                          name: 'Graded',
-                        ),
-                        10.horizontalSpace,
-                        AppText(
-                          text: 'Graded on Oct 21, 2025',
-                          style: AppsStyles.s14Regular.copyWith(
-                            color: AppColors.grey,
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 ),
-              ),
+
+                30.verticalSpace,
+              ],
             ),
-
-            30.verticalSpace,
-          ],
+          ),
         ),
       ),
-    );
-  }
-
-  Widget materialDisplay(
-    IconData leadingIcon,
-    IconData trailingIcon,
-    String title,
-    String subTitle,
-    Color backgroundColor,
-    Color iconColor,
-  ) {
-    return CustomListTile2(
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          color: backgroundColor,
-
-          padding: EdgeInsets.all(10),
-          child: Icon(leadingIcon, color: iconColor),
-        ),
-      ),
-      title: Text(title, style: AppsStyles.s14Bold),
-      subtitle: Text(subTitle, style: AppsStyles.s12Light),
-      trailing: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          color: backgroundColor,
-          padding: EdgeInsets.all(10),
-          child: Icon(trailingIcon, color: iconColor),
-        ),
-      ),
-    );
-  }
-
-  Widget cardDisplay(Widget child, {Color? color}) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.grey, width: 0.5),
-        color: color,
-      ),
-      child: Padding(padding: const EdgeInsets.all(5.0), child: child),
     );
   }
 
@@ -320,7 +264,7 @@ class AssignmentScreen extends BaseStatelessWidget {
       children: [
         Row(
           children: [
-            Icon(Icons.access_time_rounded, color: AppColors.red, size: 15),
+            Icon(Icons.access_time_rounded, color: AppColors.red, size: 15.r),
             5.horizontalSpace,
             Text(
               'Due: Oct 25, 2025',
@@ -336,8 +280,9 @@ class AssignmentScreen extends BaseStatelessWidget {
             ),
           ],
         ),
+        5.verticalSpace,
         AppText(
-          style: AppsStyles.s14Regular,
+          style: AppsStyles.s12Regular,
           text:
               'Complete the following exercises on number systems. Download the assignment files, solve the problems, and upload your answers.',
         ),
@@ -345,33 +290,15 @@ class AssignmentScreen extends BaseStatelessWidget {
     );
   }
 
-  Widget uploadWidget(BuildContext context) {
-    return AppDottedBorder(
-      child: Container(
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              IconButton(
-                onPressed: () async {
-                  final file = await HelperMethods.pickAssignmentFile(context);
-                  if (file != null) {
-                    // TODO: ارفع الملف أو خزّنه في الكيوبيت بتاعك
-                    print("Picked file path: ${file.path}");
-                  }
-                },
-                icon: Icon(FontAwesomeIcons.fileUpload, color: AppColors.grey),
-              ),
-              AppText(text: 'Upload your answer', style: AppsStyles.s16Bold),
-              5.verticalSpace,
-              AppText(
-                text: 'Click to browse or drag and drop',
-                style: AppsStyles.s12Regular.copyWith(color: AppColors.grey),
-              ),
-            ],
-          ),
-        ),
+  Widget yourGrade() {
+    return CustomListTile(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      borderRadius: BorderRadius.circular(8),
+      backgroundColor: Colors.white,
+      leading: Text('Your Grade: ', style: AppsStyles.s12Bold),
+      trailing: Text(
+        '85/100',
+        style: AppsStyles.s18Bold.copyWith(color: AppColors.green),
       ),
     );
   }

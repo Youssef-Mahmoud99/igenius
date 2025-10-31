@@ -37,7 +37,7 @@ class TeacherTile extends StatelessWidget {
       children: [
         // Circle with gradient
         Container(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(
@@ -48,7 +48,7 @@ class TeacherTile extends StatelessWidget {
           ),
           child: Text(
             shortcut,
-            style: AppsStyles.s20Bold.copyWith(color: Colors.white),
+            style: AppsStyles.s16Bold.copyWith(color: Colors.white),
           ),
         ),
         12.horizontalSpace,
@@ -62,12 +62,12 @@ class TeacherTile extends StatelessWidget {
                   Flexible(
                     child: Text(
                       name,
-                      style: AppsStyles.s18Bold,
+                      style: AppsStyles.s14Bold,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   6.horizontalSpace,
-                  Icon(Icons.verified, color: AppColors.blue, size: 18),
+                  Icon(Icons.verified, color: AppColors.blue, size: 16.r),
                 ],
               ),
               6.verticalSpace,
@@ -97,8 +97,8 @@ class TeacherTile extends StatelessWidget {
               10.verticalSpace,
               inHome == false
                   ? Appbutton(
-                    height: 30.h,
                     color: AppColors.secondary,
+                    height: 30.h,
                     borderRadius: 12,
                     text: 'View Profile',
                     onPressed: () {

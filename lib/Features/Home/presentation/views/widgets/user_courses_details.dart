@@ -41,7 +41,7 @@ class UserCoursesDetails extends StatelessWidget {
   Widget dataBuild(String title, String value, String image, Color color) {
     return Container(
       width: 100.w,
-      height: 130.h,
+      height: 120.h,
       child: Card(
         color: Colors.white,
         elevation: 6,
@@ -59,13 +59,13 @@ class UserCoursesDetails extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(10.0),
                   color: color,
-                  child: Image.asset(image, color: Colors.white, height: 30),
+                  child: Image.asset(image, color: Colors.white, height: 25.h),
                 ),
               ),
 
               6.verticalSpace,
-              Text(value, style: AppsStyles.s24Bold),
-              Text(title, style: AppsStyles.s12Light),
+              Text(value, style: AppsStyles.s16Bold),
+              Text(title, style: AppsStyles.s10Regular),
             ],
           ),
         ),

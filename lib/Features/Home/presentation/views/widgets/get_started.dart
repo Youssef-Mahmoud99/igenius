@@ -7,6 +7,7 @@ import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/helpers/app_navigtion.dart';
 import '../../../../../core/widgets/primary_button.dart';
+import 'floating_card.dart';
 
 class GetStarted extends StatelessWidget {
   GetStarted({Key? key}) : super(key: key);
@@ -29,20 +30,11 @@ class GetStarted extends StatelessWidget {
       width: double.infinity,
       child: Column(
         children: [
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-            ),
-            color: Colors.white.withOpacity(0.2),
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Image.asset(AppImages.courses, height: 60),
-            ),
-          ),
+          FloatingCard(),
           10.verticalSpace,
           AppText(
             text: 'Master Your IGCSE',
-            style: AppsStyles.s28Bold.copyWith(color: AppColors.white),
+            style: AppsStyles.s24Bold.copyWith(color: AppColors.white),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -50,12 +42,12 @@ class GetStarted extends StatelessWidget {
               textAlign: TextAlign.center,
               text:
                   'Learn smarter, achieve higher with expert teachers and comprehensive courses',
-              style: AppsStyles.s18Light.copyWith(color: AppColors.white),
+              style: AppsStyles.s12Light.copyWith(color: AppColors.white),
             ),
           ),
           20.verticalSpace,
           Appbutton(
-            height: 60,
+            height: 50.h,
             borderRadius: 16,
             text: "Get Started Free",
             onPressed: () {
@@ -85,14 +77,14 @@ class GetStarted extends StatelessWidget {
       children: [
         AppText(
           text: value,
-          style: AppsStyles.s28Bold.copyWith(color: AppColors.white),
+          style: AppsStyles.s20Bold.copyWith(color: AppColors.white),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: AppText(
             textAlign: TextAlign.center,
             text: title,
-            style: AppsStyles.s14Regular.copyWith(color: AppColors.white),
+            style: AppsStyles.s12Regular.copyWith(color: AppColors.white),
           ),
         ),
       ],

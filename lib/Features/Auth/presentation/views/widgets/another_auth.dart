@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/core/theme/app_colors.dart';
 import 'package:igenius/core/widgets/custom_text.dart';
 import 'package:igenius/core/widgets/custom_text_button.dart';
@@ -22,13 +23,13 @@ class AnotherAuth extends StatelessWidget {
       children: [
         AppText(
           text: text,
-          style: AppsStyles.s16Regular.copyWith(color: AppColors.grey),
+          style: AppsStyles.s14Regular.copyWith(color: AppColors.grey),
         ),
         CustomTextButton(
           text: anotherAuthName,
           color: AppColors.primary,
           onPressed: onPressed,
-          fontSize: 18,
+          fontSize: 14.sp,
           fontWeight: FontWeight.bold,
         ),
       ],

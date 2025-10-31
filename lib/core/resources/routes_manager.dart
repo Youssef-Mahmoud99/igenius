@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:igenius/Features/Account/presentation/views/pages/about_us_screen.dart';
+import 'package:igenius/Features/Account/presentation/views/pages/edit_profile_screen.dart';
+import 'package:igenius/Features/Account/presentation/views/pages/my_courses_screen.dart';
+import 'package:igenius/Features/Account/presentation/views/pages/privacy_policy_screen.dart';
 import 'package:igenius/Features/Auth/presentation/views/pages/create_account.dart';
+import 'package:igenius/Features/Auth/presentation/views/pages/forget_password_screen.dart';
 import 'package:igenius/Features/Auth/presentation/views/pages/login_screen.dart';
 import 'package:igenius/Features/Courses/presentation/views/pages/assignment_screen.dart';
 import 'package:igenius/Features/home/presentation/views/pages/Home_screen.dart';
 import 'package:igenius/Features/layout/layout_screen.dart';
 import 'package:igenius/splash_screen.dart';
+import '../../Features/Account/presentation/views/pages/help_and_support_screen.dart';
 import '../../Features/Courses/presentation/views/pages/course_details_screen.dart';
 import '../../Features/Courses/presentation/views/pages/courses_screen.dart';
-import '../../Features/Courses/presentation/views/pages/filters_screen.dart';
+import '../../Features/filters/presentation/pages/filters_screen.dart';
 import '../../Features/Courses/presentation/views/pages/lesson_view_screen.dart';
 import '../../Features/Notifications/presentation/views/pages/notifications_screen.dart';
 import '../../Features/Teachers/presentation/views/pages/teachers_screen.dart';
@@ -43,6 +48,10 @@ class RoutesManager {
         builder: (context, state) => CreateAccountScreen(),
       ),
       GoRoute(
+        path: AppRoutes.forgotPassword,
+        builder: (context, state) => ForgetPasswordScreen(),
+      ),
+      GoRoute(
         path: AppRoutes.layout,
         builder: (context, state) {
           Map<String, dynamic> args = state.extra! as Map<String, dynamic>;
@@ -53,7 +62,11 @@ class RoutesManager {
       GoRoute(
         path: AppRoutes.filtersScreen,
         pageBuilder: (context, state) {
-          return SlideFadeTransition(child: FiltersScreen());
+          Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+          final isCourses = args['isCourses'] as bool;
+          return SlideFadeTransition(
+            child: FiltersScreen(isCourses: isCourses),
+          );
         },
       ),
       GoRoute(
@@ -80,6 +93,22 @@ class RoutesManager {
       GoRoute(
         path: AppRoutes.aboutUsScreen,
         builder: (context, state) => AboutUsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.editProfileScreen,
+        builder: (context, state) => EditProfileScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.myCoursesScreen,
+        builder: (context, state) => MyCoursesScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.privacyPolicyScreen,
+        builder: (context, state) => PrivacyPolicyScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.helpAndSupportScreen,
+        builder: (context, state) => HelpAndSupportScreen(),
       ),
 
       // GoRoute(

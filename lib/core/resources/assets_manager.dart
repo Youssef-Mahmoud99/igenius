@@ -20,6 +20,14 @@ class AppImages {
   static const String lock = "$_iconsPath/lock.png";
   static const String privacy = "$_iconsPath/privacy.png";
   static const String time = "$_iconsPath/time.png";
+  static const String aboutus = "$_iconsPath/aboutus.png";
+  static const String answer = "$_iconsPath/answer.png";
+  static const String assignment = "$_iconsPath/assignment.png";
+  static const String editprofile = "$_iconsPath/editprofile.png";
+  static const String filter = "$_iconsPath/filter.png";
+  static const String mycourses = "$_iconsPath/mycourses.png";
+  static const String upload = "$_iconsPath/upload.png";
+  static const String notifications = "$_iconsPath/notifications.png";
 
   //logos
 

@@ -14,7 +14,6 @@ import '../widgets/login_form.dart';
 import '../widgets/signin_with_google.dart';
 
 class LoginScreen extends BaseStatelessWidget {
-
   @override
   Widget buildBody(BuildContext context) {
     return BaseGradient(
@@ -35,16 +34,16 @@ class LoginScreen extends BaseStatelessWidget {
                 30.verticalSpace,
                 AppText(
                   text: 'Welcome Back!',
-                  style: AppsStyles.s32Bold.copyWith(color: AppColors.primary),
+                  style: AppsStyles.s24Bold.copyWith(color: AppColors.primary),
                 ),
                 AppText(
                   text: 'Sign in to continue learning',
-                  style: AppsStyles.s20Regular.copyWith(color: AppColors.grey),
+                  style: AppsStyles.s16Regular.copyWith(color: AppColors.grey),
                 ),
                 50.verticalSpace,
 
                 LoginForm(),
-                20.verticalSpace,
+                10.verticalSpace,
                 AnotherAuth(
                   text: 'Don\'t have an account?',
                   anotherAuthName: 'Sign up',
@@ -56,6 +55,7 @@ class LoginScreen extends BaseStatelessWidget {
                 Align(
                   alignment: Alignment.center,
                   child: CustomTextButton(
+                    fontSize: 14.sp,
                     text: 'Continue as guest',
                     color: AppColors.primary,
                     fontWeight: FontWeight.w500,

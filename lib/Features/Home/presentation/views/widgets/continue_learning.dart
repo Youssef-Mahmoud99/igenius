@@ -32,11 +32,11 @@ class ContinueLearningCard extends StatelessWidget {
                 CustomListTile(
                   title: AppText(
                     text: "Continue Learning",
-                    style: AppsStyles.s24Bold.copyWith(color: AppColors.white),
+                    style: AppsStyles.s20Bold.copyWith(color: AppColors.white),
                   ),
                   subtitle: AppText(
                     text: "You're doing great! Keep it up 🎉",
-                    style: AppsStyles.s14Light.copyWith(color: AppColors.white),
+                    style: AppsStyles.s12Light.copyWith(color: AppColors.white),
                   ),
                   trailing: Container(
                     padding: const EdgeInsets.all(10.0),
@@ -55,13 +55,13 @@ class ContinueLearningCard extends StatelessWidget {
                     children: [
                       AppText(
                         text: "Overall Progress",
-                        style: AppsStyles.s14Regular.copyWith(
+                        style: AppsStyles.s12Regular.copyWith(
                           color: AppColors.white.withOpacity(0.9),
                         ),
                       ),
                       AppText(
                         text: "68%",
-                        style: AppsStyles.s14Bold.copyWith(
+                        style: AppsStyles.s12Bold.copyWith(
                           color: AppColors.white,
                         ),
                       ),

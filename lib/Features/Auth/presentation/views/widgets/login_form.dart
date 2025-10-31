@@ -4,12 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:igenius/core/constants/app_routes.dart';
 import 'package:igenius/core/widgets/custom_text_button.dart';
 import 'package:igenius/core/widgets/gradient_button.dart';
-import 'package:igenius/splash_screen.dart';
-
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/helpers/app_navigtion.dart';
-import '../../../../../core/widgets/check_box.dart';
 import '../../../../../core/widgets/custom_text.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
 
@@ -28,7 +25,7 @@ class LoginForm extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppText(text: 'Email Address', style: AppsStyles.s16Regular),
+              AppText(text: 'Email Address', style: AppsStyles.s12Bold),
               5.verticalSpace,
 
               CustomTextField(
@@ -54,7 +51,7 @@ class LoginForm extends StatelessWidget {
                 },
               ),
               10.verticalSpace,
-              AppText(text: 'Password', style: AppsStyles.s16Regular),
+              AppText(text: 'Password', style: AppsStyles.s12Bold),
               5.verticalSpace,
 
               CustomTextField(
@@ -78,32 +75,33 @@ class LoginForm extends StatelessWidget {
                   return null;
                 },
               ),
-              10.verticalSpace,
 
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SizedBox(
-                    width: 200,
-                    child: CustomCheckboxTile(
-                      title: 'Remember me',
-                      value: rememberMe,
-                      onChanged: (value) {
-                        setState(() {
-                          rememberMe = value!;
-                        });
-                      },
-                    ),
-                  ),
+                  // SizedBox(
+                  //   width: 200,
+                  //   child: CustomCheckboxTile(
+                  //     title: 'Remember me',
+                  //     value: rememberMe,
+                  //     onChanged: (value) {
+                  //       setState(() {
+                  //         rememberMe = value!;
+                  //       });
+                  //     },
+                  //   ),
+                  // ),
                   CustomTextButton(
                     text: "Forget password?",
                     color: AppColors.buttonGradient2,
-                    onPressed: () {},
+                    onPressed: () {
+                      AppNavaigation.push(AppRoutes.forgotPassword);
+                    },
                   ),
                 ],
               ),
-              10.verticalSpace,
               GradientButton(
+                height: 50.h,
                 text: 'Login to Account',
                 onTap: () {
                   if (_formKey.currentState!.validate()) {

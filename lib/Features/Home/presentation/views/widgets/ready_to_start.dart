@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/core/widgets/custom_text.dart';
 import 'package:igenius/core/widgets/gradient_button.dart';
 import '../../../../../core/constants/app_routes.dart';
+import '../../../../../core/resources/assets_manager.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/helpers/app_navigtion.dart';
-import '../../../../../core/widgets/primary_button.dart';
 
 class ReadyToStart extends StatelessWidget {
   ReadyToStart({Key? key}) : super(key: key);
@@ -40,24 +40,20 @@ class ReadyToStart extends StatelessWidget {
               color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: Icon(
-                  Icons.lock_open_outlined,
-                  color: AppColors.primary,
-                  size: 40,
-                ),
+                child: Image.asset(AppImages.lock, height: 40.h),
               ),
             ),
             10.verticalSpace,
-            AppText(text: 'Ready to Start?', style: AppsStyles.s28Bold),
+            AppText(text: 'Ready to Start?', style: AppsStyles.s20Bold),
             AppText(
               textAlign: TextAlign.center,
               text: 'Join thousands of students achieving their IGCSE goals',
-              style: AppsStyles.s18Light,
+              style: AppsStyles.s14Light,
             ),
 
             20.verticalSpace,
             GradientButton(
-              height: 60,
+              height: 50.h,
               text: "Create Free Account",
               onTap: () {
                 AppNavaigation.push(AppRoutes.register);
@@ -67,7 +63,7 @@ class ReadyToStart extends StatelessWidget {
             AppText(
               textAlign: TextAlign.center,
               text: 'No credit card required • Start learning today',
-              style: AppsStyles.s14Regular.copyWith(color: AppColors.grey),
+              style: AppsStyles.s10Regular.copyWith(color: AppColors.grey),
             ),
           ],
         ),
@@ -81,7 +77,7 @@ class ReadyToStart extends StatelessWidget {
       children: [
         AppText(
           text: value,
-          style: AppsStyles.s28Bold.copyWith(color: AppColors.white),
+          style: AppsStyles.s20Bold.copyWith(color: AppColors.white),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),

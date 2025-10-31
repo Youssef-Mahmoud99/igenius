@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../theme/app_colors.dart';
 
@@ -15,7 +16,7 @@ class AppsStyles {
   }) {
     return TextStyle(
       fontFamily: fontFamily,
-      fontSize: size,
+      fontSize: size.sp, // 👈 هنا التحويل لـ sp
       fontWeight: weight,
       color: color ?? AppColors.black,
       letterSpacing: letterSpacing,

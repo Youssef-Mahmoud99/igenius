@@ -19,7 +19,7 @@ class RatingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.star, color: AppColors.orange, size: 20),
+        Icon(Icons.star, color: AppColors.orange, size: 20.r),
         5.horizontalSpace,
         Text(rating.toString(), style: AppsStyles.s14Bold),
         20.horizontalSpace,

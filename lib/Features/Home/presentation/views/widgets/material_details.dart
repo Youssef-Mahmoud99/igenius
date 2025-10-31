@@ -27,7 +27,7 @@ class MaterialDetails extends StatelessWidget {
       ),
       child: Text(
         name,
-        style: style ?? AppsStyles.s14SemiBold.copyWith(color: backgroundColor),
+        style: style ?? AppsStyles.s12SemiBold.copyWith(color: backgroundColor),
       ),
     );
   }

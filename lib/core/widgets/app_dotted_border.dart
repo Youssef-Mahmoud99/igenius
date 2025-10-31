@@ -18,7 +18,7 @@ class AppDottedBorder extends StatelessWidget {
       options: RoundedRectDottedBorderOptions(
         borderPadding: EdgeInsets.zero,
         radius: Radius.circular(radius ?? 12),
-        dashPattern: const [4, 4],
+        dashPattern: const [6, 4],
         color: color ?? AppColors.grey,
         strokeWidth: 2,
         padding: EdgeInsets.zero,

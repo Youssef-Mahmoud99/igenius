@@ -42,15 +42,14 @@ class HeadLine extends StatelessWidget {
                     onPressed: () {
                       AppNavaigation.push(AppRoutes.notificationsScreen);
                     },
-                    icon: Icon(
-                      Icons.notifications_none,
-                      color: AppColors.black,
-                      size: 30,
+                    icon: ImageIcon(
+                      AssetImage(AppImages.notifications),
+                      size: 30.r,
                     ),
                   ),
                   Positioned(
-                    top: 6, // مقدار الارتفاع فوق الأيقونة
-                    right: 8, // المسافة من اليمين
+                    top: 6,
+                    right: 8,
                     child: Container(
                       width: 10,
                       height: 10,

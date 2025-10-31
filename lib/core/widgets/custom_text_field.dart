@@ -73,7 +73,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           hintStyle: TextStyle(
             color: AppColors.grey.withOpacity(0.5),
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 14.sp,
           ),
           prefixIcon: widget.prefix,
           filled: true,

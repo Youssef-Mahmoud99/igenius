@@ -8,17 +8,18 @@ class BaseGradient extends StatelessWidget {
     this.width,
     this.padding,
   }) : super(key: key);
+
   final Widget child;
   final double? height;
   final double? width;
   final EdgeInsets? padding;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      width:
-          padding != null ? width ?? MediaQuery.of(context).size.width : null,
-      height:
-          padding != null ? height ?? MediaQuery.of(context).size.height : null,
+      width: width ?? MediaQuery.sizeOf(context).width,
+      height: height ?? MediaQuery.sizeOf(context).height,
+      padding: padding,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,

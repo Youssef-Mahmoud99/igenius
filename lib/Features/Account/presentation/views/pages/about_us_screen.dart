@@ -6,7 +6,6 @@ import 'package:igenius/core/widgets/custom_appBar.dart';
 import '../../../../../core/resources/assets_manager.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
-import '../../../../../core/widgets/custom_text.dart';
 
 class AboutUsScreen extends BaseStatelessWidget {
   const AboutUsScreen({Key? key}) : super(key: key);
@@ -55,16 +54,16 @@ class AboutUsScreen extends BaseStatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Who we are', style: AppsStyles.s16Bold),
+                    Text('Who we are', style: AppsStyles.s14Bold),
                     10.verticalSpace,
                     Text(
                       'iGenius is a comprehensive online learning platform dedicated to helping IGCSE students excel in their studies. We provide high-quality courses, expert instructors, and interactive learning materials designed specifically for the IGCSE curriculum.',
-                      style: AppsStyles.s14Light,
+                      style: AppsStyles.s12Regular,
                     ),
                     10.verticalSpace,
                     Text(
                       'Our mission is to make quality education accessible to all students, regardless of their location. We believe that every student deserves the opportunity to reach their full potential with the right guidance and resources.',
-                      style: AppsStyles.s14Light,
+                      style: AppsStyles.s12Regular,
                     ),
                   ],
                 ),
@@ -73,11 +72,11 @@ class AboutUsScreen extends BaseStatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('What We Offer', style: AppsStyles.s16Bold),
+                    Text('What We Offer', style: AppsStyles.s14Bold),
                     10.verticalSpace,
                     Text(
                       'At iGenius, we provide a complete learning experience that includes:',
-                      style: AppsStyles.s14Light,
+                      style: AppsStyles.s12Regular,
                     ),
                     10.verticalSpace,
                     offerItem(
@@ -104,11 +103,11 @@ class AboutUsScreen extends BaseStatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Our Vision', style: AppsStyles.s16Bold),
+                    Text('Our Vision', style: AppsStyles.s14Bold),
                     10.verticalSpace,
                     Text(
                       'We envision a future where every IGCSE student has access to world-class education that empowers them to achieve their academic goals and build a strong foundation for their future careers. Through innovation, dedication, and a student-centered approach, we aim to transform the way students learn and succeed.',
-                      style: AppsStyles.s14Regular,
+                      style: AppsStyles.s12Regular,
                     ),
                   ],
                 ),
@@ -117,7 +116,7 @@ class AboutUsScreen extends BaseStatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Contact Us', style: AppsStyles.s16Bold),
+                    Text('Contact Us', style: AppsStyles.s14Bold),
                     10.verticalSpace,
                     contactUs(Icons.email_outlined, 'support@igenius.com'),
                     10.verticalSpace,
@@ -148,9 +147,9 @@ class AboutUsScreen extends BaseStatelessWidget {
   Widget contactUs(IconData icon, String text) {
     return Row(
       children: [
-        Icon(icon, color: AppColors.primary, size: 20),
+        Icon(icon, color: AppColors.primary, size: 20.r),
         10.horizontalSpace,
-        Text(text, style: AppsStyles.s14Regular),
+        Text(text, style: AppsStyles.s12Regular),
       ],
     );
   }
@@ -173,7 +172,7 @@ class AboutUsScreen extends BaseStatelessWidget {
             ),
           ),
           10.horizontalSpace,
-          Expanded(child: Text(text, style: AppsStyles.s14Light)),
+          Expanded(child: Text(text, style: AppsStyles.s12Regular)),
         ],
       ),
     );

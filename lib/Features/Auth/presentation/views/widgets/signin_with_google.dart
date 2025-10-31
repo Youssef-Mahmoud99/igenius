@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:igenius/core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 
 class SignInWithGoogle extends StatelessWidget {
@@ -26,11 +27,9 @@ class SignInWithGoogle extends StatelessWidget {
                       size: 28,
                     ),
                     8.horizontalSpace,
-                    const Text(
+                    Text(
                       "Soon",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                      style: AppsStyles.s14Bold.copyWith(
                         color: AppColors.primary,
                       ),
                     ),
@@ -54,14 +53,7 @@ class SignInWithGoogle extends StatelessWidget {
             children: [
               Icon(FontAwesomeIcons.google, color: AppColors.primary, size: 30),
               10.horizontalSpace,
-              Text(
-                "Sign in with Google",
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
-                ),
-              ),
+              Text("Sign in with Google", style: AppsStyles.s14Regular),
             ],
           ),
         ),

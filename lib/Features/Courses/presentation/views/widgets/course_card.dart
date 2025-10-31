@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/utils/helpers/app_navigtion.dart';
 import '../../../../Home/presentation/views/widgets/material_details.dart';
 import '../../../data/models/courses_model.dart';
 
@@ -30,7 +32,7 @@ class CourseCard extends StatelessWidget {
         children: [
           Container(
             width: double.infinity, // ياخد العرض كله
-            height: 140,
+            height: 120.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -48,7 +50,7 @@ class CourseCard extends StatelessWidget {
                   top: 12,
                   left: 12,
                   child: MaterialDetails(
-                    style: AppsStyles.s14Bold,
+                    style: AppsStyles.s12Bold,
                     color: course.categoryBackgroundColor ?? Colors.white,
                     backgroundColor: course.categoryColor ?? Colors.grey,
                     name: course.category ?? "",
@@ -70,19 +72,19 @@ class CourseCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(course.title ?? "", style: AppsStyles.s16Bold),
+                  Text(course.title ?? "", style: AppsStyles.s14Bold),
                   5.verticalSpace,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.star, color: AppColors.orange, size: 20),
+                      Icon(Icons.star, color: AppColors.orange, size: 20.r),
                       Text(course.rating.toString(), style: AppsStyles.s14Bold),
                       20.horizontalSpace,
                       SizedBox(
                         width: 80,
                         child: Text(
                           "${course.subtitle} Students",
-                          style: AppsStyles.s12Light,
+                          style: AppsStyles.s10Regular,
                         ),
                       ),
                     ],
@@ -93,26 +95,31 @@ class CourseCard extends StatelessWidget {
                     children: [
                       Text(
                         course.price ?? "",
-                        style: AppsStyles.s18Bold.copyWith(
+                        style: AppsStyles.s14Bold.copyWith(
                           color: AppColors.primary,
                         ),
                       ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
-                          ),
-                          color: Color(0xff53A1D2),
-                          width: 65.w,
-                          child: Center(
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              'Enroll',
-                              style: AppsStyles.s14Bold.copyWith(
-                                color: AppColors.white,
-                                height: 1.25,
+                      GestureDetector(
+                        onTap: () {
+                          AppNavaigation.push(AppRoutes.courseDetails);
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            color: Color(0xff53A1D2),
+                            width: 65.w,
+                            child: Center(
+                              child: Text(
+                                textAlign: TextAlign.center,
+                                'Enroll',
+                                style: AppsStyles.s12Bold.copyWith(
+                                  color: AppColors.white,
+                                  height: 1.25,
+                                ),
                               ),
                             ),
                           ),
@@ -149,7 +156,7 @@ class CourseCard extends StatelessWidget {
             Text(
               textAlign: TextAlign.center,
               'Live',
-              style: AppsStyles.s16Bold.copyWith(color: AppColors.white),
+              style: AppsStyles.s12Bold.copyWith(color: AppColors.white),
             ),
           ],
         ),

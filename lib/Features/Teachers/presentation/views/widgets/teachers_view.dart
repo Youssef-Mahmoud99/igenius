@@ -66,7 +66,7 @@ class TeachersView extends StatelessWidget {
             ),
             margin: EdgeInsets.only(bottom: 16),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              padding: const EdgeInsets.all(10),
               child: TeacherTile(
                 colors: teacher["colors"],
                 shortcut: teacher["shortcut"],
