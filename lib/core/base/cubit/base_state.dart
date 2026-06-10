@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../error/failures.dart';
+import '../models/error_model.dart';
 
 abstract class BaseCubitState<T> extends Equatable {
   const BaseCubitState();
@@ -32,13 +33,13 @@ class SuccessState<T> extends BaseCubitState<T> {
 
 /// Error State
 class ErrorState<T> extends BaseCubitState<T> {
-  final Failure failure;
+  final ErrorModel error;
   final String message;
   
-  const ErrorState(this.failure, this.message);
+  const ErrorState(this.error, this.message);
   
   @override
-  List<Object?> get props => [failure, message];
+  List<Object?> get props => [error, message];
 }
 
 /// Empty State (لما مفيش data)

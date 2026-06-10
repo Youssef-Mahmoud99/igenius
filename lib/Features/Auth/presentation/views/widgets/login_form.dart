@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:igenius/core/constants/app_routes.dart';
@@ -9,6 +11,9 @@ import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/helpers/app_navigtion.dart';
 import '../../../../../core/widgets/custom_text.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
+import '../../../../../injection/service_locator.dart';
+import '../../../data/models/auth_model.dart';
+import '../../cubits/auth_cubit.dart';
 
 class LoginForm extends StatelessWidget {
   LoginForm({Key? key}) : super(key: key);
@@ -18,6 +23,10 @@ class LoginForm extends StatelessWidget {
   bool rememberMe = false;
   @override
   Widget build(BuildContext context) {
+  if (kDebugMode) {
+     email = 'yossef10@student.com';
+     password = '12345678';
+  }
     return StatefulBuilder(
       builder: (context, setState) {
         return Form(
@@ -29,6 +38,7 @@ class LoginForm extends StatelessWidget {
               5.verticalSpace,
 
               CustomTextField(
+                initialValue: email,
                 prefix: Icon(
                   FontAwesomeIcons.at,
                   color: AppColors.grey,
@@ -55,6 +65,7 @@ class LoginForm extends StatelessWidget {
               5.verticalSpace,
 
               CustomTextField(
+                initialValue: password,
                 prefix: Icon(
                   FontAwesomeIcons.lock,
                   color: AppColors.grey,
@@ -104,8 +115,12 @@ class LoginForm extends StatelessWidget {
                 height: 50.h,
                 text: 'Login to Account',
                 onTap: () {
+                  final cubit = sl<AuthCubit>();
                   if (_formKey.currentState!.validate()) {
-                    AppNavaigation.goToHome(isGuest: false);
+                    cubit.login(AuthModel(
+                      email: email!,
+                      password: password!,
+                    ));
                   }
                 },
               ),

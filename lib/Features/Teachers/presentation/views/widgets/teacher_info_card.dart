@@ -5,9 +5,11 @@ import 'package:igenius/Features/Home/presentation/views/widgets/material_detail
 import 'package:igenius/core/widgets/custom_text.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../Courses/data/models/teacher.dart';
 
 class TeacherInfoCard extends StatelessWidget {
-  TeacherInfoCard({Key? key}) : super(key: key);
+  final Teacher teacher;
+  TeacherInfoCard({Key? key, required this.teacher}) : super(key: key);
   List<Map<String, dynamic>> data = [
     {"title": "Rating", "value": "★ 4.9"},
     {"title": "Students", "value": "1,234"},
@@ -45,7 +47,7 @@ class TeacherInfoCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AppText(
-                text: 'Dr. Robert Williams',
+                text: teacher.name?.toUpperCase() ?? '',
                 style: AppsStyles.s24Bold.copyWith(color: AppColors.white),
               ),
               6.horizontalSpace,
@@ -56,7 +58,7 @@ class TeacherInfoCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: AppText(
               textAlign: TextAlign.center,
-              text: 'Mathematics & Physics Expert',
+              text:  teacher.description ?? '',
               style: AppsStyles.s12Regular.copyWith(color: AppColors.greyLight),
             ),
           ),

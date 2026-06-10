@@ -51,7 +51,7 @@ class LoginScreen extends BaseStatelessWidget {
                     AppNavaigation.goToSignUp();
                   },
                 ),
-                SignInWithGoogle(),
+                // SignInWithGoogle(),
                 Align(
                   alignment: Alignment.center,
                   child: CustomTextButton(

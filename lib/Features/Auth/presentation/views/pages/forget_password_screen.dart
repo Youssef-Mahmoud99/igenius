@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:igenius/core/widgets/base/base_stateless.dart';
+import '../../../../../app.dart';
+import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/resources/assets_manager.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
@@ -10,6 +12,8 @@ import '../../../../../core/widgets/base_gradient.dart';
 import '../../../../../core/widgets/custom_text.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
 import '../../../../../core/widgets/gradient_button.dart';
+import '../../../../../injection/service_locator.dart';
+import '../../cubits/password_cubit.dart';
 
 class ForgetPasswordScreen extends BaseStatelessWidget {
   ForgetPasswordScreen({Key? key}) : super(key: key);
@@ -89,8 +93,10 @@ class ForgetPasswordScreen extends BaseStatelessWidget {
                               height: 50.h,
                               text: 'Send  ',
                               onTap: () {
+                                final cubit = sl<PasswordCubit>();
                                 if (_formKey.currentState!.validate()) {
-                                  AppNavaigation.goToLogin();
+                                passwordParams = passwordParams?.copyWith(email: email);
+                                  cubit.forgetPassword(email!);
                                 }
                               },
                             ),

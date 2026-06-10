@@ -5,7 +5,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../app.dart';
+import '../../services/secure_storage_service.dart';
 import '../../theme/app_colors.dart';
+import 'app_navigtion.dart';
 
 class HelperMethods {
   HelperMethods._();
@@ -134,14 +137,14 @@ class HelperMethods {
   static Future<void> shareText(String text) async {
     await Share.share(text);
   }
+  
 
-  // ======== URL Launcher ========
-  static Future<void> openUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+ static logout()async{
+  
+   await SecureStorageService.clear();
+   currentUser = null;
+   currentStudent = null;   AppNavaigation.goToLogin();
+
+ }
+ 
 }

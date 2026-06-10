@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:igenius/Features/Account/presentation/views/pages/about_us_screen.dart';
 import 'package:igenius/Features/Account/presentation/views/pages/edit_profile_screen.dart';
@@ -12,6 +13,15 @@ import 'package:igenius/Features/home/presentation/views/pages/Home_screen.dart'
 import 'package:igenius/Features/layout/layout_screen.dart';
 import 'package:igenius/splash_screen.dart';
 import '../../Features/Account/presentation/views/pages/help_and_support_screen.dart';
+import '../../Features/Auth/presentation/cubits/auth_cubit.dart';
+import '../../Features/Auth/presentation/cubits/password_cubit.dart';
+import '../../Features/Auth/presentation/views/pages/new_password_screen.dart';
+import '../../Features/Auth/presentation/views/pages/otp_screen.dart';
+import '../../Features/Courses/data/models/teacher.dart';
+import '../../Features/Courses/presentation/cubits/course_details_cubit.dart';
+import '../../Features/Courses/presentation/cubits/courses_by_teacher_cubit.dart';
+import '../../Features/Courses/presentation/cubits/courses_cubit.dart';
+import '../../Features/Courses/presentation/cubits/home_courses_cubit.dart';
 import '../../Features/Courses/presentation/views/pages/course_details_screen.dart';
 import '../../Features/Courses/presentation/views/pages/courses_screen.dart';
 import '../../Features/filters/presentation/pages/filters_screen.dart';
@@ -41,7 +51,11 @@ class RoutesManager {
 
       GoRoute(
         path: AppRoutes.login,
-        builder: (context, state) => LoginScreen(),
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => sl<AuthCubit>(),
+              child: LoginScreen(),
+            ),
       ),
       GoRoute(
         path: AppRoutes.register,
@@ -49,14 +63,24 @@ class RoutesManager {
       ),
       GoRoute(
         path: AppRoutes.forgotPassword,
-        builder: (context, state) => ForgetPasswordScreen(),
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => sl<PasswordCubit>(),
+              child: ForgetPasswordScreen(),
+            ),
       ),
       GoRoute(
         path: AppRoutes.layout,
         builder: (context, state) {
           Map<String, dynamic> args = state.extra! as Map<String, dynamic>;
           final isGuest = args['isGuest'] as bool;
-          return LayoutScreen(isGuest: isGuest, key: layoutKey);
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => sl<HomeCoursesCubit>()),
+              BlocProvider(create: (context) => sl<CoursesCubit>()),
+            ],
+            child: LayoutScreen(isGuest: isGuest, key: layoutKey),
+          );
         },
       ),
       GoRoute(
@@ -71,11 +95,29 @@ class RoutesManager {
       ),
       GoRoute(
         path: AppRoutes.teacherProfile,
-        builder: (context, state) => TeacherProfileScreen(),
+        pageBuilder: (context, state) {
+          Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+          final teacher = args['teacher'] as Teacher;
+          return SlideFadeTransition(
+            child: BlocProvider(
+              create: (context) => sl<CoursesByTeacherCubit>(),
+              child: TeacherProfile(teacher: teacher),
+            ),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.courseDetails,
-        builder: (context, state) => CourseDetailsScreen(),
+        pageBuilder: (context, state) {
+          Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+          final courseId = args['courseId'] as int;
+          return SlideFadeTransition(
+            child: BlocProvider(
+              create: (context) => sl<CourseDetailsCubit>(),
+              child: CourseDetailsScreen(courseId: courseId),
+            ),
+          );
+        },
       ),
 
       GoRoute(
@@ -109,6 +151,14 @@ class RoutesManager {
       GoRoute(
         path: AppRoutes.helpAndSupportScreen,
         builder: (context, state) => HelpAndSupportScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.otpScreen,
+        builder: (context, state) => OtpScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.createNewPassword,
+        builder: (context, state) => NewPasswordScreen(),
       ),
 
       // GoRoute(

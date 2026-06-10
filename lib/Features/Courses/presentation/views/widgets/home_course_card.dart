@@ -6,13 +6,14 @@ import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/widgets/cached_network_image.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../../Home/presentation/views/widgets/material_details.dart';
 
 class HomeCourseCard extends StatelessWidget {
   const HomeCourseCard({Key? key, required this.course, required this.inHome})
     : super(key: key);
-  final CoursesModel course;
+  final CourseModel course;
   final bool inHome;
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class HomeCourseCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -38,7 +39,7 @@ class HomeCourseCard extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: course.gradientColors ?? [],
+                colors: [ AppColors.primary, AppColors.secondary],
               ),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(16),
@@ -63,16 +64,20 @@ class HomeCourseCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          course.tagIcon.toString(),
+                          course.subject?.name ?? "",
                           style: AppsStyles.s12Regular,
                         ),
-                        5.horizontalSpace,
-                        Text(course.tag ?? "", style: AppsStyles.s10Bold),
+                        // 5.horizontalSpace,
+                        // Text(course.system?.name ?? "", style: AppsStyles.s10Bold),
                       ],
                     ),
                   ),
                 ),
-                Center(child: Image.asset(course.image ?? "")),
+                Center(child: CustomCachedNetworkImage(
+                  imageUrl: course.image ?? "",
+                  width: 80.w,
+                  height: 80.h,
+                )),
               ],
             ),
           ),
@@ -83,15 +88,15 @@ class HomeCourseCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MaterialDetails(
-                    color: course.categoryBackgroundColor ?? Colors.white,
-                    backgroundColor: course.categoryColor ?? Colors.grey,
-                    name: course.category ?? "",
+                    color: AppColors.tertiary,
+                    backgroundColor: AppColors.white,
+                    name: course.teacher?.name ?? "",
                   ),
                   5.verticalSpace,
                   Text(course.title ?? "", style: AppsStyles.s14Bold),
                   5.verticalSpace,
                   Text(
-                    course.subtitle ?? "",
+                    course.description ?? "",
                     style: AppsStyles.s12Regular.copyWith(
                       color: AppColors.grey,
                     ),
@@ -111,7 +116,9 @@ class HomeCourseCard extends StatelessWidget {
                             borderRadius: 12,
                             text: 'View Course',
                             onPressed: () {
-                              AppNavaigation.push(AppRoutes.courseDetails);
+                              AppNavaigation.pushToPageWithParams(AppRoutes.courseDetails,  {
+                                'courseId': course.id,
+                              });
                             },
                           ),
                         ],
@@ -137,14 +144,14 @@ class HomeCourseCard extends StatelessWidget {
       children: [
         Icon(Icons.star, color: Color(0xFFFBBF24), size: 16.r),
         const SizedBox(width: 4),
-        Text(course.rating.toString(), style: AppsStyles.s14Bold),
+        Text('5.0', style: AppsStyles.s14Bold),
       ],
     );
   }
 
   Widget price() {
     return Text(
-      course.price ?? "",
+      course.price.toString() ,
       style: AppsStyles.s14Bold.copyWith(color: AppColors.primary),
     );
   }

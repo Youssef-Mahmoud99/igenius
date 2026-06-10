@@ -5,6 +5,7 @@ import 'package:igenius/Features/Account/presentation/views/widgets/settings_ite
 import 'package:igenius/core/constants/app_routes.dart';
 import 'package:igenius/core/resources/assets_manager.dart';
 import 'package:igenius/core/widgets/base/base_stateless.dart';
+import '../../../../../app.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/base_gradient.dart';
@@ -47,8 +48,8 @@ class AccountScreen extends BaseStatelessWidget {
     },
   ];
   List<String> userInfo = [
-    'John Doe',
-    'johndoe@gmail.com',
+    currentUser?.name ?? 'John Doe',
+    currentUser?.email ?? 'johndoe@gmail.com',
     'Student • Joined Sep 2025',
   ];
   @override
@@ -125,6 +126,7 @@ class AccountScreen extends BaseStatelessWidget {
                               title: 'Logout',
                               icon: Icons.logout,
                               index: 3,
+                              
                             ),
                           ],
                         ),

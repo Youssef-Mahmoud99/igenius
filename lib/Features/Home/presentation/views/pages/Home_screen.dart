@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Home/presentation/views/widgets/continue_learning.dart';
-import 'package:igenius/core/widgets/base/base_stateless.dart';
 import 'package:igenius/core/widgets/base_gradient.dart';
 import '../../../../../app.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/widgets/custom_text.dart';
+import '../../../../../injection/service_locator.dart';
+import '../../../../Courses/presentation/cubits/home_courses_cubit.dart';
 import '../widgets/get_started.dart';
 import '../widgets/head_line.dart';
 import '../widgets/popular_courses.dart';
@@ -16,19 +18,30 @@ import '../widgets/user_courses_details.dart';
 import '../widgets/view_all.dart';
 import '../widgets/why_choose_igenius.dart';
 
-class HomePage extends BaseStatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.isGuest}) : super(key: key);
   final bool isGuest;
 
   @override
-  Widget buildBody(BuildContext context) {
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // initState() {
+  //   context.read<HomeCoursesCubit>().getHomeCourses(
+
+  //   );
+  //   super.initState();
+  // }
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: BaseGradient(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children:
-                isGuest
+                widget.isGuest
                     ? [
                       HeadLine(isGuest: true),
                       GetStarted(),
@@ -42,7 +55,6 @@ class HomePage extends BaseStatelessWidget {
                       ),
                       10.verticalSpace,
                       WhyChooseIgenius(),
-
                       10.verticalSpace,
                       ViewAll(
                         title: 'Popular Courses',
@@ -51,9 +63,8 @@ class HomePage extends BaseStatelessWidget {
                           layoutKey.currentState?.setIndex(1);
                         },
                       ),
-
                       SizedBox(
-                        height: 270.h,
+                        height: 290.h,
                         child: PopularCourses(isGuest: true),
                       ),
                       10.verticalSpace,
@@ -87,7 +98,7 @@ class HomePage extends BaseStatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 270.h,
+                        height: 320.h,
                         child: PopularCourses(isGuest: false),
                       ),
                       10.verticalSpace,

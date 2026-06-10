@@ -11,7 +11,6 @@ class CustomPhoneField extends StatefulWidget {
   final String? initialValue;
 
   const CustomPhoneField({
-    
     super.key,
     this.controller,
     this.onInputChanged,
@@ -51,7 +50,10 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
   @override
   void initState() {
     super.initState();
-    _currentNumber = PhoneNumber(isoCode: widget.initialCountry , phoneNumber: widget.initialValue);
+    _currentNumber = PhoneNumber(
+      isoCode: widget.initialCountry,
+      phoneNumber: widget.initialValue,
+    );
   }
 
   @override
@@ -64,7 +66,6 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
       ),
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       child: InternationalPhoneNumberInput(
-        
         maxLength: 11,
         validator: (value) {
           if (value == null || value.isEmpty) {
@@ -77,7 +78,29 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
           setState(() {
             _currentNumber = number;
           });
-          widget.onInputChanged?.call(number);
+
+          // 👇 شيل الصفر بعد الـ dial code
+          final rawPhone = number.phoneNumber ?? '';
+          final dialCode = number.dialCode ?? '';
+
+          String formatted = rawPhone;
+          if (rawPhone.startsWith(dialCode)) {
+            final withoutDial = rawPhone.substring(dialCode.length);
+            final withoutLeadingZero =
+                withoutDial.startsWith('0')
+                    ? withoutDial.substring(1)
+                    : withoutDial;
+            formatted = '$dialCode$withoutLeadingZero';
+          }
+
+          // ابعت الـ PhoneNumber المعدل
+          widget.onInputChanged?.call(
+            PhoneNumber(
+              phoneNumber: formatted,
+              dialCode: dialCode,
+              isoCode: number.isoCode,
+            ),
+          );
         },
         countries: CustomPhoneField.arabCountries,
         initialValue: _currentNumber,

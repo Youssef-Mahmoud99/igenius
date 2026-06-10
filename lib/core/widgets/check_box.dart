@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/core/resources/styles_manager.dart';
 import 'package:igenius/core/theme/app_colors.dart';
 
+
+
 class CustomCheckboxTile extends StatelessWidget {
   final String? title;
   final bool value;
@@ -50,3 +52,4 @@ class CustomCheckboxTile extends StatelessWidget {
     );
   }
 }
+

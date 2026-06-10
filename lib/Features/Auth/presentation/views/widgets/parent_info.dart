@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Auth/presentation/views/widgets/code_picker.dart';
 import 'package:igenius/core/resources/assets_manager.dart';
+import '../../../../../app.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
 import '../../../../../core/widgets/required_field_text.dart';
 
@@ -18,12 +19,6 @@ class ParentInfo extends StatefulWidget {
 }
 
 class _ParentInfoState extends State<ParentInfo> {
-  String? parentEmail;
-
-  String? parentPhoneNumber;
-
-  String? parentWhatsappNumber;
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -35,9 +30,8 @@ class _ParentInfoState extends State<ParentInfo> {
           5.verticalSpace,
           CustomTextField(
             onChanged: (value) {
-              setState(() {
-                parentEmail = value;
-              });
+              registerParams = registerParams?.copyWith(parentEmail: value);
+              log("parent email: ${registerParams?.parentEmail}");
             },
             hint: 'john.doe@example.com',
             inputType: TextInputType.emailAddress,
@@ -55,10 +49,8 @@ class _ParentInfoState extends State<ParentInfo> {
           5.verticalSpace,
           CustomPhoneField(
             onInputChanged: (value) {
-              setState(() {
-                parentPhoneNumber = value.toString();
-              });
-              log(parentPhoneNumber ?? "");
+              registerParams = registerParams?.copyWith(parentPhone: value.phoneNumber.toString());
+              log("parent phone: ${registerParams?.parentPhone}");
             },
             hint: '+20 123 456 7890',
           ),
@@ -67,10 +59,8 @@ class _ParentInfoState extends State<ParentInfo> {
           5.verticalSpace,
           CustomPhoneField(
             onInputChanged: (value) {
-              setState(() {
-                parentWhatsappNumber = value.toString();
-              });
-              log(parentWhatsappNumber ?? "");
+              registerParams = registerParams?.copyWith(parentWhatsapp: value.phoneNumber.toString());
+              log("parent whatsapp: ${registerParams?.parentWhatsapp}");
             },
             hint: '+20 123 456 7890',
           ),

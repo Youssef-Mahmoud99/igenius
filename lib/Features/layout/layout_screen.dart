@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Account/presentation/views/pages/account_screen.dart';
 import 'package:igenius/Features/Courses/presentation/views/pages/courses_screen.dart';
 import 'package:igenius/Features/Teachers/presentation/views/pages/teachers_screen.dart';
 import 'package:igenius/core/theme/app_colors.dart';
+import '../../injection/service_locator.dart';
 import '../Account/presentation/views/pages/about_us_screen.dart';
+import '../Auth/presentation/cubits/auth_cubit.dart';
+import '../Courses/data/models/courses_body.dart';
+import '../Courses/presentation/cubits/courses_cubit.dart';
+import '../Courses/presentation/cubits/home_courses_cubit.dart';
 import '../Home/presentation/views/pages/Home_screen.dart';
 
 class LayoutScreen extends StatefulWidget {
@@ -21,14 +27,21 @@ class LayoutScreenState extends State<LayoutScreen> {
   void setIndex(int index) {
     _currentIndex.value = index;
   }
-
+initState() {
+    context.read<HomeCoursesCubit>().getHomeCourses();
+    context.read<CoursesCubit>().getCourses();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final List<Widget> _screens = [
       HomePage(isGuest: widget.isGuest),
       CoursesScreen(),
       TeachersScreen(),
-      AccountScreen(),
+      BlocProvider(
+        create: (context) => sl<AuthCubit>(),
+        child: AccountScreen(),
+      ),
     ];
 
     return ValueListenableBuilder<int>(

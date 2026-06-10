@@ -13,6 +13,7 @@ class DioClient {
   static Future<DioClient> create() async {
 
     final dio = Dio(
+       
       BaseOptions(
         baseUrl: AppConstants.baseUrl,
         connectTimeout: const Duration(seconds: 15),
@@ -24,7 +25,8 @@ class DioClient {
       ),
     );
 
-    dio.interceptors.addAll([
+    dio.interceptors.addAll([ 
+      
       GetStorageCacheInterceptor(),
       AuthInterceptor(),
       AppLoggerInterceptor(),

@@ -264,7 +264,7 @@ class MyCoursesScreen extends BaseStatelessWidget {
                   text: course['buttonText'],
                   color: course['buttonColor'],
                   onPressed: () {
-                    AppNavaigation.push(AppRoutes.courseDetails);
+                    // AppNavaigation.push(AppRoutes.courseDetails);
                   },
                 ),
               ],

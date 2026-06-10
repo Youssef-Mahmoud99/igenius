@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 import 'package:igenius/core/widgets/primary_button.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../injection/service_locator.dart';
+import '../../../../Auth/presentation/cubits/auth_cubit.dart';
 
 class LogoutBottomSheet extends StatelessWidget {
   const LogoutBottomSheet({super.key});
@@ -15,7 +18,11 @@ class LogoutBottomSheet extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
-      builder: (context) => const LogoutBottomSheet(),
+      builder:
+          (context) => BlocProvider(
+            create: (context) => sl<AuthCubit>(),
+            child: const LogoutBottomSheet(),
+          ),
     );
   }
 
@@ -67,7 +74,9 @@ class LogoutBottomSheet extends StatelessWidget {
                   borderRadius: 12,
                   text: 'Logout',
                   onPressed: () {
-                    AppNavaigation.goToLogin();
+                    final cubit = sl<AuthCubit>();
+                    cubit.logout();
+                    AppNavaigation.pop();
                   },
                 ),
               ),

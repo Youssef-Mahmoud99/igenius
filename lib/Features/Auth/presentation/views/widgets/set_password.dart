@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../app.dart';
 import '../../../../../core/resources/assets_manager.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
@@ -18,9 +21,6 @@ class SetPassword extends StatefulWidget {
 }
 
 class _SetPasswordState extends State<SetPassword> {
-  String? password;
-  String? confirmPassword;
-  bool iAgree = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +33,8 @@ class _SetPasswordState extends State<SetPassword> {
           5.verticalSpace,
           CustomTextField(
             onChanged: (value) {
-              setState(() {
-                password = value;
-              });
+              registerParams = registerParams?.copyWith(password: value);
+              log("password: ${registerParams?.password}");
             },
             hint: 'Create a strong password',
             inputType: TextInputType.text,
@@ -44,9 +43,9 @@ class _SetPasswordState extends State<SetPassword> {
               if (value == null || value.isEmpty) {
                 return 'Password is required';
               }
-              if (value.length < 8) {
-                return 'Password must be at least 8 characters long';
-              }
+              // if (value.length < 8) {
+              //   return 'Password must be at least 8 characters long';
+              // }
               if (!RegExp(r'[A-Z]').hasMatch(value)) {
                 return 'Password must contain at least one uppercase letter';
               }
@@ -62,9 +61,8 @@ class _SetPasswordState extends State<SetPassword> {
           5.verticalSpace,
           CustomTextField(
             onChanged: (value) {
-              setState(() {
-                confirmPassword = value;
-              });
+              registerParams = registerParams?.copyWith(passwordConfirmation: value);
+              log("confirm password: ${registerParams?.passwordConfirmation}");
             },
             hint: 'Re-enter your password',
             inputType: TextInputType.text,
@@ -73,7 +71,7 @@ class _SetPasswordState extends State<SetPassword> {
               if (value == null || value.isEmpty) {
                 return 'Password is required';
               }
-              if (value != password) {
+              if (value != registerParams?.password) {
                 return 'Passwords do not match';
               }
               return null;
@@ -112,10 +110,10 @@ class _SetPasswordState extends State<SetPassword> {
                 ],
               ),
             ),
-            value: iAgree,
-            onChanged: (value) {
+            value: termsAgreed,
+             onChanged: (value) {
               setState(() {
-                iAgree = value!;
+                termsAgreed = value!;
               });
             },
           ),

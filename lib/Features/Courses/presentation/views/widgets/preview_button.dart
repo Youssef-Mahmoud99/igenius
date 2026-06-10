@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:igenius/core/localization/strings_manager.dart';
 import 'package:igenius/core/resources/styles_manager.dart';
 
 class PreviewButton extends StatefulWidget {
@@ -63,6 +64,7 @@ class _PreviewButtonState extends State<PreviewButton>
             ),
             alignment: Alignment.center,
             child: Text(
+             
               widget.text,
               style: AppsStyles.s14Bold.copyWith(color: Colors.white),
             ),

@@ -6,6 +6,8 @@ import 'package:igenius/core/resources/styles_manager.dart';
 import 'package:igenius/core/theme/app_colors.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import 'core/constants/app_keys.dart';
+import 'core/services/secure_storage_service.dart';
 import 'core/utils/helpers/app_navigtion.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,10 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     _getAppVersion();
-
-    Future.delayed(const Duration(seconds: 5), () {
-      AppNavaigation.goToLogin();
-    });
+    WhichPage();
   }
 
   Future<void> _getAppVersion() async {
@@ -34,7 +33,17 @@ class _SplashScreenState extends State<SplashScreen> {
       _appVersion = info.version;
     });
   }
+WhichPage()async {
+  String? userToken =await SecureStorageService.read(AppKeys.token);
+    Future.delayed(const Duration(seconds: 5), () {
+      if (userToken != null) {
+        AppNavaigation.goToHome(isGuest: false);
+      } else {
+        AppNavaigation.goToLogin();
+      }
+    });
 
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(

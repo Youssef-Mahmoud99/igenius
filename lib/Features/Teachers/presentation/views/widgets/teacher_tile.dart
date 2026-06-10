@@ -102,7 +102,7 @@ class TeacherTile extends StatelessWidget {
                     borderRadius: 12,
                     text: 'View Profile',
                     onPressed: () {
-                      AppNavaigation.push(AppRoutes.teacherProfile);
+                      // AppNavaigation.push(AppRoutes.teacherProfile);
                     },
                   )
                   : SizedBox.shrink(),

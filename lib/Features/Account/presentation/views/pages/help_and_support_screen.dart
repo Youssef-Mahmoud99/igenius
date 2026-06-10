@@ -4,7 +4,9 @@ import 'package:igenius/core/widgets/base/base_stateless.dart';
 import 'package:igenius/core/widgets/base_gradient.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/utils/url_launcher_utils.dart';
 import '../../../../../core/widgets/custom_appBar.dart';
+import '../widgets/contact_us_form.dart';
 
 class HelpAndSupportScreen extends BaseStatelessWidget {
   const HelpAndSupportScreen({super.key});
@@ -14,40 +16,54 @@ class HelpAndSupportScreen extends BaseStatelessWidget {
       child: BaseGradient(
         child: Padding(
           padding: EdgeInsets.all(20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'We’re here to help!',
-                style: AppsStyles.s14Bold.copyWith(color: AppColors.primary),
-              ),
-              SizedBox(height: 10.h),
-              Text(
-                'If you’re facing any issues or have questions about our app, please reach out to us through one of the methods below:',
-                style: AppsStyles.s12Regular.copyWith(color: AppColors.primary),
-              ),
-              SizedBox(height: 20.h),
-              _buildTile(
-                icon: Icons.email_rounded,
-                title: 'Email Support',
-                subtitle: 'support@igenius.com',
-                onTap: () {},
-              ),
-              SizedBox(height: 12.h),
-              _buildTile(
-                icon: Icons.chat_bubble_outline_rounded,
-                title: 'Live Chat',
-                subtitle: 'Chat with our support team instantly.',
-                onTap: () {},
-              ),
-              SizedBox(height: 12.h),
-              _buildTile(
-                icon: Icons.description_outlined,
-                title: 'FAQs',
-                subtitle: 'Find quick answers to common questions.',
-                onTap: () {},
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'We’re here to help!',
+                  style: AppsStyles.s14Bold.copyWith(color: AppColors.primary),
+                ),
+                SizedBox(height: 10.h),
+                Text(
+                  'If you’re facing any issues or have questions about our app, please reach out to us through one of the methods below:',
+                  style: AppsStyles.s12Regular.copyWith(
+                    color: AppColors.primary,
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                _buildTile(
+                  icon: Icons.email_rounded,
+                  title: 'Email Support',
+                  subtitle: 'support@igenius.com',
+                  onTap:
+                      () => UrlLauncherUtils.sendEmail(
+                        email: "support@igenius.com",
+                      ),
+                ),
+                SizedBox(height: 12.h),
+
+                // _buildTile(
+                //   icon: Icons.chat_bubble_outline_rounded,
+                //   title: 'Live Chat',
+                //   subtitle: 'Chat with our support team instantly.',
+                //   onTap: () {},
+                // ),
+                // SizedBox(height: 12.h),
+                // _buildTile(
+                //   icon: Icons.description_outlined,
+                //   title: 'FAQs',
+                //   subtitle: 'Find quick answers to common questions.',
+                //   onTap: () {},
+                // ),
+                 Text(
+                  'Contact Us',
+                  style: AppsStyles.s14Bold,
+                ),
+                SizedBox(height: 8.h),
+                ContactUsForm(),
+              ],
+            ),
           ),
         ),
       ),

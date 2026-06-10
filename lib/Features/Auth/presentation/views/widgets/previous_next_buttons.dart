@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/core/theme/app_colors.dart';
 import 'package:igenius/core/widgets/gradient_button.dart';
 import 'package:igenius/core/widgets/primary_button.dart';
 
+import '../../../../../app.dart';
 import '../../../../../core/utils/helpers/app_navigtion.dart';
+import '../../../../../core/utils/helpers/toast_helper.dart';
+import '../../../../../injection/service_locator.dart';
+import '../../cubits/auth_cubit.dart';
 
 class PreviousNextButtons extends StatefulWidget {
   const PreviousNextButtons({
@@ -49,8 +54,15 @@ class _PreviousNextButtonsState extends State<PreviousNextButtons> {
                 widget.currentStep < 3
                     ? widget.onContinue
                     : () {
+                      if (!termsAgreed) {
+                        ToastHelper.showWarning(
+                          "You must agree to the terms and conditions",
+                        );
+                        return;
+                      }
                       if (widget.formKey.currentState!.validate()) {
-                        AppNavaigation.goToLogin();
+                        final cubit = sl<AuthCubit>();
+                        cubit.register(registerParams!);
                       }
                     },
           ),

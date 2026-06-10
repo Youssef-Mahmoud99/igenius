@@ -11,7 +11,7 @@ import '../../../data/models/courses_model.dart';
 class CourseCard extends StatelessWidget {
   const CourseCard({Key? key, required this.course, required this.liveIndex})
     : super(key: key);
-  final CoursesModel course;
+  final CourseModel course;
   final int liveIndex;
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class CourseCard extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: course.gradientColors ?? [],
+                colors:   [ AppColors.primary, AppColors.secondary],
               ),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(16),
@@ -51,9 +51,9 @@ class CourseCard extends StatelessWidget {
                   left: 12,
                   child: MaterialDetails(
                     style: AppsStyles.s12Bold,
-                    color: course.categoryBackgroundColor ?? Colors.white,
-                    backgroundColor: course.categoryColor ?? Colors.grey,
-                    name: course.category ?? "",
+                    color:  Colors.white,
+                    backgroundColor:  Colors.grey,
+                    name: course.subject?.name ?? "لللل",
                   ),
                 ),
                 liveIndex % 2 == 0
@@ -72,18 +72,18 @@ class CourseCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(course.title ?? "", style: AppsStyles.s14Bold),
+                  Text(course.title ?? "", style: AppsStyles.s14Bold.copyWith(color: AppColors.primary)),
                   5.verticalSpace,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Icon(Icons.star, color: AppColors.orange, size: 20.r),
-                      Text(course.rating.toString(), style: AppsStyles.s14Bold),
+                      Text('5.0', style: AppsStyles.s14Bold),
                       20.horizontalSpace,
                       SizedBox(
                         width: 80,
                         child: Text(
-                          "${course.subtitle} Students",
+                          "200 Students",
                           style: AppsStyles.s10Regular,
                         ),
                       ),
@@ -94,14 +94,16 @@ class CourseCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        course.price ?? "",
+                        course.price.toString(),
                         style: AppsStyles.s14Bold.copyWith(
                           color: AppColors.primary,
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          AppNavaigation.push(AppRoutes.courseDetails);
+                          AppNavaigation.pushToPageWithParams(AppRoutes.courseDetails,  {
+                            'courseId': course.id,
+                          });
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(50),
