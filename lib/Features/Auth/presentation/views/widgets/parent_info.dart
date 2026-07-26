@@ -45,6 +45,23 @@ class _ParentInfoState extends State<ParentInfo> {
             },
           ),
           10.verticalSpace,
+                    RequiredFieldText(text: 'Telegram '),
+          5.verticalSpace,
+          CustomTextField(
+            onChanged: (value) {
+              registerParams = registerParams?.copyWith(parentTelegram: value);
+            },
+            hint: '@igenius',
+            inputType: TextInputType.text,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Telegram is required';
+              }
+              return null;
+            },
+          ),
+
+          10.verticalSpace,
           RequiredFieldText(text: 'Parent Phone'),
           5.verticalSpace,
           CustomPhoneField(

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:igenius/core/constants/app_constants.dart';
 import 'package:igenius/core/utils/helpers/toast_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
@@ -142,8 +143,8 @@ class HelperMethods {
  static logout()async{
   
    await SecureStorageService.clear();
-   currentUser = null;
-   currentStudent = null;   AppNavaigation.goToLogin();
+  currentUser = null;
+     AppNavaigation.goToLogin();
 
  }
  

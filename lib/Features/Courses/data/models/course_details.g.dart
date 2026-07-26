@@ -45,6 +45,7 @@ CourseDetails _$CourseDetailsFromJson(Map<String, dynamic> json) =>
           (json['units'] as List<dynamic>?)
               ?.map((e) => UnitModel.fromJson(e as Map<String, dynamic>))
               .toList(),
+      isOwned: json['is_owned'] as bool?,
     );
 
 Map<String, dynamic> _$CourseDetailsToJson(CourseDetails instance) =>
@@ -62,6 +63,7 @@ Map<String, dynamic> _$CourseDetailsToJson(CourseDetails instance) =>
       'total_lessons': instance.totalLessons,
       'is_external_course': instance.isExternalCourse,
       'course_platform': instance.coursePlatform,
+      'is_owned': instance.isOwned,
       'teacher': instance.teacher,
       'subject': instance.subject,
       'level': instance.level,
@@ -103,13 +105,24 @@ LessonModel _$LessonModelFromJson(Map<String, dynamic> json) => LessonModel(
   id: (json['id'] as num?)?.toInt(),
   title: json['title'] as String?,
   description: json['description'] as String?,
+  videoUrl: json['video_url'] as String?,
+  externalLink: json['external_link'] as String?,
+  materials: json['materials'] as String?,
   durationMinutes: (json['duration_minutes'] as num?)?.toInt(),
   order: (json['order'] as num?)?.toInt(),
   isPreview: json['is_preview'] as bool?,
   isBuyable: json['is_buyable'] as bool?,
   price: (json['price'] as num?)?.toInt(),
+  isLive: json['is_live'] as bool?,
+  meetingUrl: json['meeting_url'] as String?,
+  meetingDate: json['meeting_date'] as String?,
   viewDate: json['view_date'] as String?,
   deadlineDate: json['deadline_date'] as String?,
+  files:
+      (json['files'] as List<dynamic>?)
+          ?.map((e) => FileModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+  attendance: json['attendance'],
 );
 
 Map<String, dynamic> _$LessonModelToJson(LessonModel instance) =>
@@ -117,40 +130,22 @@ Map<String, dynamic> _$LessonModelToJson(LessonModel instance) =>
       'id': instance.id,
       'title': instance.title,
       'description': instance.description,
+      'video_url': instance.videoUrl,
+      'external_link': instance.externalLink,
+      'materials': instance.materials,
       'duration_minutes': instance.durationMinutes,
       'order': instance.order,
       'is_preview': instance.isPreview,
       'is_buyable': instance.isBuyable,
       'price': instance.price,
+      'is_live': instance.isLive,
+      'meeting_url': instance.meetingUrl,
+      'meeting_date': instance.meetingDate,
       'view_date': instance.viewDate,
       'deadline_date': instance.deadlineDate,
+      'files': instance.files,
+      'attendance': instance.attendance,
     };
-
-ExamModel _$ExamModelFromJson(Map<String, dynamic> json) => ExamModel(
-  id: (json['id'] as num?)?.toInt(),
-  title: json['title'] as String?,
-  description: json['description'] as String?,
-  durationMinutes: (json['duration_minutes'] as num?)?.toInt(),
-  totalMarks: (json['total_marks'] as num?)?.toInt(),
-  maxAttempts: (json['max_attempts'] as num?)?.toInt(),
-  order: (json['order'] as num?)?.toInt(),
-  viewDate: json['view_date'] as String?,
-  dueDate: json['due_date'] as String?,
-  deadlineDate: json['deadline_date'] as String?,
-);
-
-Map<String, dynamic> _$ExamModelToJson(ExamModel instance) => <String, dynamic>{
-  'id': instance.id,
-  'title': instance.title,
-  'description': instance.description,
-  'duration_minutes': instance.durationMinutes,
-  'total_marks': instance.totalMarks,
-  'max_attempts': instance.maxAttempts,
-  'order': instance.order,
-  'view_date': instance.viewDate,
-  'due_date': instance.dueDate,
-  'deadline_date': instance.deadlineDate,
-};
 
 AssignmentModel _$AssignmentModelFromJson(Map<String, dynamic> json) =>
     AssignmentModel(
@@ -159,10 +154,16 @@ AssignmentModel _$AssignmentModelFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       totalMarks: (json['total_marks'] as num?)?.toInt(),
       maxAttempts: (json['max_attempts'] as num?)?.toInt(),
+      attemptsUsed: (json['attempts_used'] as num?)?.toInt(),
+      canSubmit: json['can_submit'] as bool?,
       order: (json['order'] as num?)?.toInt(),
       viewDate: json['view_date'] as String?,
       dueDate: json['due_date'] as String?,
       deadlineDate: json['deadline_date'] as String?,
+      files:
+          (json['files'] as List<dynamic>?)
+              ?.map((e) => FileModel.fromJson(e as Map<String, dynamic>))
+              .toList(),
     );
 
 Map<String, dynamic> _$AssignmentModelToJson(AssignmentModel instance) =>
@@ -172,8 +173,61 @@ Map<String, dynamic> _$AssignmentModelToJson(AssignmentModel instance) =>
       'description': instance.description,
       'total_marks': instance.totalMarks,
       'max_attempts': instance.maxAttempts,
+      'attempts_used': instance.attemptsUsed,
+      'can_submit': instance.canSubmit,
       'order': instance.order,
       'view_date': instance.viewDate,
       'due_date': instance.dueDate,
       'deadline_date': instance.deadlineDate,
+      'files': instance.files,
     };
+
+ExamModel _$ExamModelFromJson(Map<String, dynamic> json) => ExamModel(
+  id: (json['id'] as num?)?.toInt(),
+  title: json['title'] as String?,
+  description: json['description'] as String?,
+  durationMinutes: (json['duration_minutes'] as num?)?.toInt(),
+  totalMarks: (json['total_marks'] as num?)?.toInt(),
+  maxAttempts: (json['max_attempts'] as num?)?.toInt(),
+  attemptsUsed: (json['attempts_used'] as num?)?.toInt(),
+  canSubmit: json['can_submit'] as bool?,
+  order: (json['order'] as num?)?.toInt(),
+  viewDate: json['view_date'] as String?,
+  dueDate: json['due_date'] as String?,
+  deadlineDate: json['deadline_date'] as String?,
+  fileUrl: json['file_url'] as String?,
+  fileName: json['file_name'] as String?,
+  fileSize: (json['file_size'] as num?)?.toInt(),
+);
+
+Map<String, dynamic> _$ExamModelToJson(ExamModel instance) => <String, dynamic>{
+  'id': instance.id,
+  'title': instance.title,
+  'description': instance.description,
+  'duration_minutes': instance.durationMinutes,
+  'total_marks': instance.totalMarks,
+  'max_attempts': instance.maxAttempts,
+  'attempts_used': instance.attemptsUsed,
+  'can_submit': instance.canSubmit,
+  'order': instance.order,
+  'view_date': instance.viewDate,
+  'due_date': instance.dueDate,
+  'deadline_date': instance.deadlineDate,
+  'file_url': instance.fileUrl,
+  'file_name': instance.fileName,
+  'file_size': instance.fileSize,
+};
+
+FileModel _$FileModelFromJson(Map<String, dynamic> json) => FileModel(
+  id: (json['id'] as num?)?.toInt(),
+  name: json['name'] as String?,
+  url: json['url'] as String?,
+  size: json['size'] as String?,
+);
+
+Map<String, dynamic> _$FileModelToJson(FileModel instance) => <String, dynamic>{
+  'id': instance.id,
+  'name': instance.name,
+  'url': instance.url,
+  'size': instance.size,
+};

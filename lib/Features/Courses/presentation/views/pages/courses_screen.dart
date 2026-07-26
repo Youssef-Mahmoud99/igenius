@@ -16,7 +16,7 @@ import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/widgets/base/base_stateless.dart';
 import '../../../../../injection/service_locator.dart';
 import '../../../data/models/courses_body.dart';
-import '../../cubits/courses_cubit.dart';
+import '../../cubits/courses/courses_cubit.dart';
 import '../widgets/search_result_length_and_type.dart';
 
 class CoursesScreen extends StatefulWidget {
@@ -139,6 +139,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                 10.verticalSpace,
                 SearchResultLengthAndType(
                   type: 'courses',
+                  resultsLength: 12,
                   onChanged: (value) {},
                 ),
                 10.verticalSpace,

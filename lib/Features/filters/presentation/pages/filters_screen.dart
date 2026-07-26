@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/core/theme/app_colors.dart';
 import 'package:igenius/core/resources/styles_manager.dart';
+import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 import 'package:igenius/core/widgets/base_gradient.dart';
+import 'package:igenius/core/widgets/custom_appBar.dart';
 import 'package:igenius/core/widgets/gradient_button.dart';
 import 'package:igenius/core/widgets/primary_button.dart';
 
+import '../../../../core/widgets/custom_text.dart';
 import '../widgets/filter_checkbox.dart';
 import '../widgets/filter_radio.dart';
 
@@ -53,11 +56,24 @@ class _FiltersScreenState extends State<FiltersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(
+        showBack:false,
+        titleChild: AppText(text: "Filters",style: AppsStyles.s18Bold),
+            
+                      actions: [
+                                              IconButton(
+                        icon: const Icon(Icons.close, color: Colors.black),
+                        onPressed: () => AppNavaigation.pop(),
+                      ),
+
+                      ]
+
+      ),
       body: Stack(
         children: [
           BaseGradient(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20).copyWith(top: 80.h),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,34 +84,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
                       ..._buildGeneralFilters(),
                     20.verticalSpace,
                   ],
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: 70.h,
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 30,
-                ),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Filters", style: AppsStyles.s18Bold),
-                      IconButton(
-                        icon: const Icon(Icons.close, color: Colors.black),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),
@@ -118,6 +106,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
           children: [
             Expanded(
               child: Appbutton(
+
                 needBorder: true,
                 color: Colors.white,
                 textColor: AppColors.primary,
@@ -267,6 +256,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
       verifiedOnly = false;
       selectedExperience = "All Experience";
     });
+    AppNavaigation.pop();
   }
 
   void _applyFilters() {

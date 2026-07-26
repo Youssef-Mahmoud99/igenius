@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/core/utils/helpers/helper_methods.dart';
-import 'package:igenius/core/utils/url_launcher_utils.dart';
-import 'package:igenius/core/widgets/base/base_stateless.dart';
 import 'package:igenius/core/widgets/base_gradient.dart';
 import 'package:igenius/core/widgets/custom_appBar.dart';
 import 'package:igenius/core/widgets/custom_text.dart';
-import 'package:igenius/core/widgets/gradient_button.dart';
-
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../Courses/data/models/teacher.dart';
-import '../../../../Courses/presentation/cubits/courses_by_teacher_cubit.dart';
+import '../../../../Courses/presentation/cubits/courses/courses_by_teacher_cubit.dart';
 import '../../../../Home/presentation/views/widgets/popular_courses.dart';
 import 'teacher_info_card.dart';
 

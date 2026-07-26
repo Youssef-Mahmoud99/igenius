@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/resources/assets_manager.dart';
@@ -8,8 +10,8 @@ import '../../../../../core/widgets/app_dotted_border.dart';
 import '../../../../../core/widgets/custom_text.dart';
 
 class UploadAssignmentWidget extends StatelessWidget {
-  const UploadAssignmentWidget({Key? key}) : super(key: key);
-
+  const UploadAssignmentWidget({Key? key, this.onFilePicked}) : super(key: key);
+  final VoidCallback? onFilePicked;
   @override
   Widget build(BuildContext context) {
     return AppDottedBorder(
@@ -20,12 +22,7 @@ class UploadAssignmentWidget extends StatelessWidget {
           child: Column(
             children: [
               IconButton(
-                onPressed: () async {
-                  final file = await HelperMethods.pickAssignmentFile(context);
-                  if (file != null) {
-                    print("Picked file path: ${file.path}");
-                  }
-                },
+                onPressed: onFilePicked,
                 icon: ImageIcon(
                   AssetImage(AppImages.upload),
                   color: AppColors.grey,

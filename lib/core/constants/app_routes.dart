@@ -19,4 +19,5 @@ class AppRoutes {
   static const String myCoursesScreen = '/myCoursesScreen';
     static const String privacyPolicyScreen = '/privacyPolicyScreen';
     static const String helpAndSupportScreen = '/helpAndSupportScreen';
+    static const String videoPlayerScreen = '/videoPlayerScreen';
 }

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Courses/presentation/views/widgets/course_card.dart';
 import 'package:igenius/core/widgets/custom_gridview.dart';
-import '../../../../Courses/data/models/courses_body.dart';
 import '../../../../Courses/data/models/courses_model.dart';
 import '../../../../../core/base/models/base_response.dart';
 import '../../../../../core/base/cubit/base_state.dart';
-import '../../../../Courses/presentation/cubits/courses_cubit.dart';
+import '../../cubits/courses/courses_cubit.dart';
 
 class CoursesView extends StatefulWidget {
   const CoursesView({Key? key}) : super(key: key);
@@ -44,10 +42,10 @@ class _CoursesViewState extends State<CoursesView> {
               shrinkWrap: true,
               itemCount: courses.length,
               itemBuilder: (context, index) {
-                return CourseCard(liveIndex: index, course: courses[index]);
+                return CourseCard( course: courses[index]);
               },
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 0.62,
+                childAspectRatio: 0.55,
                 crossAxisCount: 2,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,

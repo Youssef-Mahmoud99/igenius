@@ -1,32 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:igenius/Features/Courses/data/models/course_details.dart';
 import 'package:igenius/core/resources/styles_manager.dart';
 import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 import 'package:igenius/core/widgets/custom_text.dart';
 import 'package:igenius/core/widgets/primary_button.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/widgets/custom_text_field.dart';
 import '../../../../../core/widgets/gradient_button.dart';
 
-void showFreeSessionBottomSheet(BuildContext context) {
+void showFreeSessionBottomSheet(
+  BuildContext context,
+  CourseDetails courseDetails,
+) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
-    builder: (_) => const FreeSessionBottomSheet(),
+    builder: (_) => FreeSessionDialoge(courseDetails: courseDetails),
   );
 }
 
-class FreeSessionBottomSheet extends StatelessWidget {
-  const FreeSessionBottomSheet({Key? key}) : super(key: key);
+class FreeSessionDialoge extends StatefulWidget {
+  const FreeSessionDialoge({Key? key, required this.courseDetails})
+    : super(key: key);
+  final CourseDetails courseDetails;
 
-  final List<String> freeSessionDetails = const [
-    'Interact with the instructor in real-time',
-    'Ask questions and get instant answers',
-    'Experience our teaching style before enrolling',
-    '100% free, no credit card required',
-  ];
+  @override
+  _FreeSessionDialogeState createState() => _FreeSessionDialogeState();
+}
+
+class _FreeSessionDialogeState extends State<FreeSessionDialoge> {
+  TextEditingController sessionData = TextEditingController();
+  @override
+  void dispose() {
+    sessionData.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,34 +67,36 @@ class FreeSessionBottomSheet extends StatelessWidget {
                     liveView(),
                     10.verticalSpace,
                     AppText(
-                      text: 'Introduction to Number Systems',
+                      text: widget.courseDetails.title ?? '',
                       style: AppsStyles.s12Bold,
                     ),
                     5.verticalSpace,
                     AppText(
                       text:
-                          'Join Dr. Robert Williams for a free introductory session covering the basics of number systems.',
-                      style:
-                          AppsStyles.s10Regular.copyWith(color: AppColors.grey),
+                          widget.courseDetails.description ??
+                          'No description available',
+                      style: AppsStyles.s10Regular.copyWith(
+                        color: AppColors.grey,
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
             10.verticalSpace,
-            ...freeSessionDetails.map(
-              (item) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5.0),
-                child: Row(
-                  children: [
-                    const Icon(Icons.check, color: Colors.green, size: 20),
-                    5.horizontalSpace,
-                    Expanded(
-                        child: Text(item, style: AppsStyles.s12Regular)),
-                  ],
-                ),
-              ),
+            CustomTextField(
+              controller: sessionData,
+              inputType: TextInputType.emailAddress,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Email is required';
+                } else if (!value.contains("@")) {
+                  return 'Invalid email address';
+                }
+                return null;
+              },
             ),
+
             10.verticalSpace,
             GradientButton(
               gradientColors: const [Color(0xFFEF4444), Color(0xFFEC4899)],
@@ -99,10 +113,9 @@ class FreeSessionBottomSheet extends StatelessWidget {
                     ),
                   ),
                   5.horizontalSpace,
-                  Text(
-                    'Request Free Live Session',
-                    style: AppsStyles.s12Bold
-                        .copyWith(color: AppColors.white),
+                  AppText(
+                    text: 'Request Free Live Session',
+                    style: AppsStyles.s12Bold.copyWith(color: AppColors.white),
                   ),
                   10.horizontalSpace,
                   Icon(

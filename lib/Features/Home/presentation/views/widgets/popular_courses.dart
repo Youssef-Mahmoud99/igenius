@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:igenius/Features/Courses/presentation/cubits/courses_by_teacher_cubit.dart';
 import 'package:igenius/Features/Courses/presentation/views/widgets/home_course_card.dart';
 import '../../../../Courses/data/models/courses_body.dart';
 import '../../../../Courses/data/models/courses_model.dart';
 import '../../../../../core/base/models/base_response.dart';
 import '../../../../../core/base/cubit/base_state.dart';
-import '../../../../Courses/presentation/cubits/courses_cubit.dart';
-import '../../../../Courses/presentation/cubits/home_courses_cubit.dart';
-
+import '../../../../Courses/presentation/cubits/courses/courses_by_teacher_cubit.dart';
+import '../../../../Courses/presentation/cubits/courses/home_courses_cubit.dart';
 class PopularCourses extends StatefulWidget {
   final bool isGuest;
   final Axis scrollDirection;

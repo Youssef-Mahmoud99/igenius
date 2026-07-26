@@ -2,9 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:igenius/Features/Auth/presentation/views/widgets/code_picker.dart';
 import 'package:igenius/core/widgets/custom_drop_down.dart';
 import '../../../../../app.dart';
+import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/utils/helpers/helper_methods.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
 import '../../../../../core/widgets/required_field_text.dart';
 import 'choose_country_widget.dart';
@@ -27,6 +30,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
   String? city;
   String? school;
   String? grade;
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -86,37 +90,80 @@ class _PersonalInfoState extends State<PersonalInfo> {
             hint: '+20 123 456 7890',
           ),
           10.verticalSpace,
+          RequiredFieldText(text: 'Telegram '),
+          5.verticalSpace,
+          CustomTextField(
+            
+            onChanged: (value) {
+              registerParams = registerParams?.copyWith(telegram: value);
+            },
+            hint: '@igenius',
+            inputType: TextInputType.text,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Telegram is required';
+              }
+              return null;
+            },
+          ),
+          10.verticalSpace,
           RequiredFieldText(text: 'Grade'),
           5.verticalSpace,
           CustomSmallDropdown(
+            hint: 'Select Grade',
+            height: 40.h,
+            value: grade,
             validator: (value) {
               if (value == null || value.isEmpty) return 'Grade is required';
               return null;
             },
-            value: grade,
-            height: 50,
-            hint: 'Select your grade',
-            items: ['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4'],
+            items: ['7', '8', '9', '10', '11', '12', '13', '14'],
             onChanged: (value) {
               registerParams = registerParams?.copyWith(grade: value);
-              setState(() {});
             },
           ),
           10.verticalSpace,
           RequiredFieldText(text: 'School Name'),
           5.verticalSpace,
-          CustomSmallDropdown(
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'School is required';
-              return null;
-            },
-            value: school,
-            height: 50,
-            hint: 'Select your school',
-            items: ['Cairo American College', 'Cairo University', 'Other'],
+          CustomTextField(
             onChanged: (value) {
               registerParams = registerParams?.copyWith(school: value);
-              setState(() {});
+            },
+            inputType: TextInputType.number,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'School is required';
+              }
+              return null;
+            },
+          ),
+          10.verticalSpace,
+          CustomTextField(
+            readOnly: true,
+            prefix: IconButton(
+              onPressed: () async {
+                String? birthDate;
+                await HelperMethods.selectDate(context, birthDate).then((
+                  value,
+                ) {
+                  if (value != null) {
+                    registerParams = registerParams?.copyWith(birthDate: value);
+                  }
+                });
+              },
+              icon: Icon(
+                FontAwesomeIcons.calendarAlt,
+                color: AppColors.grey,
+                size: 15,
+              ),
+            ),
+
+            inputType: TextInputType.number,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Birth date is required';
+              }
+              return null;
             },
           ),
           10.verticalSpace,

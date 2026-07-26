@@ -15,6 +15,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final void Function()? onBack;
   final bool? centerTitle;
   final Widget? titleChild;
+  final Widget? leading;
 
   const CustomAppBar({
     super.key,
@@ -28,6 +29,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onBack,
     this.centerTitle,
     this.titleChild,
+    this.leading,
   });
 
   @override
@@ -52,7 +54,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 onPressed: onBack ?? () => AppNavaigation.pop(),
               )
-              : null,
+              : leading,
       actions: actions ?? [],
       backgroundColor: backgroundColor ?? Colors.white,
       elevation: elevation,

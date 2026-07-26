@@ -1,9 +1,9 @@
 // home_courses_cubit.dart
-import '../../../../core/base/cubit/base_cubit.dart';
-import '../../../../core/base/models/base_response.dart';
-import '../../data/models/courses_body.dart';
-import '../../data/models/courses_model.dart';
-import '../../data/repos/courses_repo.dart';
+import '../../../../../core/base/cubit/base_cubit.dart';
+import '../../../../../core/base/models/base_response.dart';
+import '../../../data/models/courses_body.dart';
+import '../../../data/models/courses_model.dart';
+import '../../../data/repos/courses_repo.dart';
 
 class HomeCoursesCubit extends BaseCubit<BaseResponse<List<CourseModel>>> {
   final CoursesRepo repo;

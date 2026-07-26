@@ -24,8 +24,8 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   if (kDebugMode) {
-     email = 'yossef10@student.com';
-     password = '12345678';
+     email = 'yossefmahmod99@gmail.com';
+     password = 'yossef1911';
   }
     return StatefulBuilder(
       builder: (context, setState) {

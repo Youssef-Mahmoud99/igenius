@@ -35,6 +35,10 @@ class CourseDetails {
   @JsonKey(name: 'course_platform')
   final dynamic coursePlatform;
 
+  @JsonKey(name: 'is_owned')
+  final bool? isOwned;
+
+
   final Teacher? teacher;
   final Teacher? subject;
   final Teacher? level;
@@ -62,6 +66,7 @@ class CourseDetails {
     this.board,
     this.system,
     this.units,
+    this.isOwned,
   });
 
   factory CourseDetails.fromJson(Map<String, dynamic> json) =>
@@ -98,11 +103,19 @@ class UnitModel {
   Map<String, dynamic> toJson() => _$UnitModelToJson(this);
 }
 
-@JsonSerializable(genericArgumentFactories: true) // شيل ignoreUnannotated
+@JsonSerializable(genericArgumentFactories: true)
 class LessonModel {
   final int? id;
   final String? title;
   final String? description;
+
+  @JsonKey(name: 'video_url')
+  final String? videoUrl;
+
+  @JsonKey(name: 'external_link')
+  final String? externalLink;
+
+  final String? materials;
 
   @JsonKey(name: 'duration_minutes')
   final int? durationMinutes;
@@ -117,23 +130,44 @@ class LessonModel {
 
   final int? price;
 
+  @JsonKey(name: 'is_live')
+  final bool? isLive;
+
+  @JsonKey(name: 'meeting_url')
+  final String? meetingUrl;
+
+  @JsonKey(name: 'meeting_date')
+  final String? meetingDate;
+
   @JsonKey(name: 'view_date')
   final String? viewDate;
 
   @JsonKey(name: 'deadline_date')
   final String? deadlineDate;
 
+  final List<FileModel>? files;
+
+  final dynamic attendance;
+
   const LessonModel({
     this.id,
     this.title,
     this.description,
+    this.videoUrl,
+    this.externalLink,
+    this.materials,
     this.durationMinutes,
     this.order,
     this.isPreview,
     this.isBuyable,
     this.price,
+    this.isLive,
+    this.meetingUrl,
+    this.meetingDate,
     this.viewDate,
     this.deadlineDate,
+    this.files,
+    this.attendance,
   });
 
   factory LessonModel.fromJson(Map<String, dynamic> json) =>
@@ -142,7 +176,62 @@ class LessonModel {
   Map<String, dynamic> toJson() => _$LessonModelToJson(this);
 }
 
-@JsonSerializable(genericArgumentFactories: true) // شيل ignoreUnannotated
+
+
+@JsonSerializable(genericArgumentFactories: true)
+class AssignmentModel {
+  final int? id;
+  final String? title;
+  final String? description;
+
+  @JsonKey(name: 'total_marks')
+  final int? totalMarks;
+
+  @JsonKey(name: 'max_attempts')
+  final int? maxAttempts;
+
+  @JsonKey(name: 'attempts_used')
+  final int? attemptsUsed;
+
+  @JsonKey(name: 'can_submit')
+  final bool? canSubmit;
+
+  final int? order;
+
+  @JsonKey(name: 'view_date')
+  final String? viewDate;
+
+  @JsonKey(name: 'due_date')
+  final String? dueDate;
+
+  @JsonKey(name: 'deadline_date')
+  final String? deadlineDate;
+
+  final List<FileModel>? files;
+
+  const AssignmentModel({
+    this.id,
+    this.title,
+    this.description,
+    this.totalMarks,
+    this.maxAttempts,
+    this.attemptsUsed,
+    this.canSubmit,
+    this.order,
+    this.viewDate,
+    this.dueDate,
+    this.deadlineDate,
+    this.files,
+  });
+
+  factory AssignmentModel.fromJson(Map<String, dynamic> json) =>
+      _$AssignmentModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AssignmentModelToJson(this);
+}
+
+
+@JsonSerializable(genericArgumentFactories: true)
 class ExamModel {
   final int? id;
   final String? title;
@@ -157,6 +246,12 @@ class ExamModel {
   @JsonKey(name: 'max_attempts')
   final int? maxAttempts;
 
+  @JsonKey(name: 'attempts_used')
+  final int? attemptsUsed;
+
+  @JsonKey(name: 'can_submit')
+  final bool? canSubmit;
+
   final int? order;
 
   @JsonKey(name: 'view_date')
@@ -168,6 +263,15 @@ class ExamModel {
   @JsonKey(name: 'deadline_date')
   final String? deadlineDate;
 
+  @JsonKey(name: 'file_url')
+  final String? fileUrl;
+
+  @JsonKey(name: 'file_name')
+  final String? fileName;
+
+  @JsonKey(name: 'file_size')
+  final int? fileSize;
+
   const ExamModel({
     this.id,
     this.title,
@@ -175,10 +279,15 @@ class ExamModel {
     this.durationMinutes,
     this.totalMarks,
     this.maxAttempts,
+    this.attemptsUsed,
+    this.canSubmit,
     this.order,
     this.viewDate,
     this.dueDate,
     this.deadlineDate,
+    this.fileUrl,
+    this.fileName,
+    this.fileSize,
   });
 
   factory ExamModel.fromJson(Map<String, dynamic> json) =>
@@ -188,43 +297,23 @@ class ExamModel {
 }
 
 
+
 @JsonSerializable(genericArgumentFactories: true) // شيل ignoreUnannotated
-class AssignmentModel {
+class FileModel {
   final int? id;
-  final String? title;
-  final String? description;
+  final String? name;
+  final String? url;
+  final String? size;
 
-  @JsonKey(name: 'total_marks')
-  final int? totalMarks;
-
-  @JsonKey(name: 'max_attempts')
-  final int? maxAttempts;
-
-  final int? order;
-
-  @JsonKey(name: 'view_date')
-  final String? viewDate;
-
-  @JsonKey(name: 'due_date')
-  final String? dueDate;
-
-  @JsonKey(name: 'deadline_date')
-  final String? deadlineDate;
-
-  const AssignmentModel({
+  const FileModel({
     this.id,
-    this.title,
-    this.description,
-    this.totalMarks,
-    this.maxAttempts,
-    this.order,
-    this.viewDate,
-    this.dueDate,
-    this.deadlineDate,
+    this.name,
+     this.url,
+     this.size,
   });
 
-  factory AssignmentModel.fromJson(Map<String, dynamic> json) =>
-      _$AssignmentModelFromJson(json);
+  factory FileModel.fromJson(Map<String, dynamic> json) =>
+      _$FileModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AssignmentModelToJson(this);
+  Map<String, dynamic> toJson() => _$FileModelToJson(this);
 }

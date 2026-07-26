@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:igenius/app.dart';
 import 'package:igenius/core/constants/app_routes.dart';
 import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 import '../../injection/service_locator.dart';
@@ -46,7 +47,13 @@ class ConnectivityService {
 
       Future.delayed(Duration(milliseconds: 300), () {
         if (context.mounted) {
-          AppNavaigation.goToPageWithParams(AppRoutes.home, {'isGuest': true});
+          if (currentUser == null){
+          AppNavaigation.goToLogin();
+
+          }
+          else{
+            AppNavaigation.goToHome(isGuest: false);
+          }
         }
       });
     }

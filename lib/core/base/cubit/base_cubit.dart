@@ -1,9 +1,8 @@
+import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:igenius/core/utils/helpers/toast_helper.dart';
-import '../../error/failures.dart';
 import '../../utils/helpers/easy_loading_helper.dart';
-import '../models/base_response.dart';
 import '../models/error_model.dart';
 import 'base_state.dart';
 
@@ -39,7 +38,9 @@ abstract class BaseCubit<T> extends Cubit<BaseCubitState<T>> {
         final message =
             errorMessageExtractor?.call(failure) ?? failure.allErrorMessages;
         emit(ErrorState(failure, message));
+        log("error: $message");
         ToastHelper.showError(message);
+
       },
       (data) {
         final message = successMessageExtractor?.call(data) ?? successMessage;

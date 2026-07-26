@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Home/presentation/views/widgets/continue_learning.dart';
 import 'package:igenius/core/widgets/base_gradient.dart';
 import '../../../../../app.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/widgets/custom_text.dart';
-import '../../../../../injection/service_locator.dart';
-import '../../../../Courses/presentation/cubits/home_courses_cubit.dart';
 import '../widgets/get_started.dart';
 import '../widgets/head_line.dart';
 import '../widgets/popular_courses.dart';

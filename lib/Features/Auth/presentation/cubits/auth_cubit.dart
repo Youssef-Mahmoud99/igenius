@@ -1,4 +1,3 @@
-import '../../../../app.dart';
 import '../../../../core/base/cubit/base_cubit.dart';
 import '../../../../core/base/cubit/base_state.dart';
 import '../../../../core/base/models/base_response.dart';
@@ -28,8 +27,6 @@ class AuthCubit extends BaseCubit<BaseResponse<AuthResponseModel>> {
       final data =
           (state as SuccessState<BaseResponse<AuthResponseModel>>).data;
       await SecureStorageService.write(AppKeys.token, data.data?.token ?? '');
-      currentUser = data.data?.user;
-      currentStudent = data.data?.student;
       AppNavaigation.goToHome(isGuest: false);
     }
   }
@@ -46,8 +43,6 @@ class AuthCubit extends BaseCubit<BaseResponse<AuthResponseModel>> {
       final data =
           (state as SuccessState<BaseResponse<AuthResponseModel>>).data;
       await SecureStorageService.write(AppKeys.token, data.data?.token ?? '');
-      currentUser = data.data?.user;
-      // currentStudent = data.data?.student;
       AppNavaigation.goToHome(isGuest: false);
     }
   }

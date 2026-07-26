@@ -32,6 +32,9 @@ class CourseModel {
   @JsonKey(name: 'is_external_course')
   final bool? isExternalCourse;
 
+   @JsonKey(name: 'is_owned')
+   final bool? isOwned;
+
   final Teacher? teacher;
   final Teacher? subject;
   final Teacher? level;
@@ -56,7 +59,9 @@ class CourseModel {
     this.level,
     this.board,
     this.system,
+    this.isOwned,
   });
+
 
   factory CourseModel.fromJson(Map<String, dynamic> json) =>
       _$CourseModelFromJson(json);
@@ -81,6 +86,7 @@ class CourseModel {
     Teacher? level,
     Teacher? board,
     Teacher? system,
+    bool? isOwned,
   }) {
     return CourseModel(
       id: id ?? this.id,
@@ -102,6 +108,7 @@ class CourseModel {
       level: level ?? this.level,
       board: board ?? this.board,
       system: system ?? this.system,
+      isOwned: isOwned ?? this.isOwned,
     );
   }
 }

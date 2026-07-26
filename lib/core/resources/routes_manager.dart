@@ -8,20 +8,30 @@ import 'package:igenius/Features/Account/presentation/views/pages/privacy_policy
 import 'package:igenius/Features/Auth/presentation/views/pages/create_account.dart';
 import 'package:igenius/Features/Auth/presentation/views/pages/forget_password_screen.dart';
 import 'package:igenius/Features/Auth/presentation/views/pages/login_screen.dart';
+import 'package:igenius/Features/Courses/presentation/cubits/lessons/lesson_content_cubit.dart';
 import 'package:igenius/Features/Courses/presentation/views/pages/assignment_screen.dart';
+import 'package:igenius/Features/Courses/presentation/views/pages/video_player_screen.dart';
 import 'package:igenius/Features/home/presentation/views/pages/Home_screen.dart';
 import 'package:igenius/Features/layout/layout_screen.dart';
+import 'package:igenius/Features/payment/presentation/cubits/buy_lesson_cubit.dart';
+import 'package:igenius/Features/payment/presentation/cubits/pay_installment_cubit.dart';
+import 'package:igenius/Features/payment/presentation/cubits/request_installment_cubit.dart';
 import 'package:igenius/splash_screen.dart';
+import '../../Features/Account/presentation/cubits/profile_cubit.dart';
+import '../../Features/Account/presentation/cubits/update_profile_cubit.dart';
 import '../../Features/Account/presentation/views/pages/help_and_support_screen.dart';
 import '../../Features/Auth/presentation/cubits/auth_cubit.dart';
 import '../../Features/Auth/presentation/cubits/password_cubit.dart';
 import '../../Features/Auth/presentation/views/pages/new_password_screen.dart';
 import '../../Features/Auth/presentation/views/pages/otp_screen.dart';
 import '../../Features/Courses/data/models/teacher.dart';
-import '../../Features/Courses/presentation/cubits/course_details_cubit.dart';
-import '../../Features/Courses/presentation/cubits/courses_by_teacher_cubit.dart';
-import '../../Features/Courses/presentation/cubits/courses_cubit.dart';
-import '../../Features/Courses/presentation/cubits/home_courses_cubit.dart';
+import '../../Features/Courses/presentation/cubits/courses/course_details_cubit.dart';
+import '../../Features/Courses/presentation/cubits/courses/courses_by_teacher_cubit.dart';
+import '../../Features/Courses/presentation/cubits/courses/courses_cubit.dart';
+import '../../Features/Courses/presentation/cubits/courses/home_courses_cubit.dart';
+import '../../Features/Courses/presentation/cubits/lessons/mark_attendance_cubit.dart';
+import '../../Features/Courses/presentation/cubits/my_courses/my_course_details_cubit.dart';
+import '../../Features/Courses/presentation/cubits/my_courses/my_courses_cubit.dart';
 import '../../Features/Courses/presentation/views/pages/course_details_screen.dart';
 import '../../Features/Courses/presentation/views/pages/courses_screen.dart';
 import '../../Features/filters/presentation/pages/filters_screen.dart';
@@ -29,6 +39,7 @@ import '../../Features/Courses/presentation/views/pages/lesson_view_screen.dart'
 import '../../Features/Notifications/presentation/views/pages/notifications_screen.dart';
 import '../../Features/Teachers/presentation/views/pages/teachers_screen.dart';
 import '../../Features/Teachers/presentation/views/widgets/teacher_profile.dart';
+import '../../Features/payment/presentation/cubits/buy_course_cubit.dart';
 import '../../app.dart';
 import '../../injection/service_locator.dart';
 import '../animations/page_transitions.dart';
@@ -78,6 +89,7 @@ class RoutesManager {
             providers: [
               BlocProvider(create: (context) => sl<HomeCoursesCubit>()),
               BlocProvider(create: (context) => sl<CoursesCubit>()),
+              BlocProvider(create: (context) => sl<ProfileCubit>()),
             ],
             child: LayoutScreen(isGuest: isGuest, key: layoutKey),
           );
@@ -107,15 +119,38 @@ class RoutesManager {
         },
       ),
       GoRoute(
+        path: AppRoutes.videoPlayerScreen,
+        pageBuilder: (context, state) {
+          Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+          return SlideFadeTransition(
+            child: CustomVideoPlayer(
+              onProgressThresholdReached:  args['onProgressThresholdReached'] as VoidCallback,
+              videoUrl: args['videoUrl'] as String,
+              autoPlay: true,
+              looping: true,
+            ),
+          );
+        },
+      ),
+      GoRoute(
         path: AppRoutes.courseDetails,
         pageBuilder: (context, state) {
           Map<String, dynamic> args = state.extra as Map<String, dynamic>;
           final courseId = args['courseId'] as int;
+          final isBought = args['isBought'] as bool;
           return SlideFadeTransition(
-            child: BlocProvider(
-              create: (context) => sl<CourseDetailsCubit>(),
-              child: CourseDetailsScreen(courseId: courseId),
-            ),
+            child:  MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (context) => sl<CourseDetailsCubit>()),
+                BlocProvider(create: (context) => sl<MyCourseDetailsCubit>()),
+                BlocProvider(create: (context) => sl<BuyLessonCubit>()),
+
+
+              ],
+              child: CourseDetailsScreen(
+                isBought: isBought,
+                courseId: courseId),
+            )
           );
         },
       ),
@@ -126,23 +161,62 @@ class RoutesManager {
       ),
       GoRoute(
         path: AppRoutes.lessonViewScreen,
-        builder: (context, state) => LessonViewScreen(),
+         pageBuilder: (context, state) {
+           Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+          final lessonId = args['lessonId'] as int;
+          final unitTitle = args['unitTitle'] as String;
+          return SlideFadeTransition(
+            child:  MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (context) => sl<LessonContentCubit>()),
+                BlocProvider(create: (context) => sl<MarkAttendanceCubit>()),
+
+              ],
+              child: LessonViewScreen(
+                unitTitle:  unitTitle,
+                lessonId: lessonId,
+              ),
+            ),
+          );
+        },
       ),
-      GoRoute(
+
+            GoRoute(
         path: AppRoutes.assignmentViewScreen,
-        builder: (context, state) => AssignmentScreen(),
+        pageBuilder: (context, state) {
+          Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+          final id = args['id'] as int;
+          final unitTitle = args['unitTitle'] as String;
+          final isExam = args['isExam'] as bool;
+          return SlideFadeTransition(
+            child:  AssignmentScreen(
+              isExam:  isExam,
+              id: id,
+              unitTitle: unitTitle,
+            ),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRoutes.aboutUsScreen,
         builder: (context, state) => AboutUsScreen(),
       ),
       GoRoute(
         path: AppRoutes.editProfileScreen,
-        builder: (context, state) => EditProfileScreen(),
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => sl<UpdateProfileCubit>(),
+              child: EditProfileScreen(),
+            ),
       ),
       GoRoute(
         path: AppRoutes.myCoursesScreen,
-        builder: (context, state) => MyCoursesScreen(),
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => sl<MyCoursesCubit>(),
+              child: MyCoursesScreen(),
+            ),
       ),
       GoRoute(
         path: AppRoutes.privacyPolicyScreen,

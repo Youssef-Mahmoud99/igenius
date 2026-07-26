@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Account/presentation/views/widgets/account_tile.dart';
 import 'package:igenius/Features/Account/presentation/views/widgets/settings_item.dart';
@@ -6,9 +7,14 @@ import 'package:igenius/core/constants/app_routes.dart';
 import 'package:igenius/core/resources/assets_manager.dart';
 import 'package:igenius/core/widgets/base/base_stateless.dart';
 import '../../../../../app.dart';
+import '../../../../../core/base/cubit/base_state.dart';
+import '../../../../../core/base/models/base_response.dart';
+import '../../../../../core/constants/app_constants.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/base_gradient.dart';
+import '../../../data/models/profile_response_model.dart';
+import '../../cubits/profile_cubit.dart';
 
 class AccountScreen extends BaseStatelessWidget {
   AccountScreen({Key? key}) : super(key: key);
@@ -46,11 +52,6 @@ class AccountScreen extends BaseStatelessWidget {
       'colors': [Color(0xFFFEFCE8), Color(0xFFFBCFE8)],
       'route': AppRoutes.aboutUsScreen,
     },
-  ];
-  List<String> userInfo = [
-    currentUser?.name ?? 'John Doe',
-    currentUser?.email ?? 'johndoe@gmail.com',
-    'Student • Joined Sep 2025',
   ];
   @override
   Widget buildBody(BuildContext context) {
@@ -126,7 +127,6 @@ class AccountScreen extends BaseStatelessWidget {
                               title: 'Logout',
                               icon: Icons.logout,
                               index: 3,
-                              
                             ),
                           ],
                         ),
@@ -143,58 +143,72 @@ class AccountScreen extends BaseStatelessWidget {
   }
 
   Widget accountDetails() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              "My Account",
-              style: AppsStyles.s16Bold.copyWith(color: Colors.white),
-            ),
-            // Spacer(),
-            // Icon(Icons.settings, color: Colors.white, size: 20.r),
-          ],
-        ),
-        10.verticalSpace,
-        Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.2),
+    return BlocBuilder<
+      ProfileCubit,
+      BaseCubitState<BaseResponse<ProfileResponseModel>>
+    >(
+      builder: (context, state) {
+        if (state is SuccessState<BaseResponse<ProfileResponseModel>>) {
+          final user = state.data.data?.user;
+
+          final userInfo = [user?.name ?? "", user?.email ?? ""];
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "My Account",
+                    style: AppsStyles.s16Bold.copyWith(color: Colors.white),
+                  ),
+                ],
               ),
-              child: Text(
-                "JD",
-                style: AppsStyles.s18Bold.copyWith(color: Colors.white),
+              10.verticalSpace,
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withOpacity(0.2),
+                    ),
+                    child: Text(
+                      user!.name[0].toUpperCase(),
+                      style: AppsStyles.s18Bold.copyWith(color: Colors.white),
+                    ),
+                  ),
+                  20.horizontalSpace,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:
+                        userInfo
+                            .map(
+                              (item) => Text(
+                                item,
+                                style:
+                                    userInfo.indexOf(item) == 0
+                                        ? AppsStyles.s14Bold.copyWith(
+                                          color: Colors.white,
+                                        )
+                                        : AppsStyles.s12Regular.copyWith(
+                                          color: Colors.white,
+                                        ),
+                              ),
+                            )
+                            .toList(),
+                  ),
+                ],
               ),
-            ),
-            20.horizontalSpace,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...userInfo
-                    .map(
-                      (item) => Text(
-                        item,
-                        style:
-                            userInfo.indexOf(item) == 0
-                                ? AppsStyles.s14Bold.copyWith(
-                                  color: Colors.white,
-                                )
-                                : AppsStyles.s12Regular.copyWith(
-                                  color: Colors.white,
-                                ),
-                      ),
-                    )
-                    .toList(),
-              ],
-            ),
-          ],
-        ),
-      ],
+            ],
+          );
+        }
+
+        if (state is ErrorState<BaseResponse<ProfileResponseModel>>) {
+          return Text(state.message ?? "Error");
+        }
+        return const Center(child: CircularProgressIndicator( color: Colors.white,));
+      },
     );
   }
 }
