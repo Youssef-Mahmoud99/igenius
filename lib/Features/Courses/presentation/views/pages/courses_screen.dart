@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:igenius/Features/Courses/presentation/views/widgets/course_type.dart';
 import 'package:igenius/Features/Courses/presentation/views/widgets/courses_view.dart';
 import 'package:igenius/core/resources/assets_manager.dart';
 import 'package:igenius/core/theme/app_colors.dart';
 import 'package:igenius/core/utils/extensions/extensions.dart';
 import 'package:igenius/core/utils/helpers/app_navigtion.dart';
-import 'package:igenius/core/widgets/base/base_stateful.dart';
 import 'package:igenius/core/widgets/base_gradient.dart';
 import 'package:igenius/core/widgets/custom_appBar.dart';
 import 'package:igenius/core/widgets/custom_text_field.dart';
+import '../../../../../core/base/cubit/base_state.dart';
 import '../../../../../core/constants/app_routes.dart';
-import '../../../../../core/widgets/base/base_stateless.dart';
-import '../../../../../injection/service_locator.dart';
-import '../../../data/models/courses_body.dart';
+import '../../../../Notifications/presentation/views/widgets/custom_type_shimmer.dart';
+import '../../../../filters/presentation/cubits/filter_data_cubit.dart';
+import '../../../../filters/presentation/widgets/filter_shimmer_section.dart';
 import '../../cubits/courses/courses_cubit.dart';
 import '../widgets/search_result_length_and_type.dart';
 
@@ -28,36 +27,37 @@ class CoursesScreen extends StatefulWidget {
 
 class _CoursesScreenState extends State<CoursesScreen> {
   TextEditingController searchController = TextEditingController();
-  final List<String> courseTypes = [
-    'All Courses',
-    'Mathematics',
-    'Physics',
-    'Chemistry',
-    'Biology',
-  ];
-
-  // @override
-  // void initState() {
-  //   context.read<CoursesCubit>().getCourses(CoursesBody(page: 1, perPage: 10));
-  //   super.initState();
-  // }
+  final ScrollController _scrollController = ScrollController();
 
   search(String value) {
     final cubit = context.read<CoursesCubit>();
-    cubit.body = cubit.body.copyWith(search: value); // copyWith مش setter
-    cubit.updateBody(cubit.body);
-    cubit.getCourses();
+    cubit.updateBody(cubit.body.copyWith(search: value));
   }
 
-  dispose() {
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      context.read<CoursesCubit>().loadMoreCourses();
+    }
+  }
+
+  @override
+  void initState() {
+    searchController.text = context.read<CoursesCubit>().body.search ?? '';
+    context.read<CoursesCubit>().getCourses(); // أول تحميل
+    context.read<FilterDataCubit>().getAllFilters();
+    _scrollController.addListener(_onScroll);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
     searchController.dispose();
     super.dispose();
   }
-@override
-  void initState() {
-    searchController.text = context.read<CoursesCubit>().body.search ?? '';
-    super.initState();
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +87,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
       ),
       body: BaseGradient(
         child: SingleChildScrollView(
+          controller: _scrollController, // <-- هنا الأساس
           physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
             padding: EdgeInsets.only(bottom: 20.h),
@@ -109,8 +110,8 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                     true
                                 ? IconButton(
                                   onPressed: () {
-                                      searchController.clear();
-                                      search('');
+                                    searchController.clear();
+                                    search('');
                                   },
                                   icon: Icon(
                                     Icons.clear,
@@ -128,18 +129,43 @@ class _CoursesScreenState extends State<CoursesScreen> {
                         ),
                       ),
                       10.verticalSpace,
-                      CourseType(
-                        courseTypes: courseTypes,
-                        onTypeSelected: (type) {},
+                      BlocBuilder<FilterDataCubit, BaseCubitState>(
+                        builder: (context, state) {
+                          final filterCubit = context.read<FilterDataCubit>();
+                          final coursesCubit = context.watch<CoursesCubit>();
+
+                          if (filterCubit.isSubjectsLoading) {
+                            return const CustomTypeShimmer(
+                               
+                            ); // أو أي شيمر أفقي لو عندك واحد مخصص
+                          }
+
+                          final items = <CourseTypeItem>[
+                            const CourseTypeItem(id: null, name: 'All Courses'),
+                            ...filterCubit.subjects.map(
+                              (s) =>
+                                  CourseTypeItem(id: s.id, name: s.name ?? ''),
+                            ),
+                          ];
+
+                          return CourseType(
+                            courseTypes: items,
+                            selectedId: coursesCubit.body.subjectId,
+                            onTypeSelected: (id) {
+                              context.read<CoursesCubit>().applyFilters(
+                                subjectId: id,
+                              );
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),
                 ),
-
                 10.verticalSpace,
                 SearchResultLengthAndType(
                   type: 'courses',
-                  resultsLength: 12,
+                  resultsLength: context.watch<CoursesCubit>().totalCourses,
                   onChanged: (value) {},
                 ),
                 10.verticalSpace,

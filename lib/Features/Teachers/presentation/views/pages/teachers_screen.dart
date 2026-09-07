@@ -11,6 +11,7 @@ import 'package:igenius/core/widgets/custom_text_field.dart';
 import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/widgets/base/base_stateless.dart';
 import '../../../../Courses/presentation/views/widgets/search_result_length_and_type.dart';
+import '../../../../Notifications/presentation/views/widgets/notification_type.dart';
 
 class TeachersScreen extends BaseStatelessWidget {
   TeachersScreen({Key? key}) : super(key: key);
@@ -80,9 +81,10 @@ class TeachersScreen extends BaseStatelessWidget {
                           ),
                         ),
                         10.verticalSpace,
-                        CourseType(
-                          courseTypes: courseTypes,
+                        CustomType(
+                              CustomTypes: courseTypes,
                           onTypeSelected: (type) {},
+                          
                         ),
                       ],
                     ),

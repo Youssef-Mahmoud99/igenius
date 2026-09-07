@@ -14,6 +14,7 @@ import '../../../../Courses/presentation/views/widgets/course_type.dart';
 import '../../../../Courses/data/models/courses_body.dart';
 import '../../../../Courses/data/models/courses_model.dart';
 import '../../../../../core/base/cubit/base_state.dart';
+import '../../../../Notifications/presentation/views/widgets/notification_type.dart';
 import '../../../data/models/my_course_model.dart';
 
 class MyCoursesScreen extends StatefulWidget {
@@ -75,8 +76,8 @@ class _MyCoursesScreenState extends State<MyCoursesScreen> {
               color: AppColors.white,
               child: Column(
                 children: [
-                  CourseType(
-                    courseTypes: courseTypes,
+                  CustomType(
+                    CustomTypes:  courseTypes,
                     onTypeSelected: (type) {
                       setState(() => selectedTab = type!);
                     },

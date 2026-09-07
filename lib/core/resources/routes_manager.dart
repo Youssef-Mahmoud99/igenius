@@ -34,6 +34,7 @@ import '../../Features/Courses/presentation/cubits/my_courses/my_course_details_
 import '../../Features/Courses/presentation/cubits/my_courses/my_courses_cubit.dart';
 import '../../Features/Courses/presentation/views/pages/course_details_screen.dart';
 import '../../Features/Courses/presentation/views/pages/courses_screen.dart';
+import '../../Features/filters/presentation/cubits/filter_data_cubit.dart';
 import '../../Features/filters/presentation/pages/filters_screen.dart';
 import '../../Features/Courses/presentation/views/pages/lesson_view_screen.dart';
 import '../../Features/Notifications/presentation/views/pages/notifications_screen.dart';
@@ -101,7 +102,14 @@ class RoutesManager {
           Map<String, dynamic> args = state.extra as Map<String, dynamic>;
           final isCourses = args['isCourses'] as bool;
           return SlideFadeTransition(
+            child:  MultiBlocProvider(providers: [
+          BlocProvider.value(value: sl<FilterDataCubit>()),
+          BlocProvider.value(value: sl<CoursesCubit>()), // ✅ .value مش create
+
+            ],
             child: FiltersScreen(isCourses: isCourses),
+            )
+            
           );
         },
       ),
@@ -124,7 +132,8 @@ class RoutesManager {
           Map<String, dynamic> args = state.extra as Map<String, dynamic>;
           return SlideFadeTransition(
             child: CustomVideoPlayer(
-              onProgressThresholdReached:  args['onProgressThresholdReached'] as VoidCallback,
+              onProgressThresholdReached:
+                  args['onProgressThresholdReached'] as VoidCallback,
               videoUrl: args['videoUrl'] as String,
               autoPlay: true,
               looping: true,
@@ -139,18 +148,17 @@ class RoutesManager {
           final courseId = args['courseId'] as int;
           final isBought = args['isBought'] as bool;
           return SlideFadeTransition(
-            child:  MultiBlocProvider(
+            child: MultiBlocProvider(
               providers: [
                 BlocProvider(create: (context) => sl<CourseDetailsCubit>()),
                 BlocProvider(create: (context) => sl<MyCourseDetailsCubit>()),
                 BlocProvider(create: (context) => sl<BuyLessonCubit>()),
-
-
               ],
               child: CourseDetailsScreen(
                 isBought: isBought,
-                courseId: courseId),
-            )
+                courseId: courseId,
+              ),
+            ),
           );
         },
       ),
@@ -161,27 +169,23 @@ class RoutesManager {
       ),
       GoRoute(
         path: AppRoutes.lessonViewScreen,
-         pageBuilder: (context, state) {
-           Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+        pageBuilder: (context, state) {
+          Map<String, dynamic> args = state.extra as Map<String, dynamic>;
           final lessonId = args['lessonId'] as int;
           final unitTitle = args['unitTitle'] as String;
           return SlideFadeTransition(
-            child:  MultiBlocProvider(
+            child: MultiBlocProvider(
               providers: [
                 BlocProvider(create: (context) => sl<LessonContentCubit>()),
                 BlocProvider(create: (context) => sl<MarkAttendanceCubit>()),
-
               ],
-              child: LessonViewScreen(
-                unitTitle:  unitTitle,
-                lessonId: lessonId,
-              ),
+              child: LessonViewScreen(unitTitle: unitTitle, lessonId: lessonId),
             ),
           );
         },
       ),
 
-            GoRoute(
+      GoRoute(
         path: AppRoutes.assignmentViewScreen,
         pageBuilder: (context, state) {
           Map<String, dynamic> args = state.extra as Map<String, dynamic>;
@@ -189,8 +193,8 @@ class RoutesManager {
           final unitTitle = args['unitTitle'] as String;
           final isExam = args['isExam'] as bool;
           return SlideFadeTransition(
-            child:  AssignmentScreen(
-              isExam:  isExam,
+            child: AssignmentScreen(
+              isExam: isExam,
               id: id,
               unitTitle: unitTitle,
             ),

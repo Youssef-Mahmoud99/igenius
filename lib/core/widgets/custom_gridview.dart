@@ -9,6 +9,7 @@ class CustomGridViewBuilder extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final ScrollPhysics? physics;
   final bool reverse;
+  final ScrollController? scrollController;
 
   const CustomGridViewBuilder({
     Key? key,
@@ -20,11 +21,13 @@ class CustomGridViewBuilder extends StatelessWidget {
     this.padding,
     this.physics,
     this.reverse = false,
+     this.scrollController,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      controller: scrollController,
       cacheExtent: 1000,
 
       itemCount: itemCount,

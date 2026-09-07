@@ -4,22 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 
-class CourseType extends StatefulWidget {
-  CourseType({Key? key, required this.courseTypes, this.onTypeSelected})
-    : super(key: key);
-  final List<String> courseTypes;
-  final void Function(String?)? onTypeSelected;
-  @override
-  State<CourseType> createState() => _CourseTypeState();
-}
+class CourseType extends StatelessWidget {
+  const CourseType({
+    Key? key,
+    required this.courseTypes,
+    required this.selectedId,
+    this.onTypeSelected,
+  }) : super(key: key);
 
-class _CourseTypeState extends State<CourseType> {
-  String? selectedType;
-  @override
-  void initState() {
-    selectedType = widget.courseTypes[0];
-    super.initState();
-  }
+  final List<CourseTypeItem> courseTypes;
+  final int? selectedId; // الـ id المختار حاليًا (null = All Courses)
+  final void Function(int?)? onTypeSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -28,40 +23,45 @@ class _CourseTypeState extends State<CourseType> {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return courseType('${widget.courseTypes[index]}', index);
+          final item = courseTypes[index];
+          return _courseTypeChip(item);
         },
         separatorBuilder: (context, index) => 10.horizontalSpace,
-        itemCount: widget.courseTypes.length,
+        itemCount: courseTypes.length,
       ),
     );
   }
 
-  Widget courseType(String type, int index) {
+  Widget _courseTypeChip(CourseTypeItem item) {
+    final bool isSelected = selectedId == item.id;
+
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedType = type;
-        });
-        widget.onTypeSelected?.call(type);
-      },
+      onTap: () => onTypeSelected?.call(item.id),
       child: Container(
         margin: const EdgeInsets.only(top: 5, bottom: 5),
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
-          color:
-              selectedType == type ? AppColors.primary : AppColors.borderGrey,
+          color: isSelected ? AppColors.primary : AppColors.borderGrey,
         ),
         child: Center(
           child: Text(
-            type,
+            item.name,
             style: AppsStyles.s12SemiBold.copyWith(
               height: 1,
-              color: selectedType != type ? AppColors.black : AppColors.white,
+              color: isSelected ? AppColors.white : AppColors.black,
             ),
           ),
         ),
       ),
     );
   }
+}
+
+// course_type_item.dart
+class CourseTypeItem {
+  final int? id; // null = "All Courses"
+  final String name;
+
+  const CourseTypeItem({required this.id, required this.name});
 }

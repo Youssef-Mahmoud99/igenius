@@ -8,6 +8,7 @@ import '../../../../../core/theme/app_colors.dart';
 import '../../../../Courses/presentation/views/widgets/course_type.dart';
 import '../../../data/models/notifications_model.dart';
 import '../widgets/nofification_card.dart';
+import '../widgets/notification_type.dart';
 
 class NotificationsScreen extends BaseStatelessWidget {
   NotificationsScreen({super.key});
@@ -71,8 +72,8 @@ class NotificationsScreen extends BaseStatelessWidget {
             child: Column(
               children: [
                 notificationFakeAppBar(),
-                CourseType(
-                  courseTypes: notificationTypes,
+                CustomType(
+                  CustomTypes: notificationTypes,
                   onTypeSelected: (type) {},
                 ),
               ],

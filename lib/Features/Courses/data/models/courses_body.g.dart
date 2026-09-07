@@ -16,6 +16,9 @@ CoursesBody _$CoursesBodyFromJson(Map<String, dynamic> json) => CoursesBody(
   hasInstallmentPlan: (json['has_installment_plan'] as num?)?.toInt(),
   perPage: (json['per_page'] as num?)?.toInt(),
   page: (json['page'] as num?)?.toInt(),
+  maxStudents: (json['max_students'] as num?)?.toInt(),
+  isPrivate: (json['is_private'] as num?)?.toInt(),
+  sort: json['sort'] as String?,
 );
 
 Map<String, dynamic> _$CoursesBodyToJson(CoursesBody instance) =>
@@ -28,5 +31,8 @@ Map<String, dynamic> _$CoursesBodyToJson(CoursesBody instance) =>
       'subject_id': instance.subjectId,
       'teacher_id': instance.teacherId,
       'has_installment_plan': instance.hasInstallmentPlan,
+      'max_students': instance.maxStudents,
       'per_page': instance.perPage,
+      'is_private': instance.isPrivate,
+      'sort': instance.sort,
     };

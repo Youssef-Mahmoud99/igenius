@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/custom_drop_down.dart';
+import '../../../data/models/courses_body.dart';
+import '../../cubits/courses/courses_cubit.dart';
 
 class SearchResultLengthAndType extends StatefulWidget {
   const SearchResultLengthAndType({
@@ -21,14 +24,16 @@ class SearchResultLengthAndType extends StatefulWidget {
 }
 
 class _SearchResultLengthAndTypeState extends State<SearchResultLengthAndType> {
-  final List<String> popularCategories = [
-    'Most Popular',
-    'Highest Rated',
-    'Most Recent',
-    'Most Viewed',
-  ];
+  final Map<String, String> popularCategories = {
+    'Latest': 'latest',
+    'Most Popular': 'popular',
+    'Price Ascending': 'price_asc',
+    'Price Descending': 'price_desc',
+    'Is Private': 'is_private',
+    'Has Installment Plan': 'has_installment_plan',
+  };
 
-  String? selectedCategory = 'Most Popular';
+  String? selectedCategory;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -53,11 +58,30 @@ class _SearchResultLengthAndTypeState extends State<SearchResultLengthAndType> {
           ),
 
           Container(
-            width: 170.w,
+            width: 200.w,
 
             child: CustomSmallDropdown(
-              items: popularCategories,
+              items: popularCategories.keys.toList(),
               onChanged: (value) {
+                final cubit = context.read<CoursesCubit>();
+                final oldBody = cubit.body;
+
+                CoursesBody newBody = CoursesBody(
+                  page: 1,
+                  perPage: oldBody.perPage,
+                  search: oldBody.search, // خلي البحث زي ما هو
+                  // كل باقي الفلاتر بتتصفر هنا تلقائيًا (null) لأننا مش بنمررهم
+                );
+
+                if (popularCategories[value] == "is_private") {
+                  newBody = newBody.copyWith(isPrivate: 1);
+                } else if (popularCategories[value] == "has_installment_plan") {
+                  newBody = newBody.copyWith(hasInstallmentPlan: 1);
+                } else {
+                  newBody = newBody.copyWith(sort: popularCategories[value]);
+                }
+
+                cubit.updateBody(newBody);
                 setState(() => selectedCategory = value);
               },
               value: selectedCategory,

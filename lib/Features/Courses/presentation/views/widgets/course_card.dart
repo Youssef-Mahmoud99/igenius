@@ -229,7 +229,7 @@ class CourseCard extends StatelessWidget {
                 style: AppsStyles.s14Bold.copyWith(color: AppColors.primary),
               ),
               TextSpan(
-                text: " " + course.price.toString(),
+                text: "\n" + course.price.toString(),
                 style: AppsStyles.s12Bold.copyWith(
                   color: AppColors.grey,
                   decoration: TextDecoration.lineThrough,
@@ -249,9 +249,12 @@ class CourseCard extends StatelessWidget {
       children: [
         Icon(icon, color: Colors.grey, size: 15),
         5.horizontalSpace,
-        AppText(
-          text: text,
-          style: AppsStyles.s12Regular.copyWith(color: AppColors.grey),
+        SizedBox(
+          width: 100.w,
+          child: AppText(
+            text: text,
+            style: AppsStyles.s12Regular.copyWith(color: AppColors.grey),
+          ),
         ),
       ],
     );

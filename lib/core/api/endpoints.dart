@@ -1,5 +1,4 @@
-class AppUrls {
-
+class EndPoints {
   // auth
   static const String login = "/auth/login";
   static const String register = "/auth/register";
@@ -8,19 +7,19 @@ class AppUrls {
   static const String verifyOtp = "/auth/verify-reset-code";
   static const String resetPassword = "/auth/reset-password";
 
-
-// courses
+  // courses
   static const String courses = "/courses";
 
   // user
   static const String profile = "/student/profile";
   static const String myCourses = "/student/courses";
   static const String getLessonContent = "/student/lessons";
-  
+  static const String myPurchasedLessons = "/student/my-lessons";
+  static const String markLessonAttendance = "/student/lessons/attend";
+
   // assignments
   static const String assignments = "/student/assignments";
   static const String myExams = "/student/exams";
-
 
   // payment
 
@@ -31,4 +30,10 @@ class AppUrls {
   static const String buyInstallment = "/student/purchase/installment";
 
 
+  // Filters
+
+  static const String subjects = "/subjects";
+  static const String boards = "/boards";
+  static const String systems = "/systems";
+  static const String levels = "/levels";
 }

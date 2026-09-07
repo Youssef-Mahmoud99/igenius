@@ -11,6 +11,7 @@ import '../Auth/presentation/cubits/auth_cubit.dart';
 import '../Courses/presentation/cubits/courses/courses_cubit.dart';
 import '../Courses/presentation/cubits/courses/home_courses_cubit.dart';
 import '../Home/presentation/views/pages/Home_screen.dart';
+import '../filters/presentation/cubits/filter_data_cubit.dart';
 
 class LayoutScreen extends StatefulWidget {
   const LayoutScreen({Key? key, required this.isGuest}) : super(key: key);
@@ -26,18 +27,20 @@ class LayoutScreenState extends State<LayoutScreen> {
   void setIndex(int index) {
     _currentIndex.value = index;
   }
-initState() {
+
+  initState() {
     context.read<HomeCoursesCubit>().getHomeCourses();
     context.read<CoursesCubit>().getCourses();
     context.read<ProfileCubit>().getProfile();
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> _screens = [
       HomePage(isGuest: widget.isGuest),
-      CoursesScreen(),
+      BlocProvider(create: (context) => sl<FilterDataCubit>(), child: CoursesScreen()),
       TeachersScreen(),
       BlocProvider(
         create: (context) => sl<AuthCubit>(),

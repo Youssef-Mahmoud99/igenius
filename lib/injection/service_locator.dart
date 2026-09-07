@@ -36,6 +36,10 @@ import '../Features/Courses/presentation/cubits/lessons/lesson_content_cubit.dar
 import '../Features/Courses/presentation/cubits/lessons/mark_attendance_cubit.dart';
 import '../Features/Courses/presentation/cubits/my_courses/my_course_details_cubit.dart';
 import '../Features/Courses/presentation/cubits/my_courses/my_courses_cubit.dart';
+import '../Features/filters/data/network/filter_data_api.dart';
+import '../Features/filters/data/repos/filter_data_repo.dart';
+import '../Features/filters/data/repos/filter_data_repo_impl.dart';
+import '../Features/filters/presentation/cubits/filter_data_cubit.dart';
 import '../Features/payment/data/network/payment_api.dart';
 import '../Features/payment/data/repos/payment_repo.dart';
 import '../Features/payment/data/repos/payment_repo_impl.dart';
@@ -82,43 +86,43 @@ Future<void> init() async {
   // Password
   sl.registerLazySingleton<PasswordApi>(() => PasswordApi(sl<DioClient>().dio));
   sl.registerLazySingleton<PasswordRepo>(() => PasswordRepoImpl(sl<PasswordApi>()));
-  sl.registerFactory(() => PasswordCubit(sl<PasswordRepo>()));
+  sl.registerLazySingleton(() => PasswordCubit(sl<PasswordRepo>()));
 
   // Courses
   sl.registerLazySingleton<CoursesApi>(() => CoursesApi(sl<DioClient>().dio));
   sl.registerLazySingleton<CoursesRepo>(() => CoursesRepoImpl(sl<CoursesApi>()));
-  sl.registerFactory(() => CoursesCubit(sl<CoursesRepo>()));
-  sl.registerFactory(() => CourseDetailsCubit(sl<CoursesRepo>()));
-  sl.registerFactory(() => HomeCoursesCubit(sl<CoursesRepo>()));
-  sl.registerFactory(() => CoursesByTeacherCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => CoursesCubit(sl<CoursesRepo>()));
+  sl.registerLazySingleton(() => CourseDetailsCubit(sl<CoursesRepo>()));
+  sl.registerLazySingleton(() => HomeCoursesCubit(sl<CoursesRepo>()));
+  sl.registerLazySingleton(() => CoursesByTeacherCubit(sl<CoursesRepo>()));
 
 
   // My Courses
-sl.registerFactory(() => MyCoursesCubit(sl<CoursesRepo>()));
-sl.registerFactory(() => MyCourseDetailsCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => MyCoursesCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => MyCourseDetailsCubit(sl<CoursesRepo>()));
 
 // Lessons
-sl.registerFactory(() => LessonContentCubit(sl<CoursesRepo>()));
-sl.registerFactory(() => MarkAttendanceCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => LessonContentCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => MarkAttendanceCubit(sl<CoursesRepo>()));
 
 // Assignments
-sl.registerFactory(() => AssignmentsCubit(sl<CoursesRepo>()));
-sl.registerFactory(() => AssignmentDetailsCubit(sl<CoursesRepo>()));
-sl.registerFactory(() => AssignmentAttemptsCubit(sl<CoursesRepo>()));
-sl.registerFactory(() => SubmitAssignmentCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => AssignmentsCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => AssignmentDetailsCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => AssignmentAttemptsCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => SubmitAssignmentCubit(sl<CoursesRepo>()));
 
 // Exams
-sl.registerFactory(() => MyExamsCubit(sl<CoursesRepo>()));
-sl.registerFactory(() => MyExamDetailsCubit(sl<CoursesRepo>()));
-sl.registerFactory(() => ExamAttemptsCubit(sl<CoursesRepo>()));
-sl.registerFactory(() => SubmitExamCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => MyExamsCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => MyExamDetailsCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => ExamAttemptsCubit(sl<CoursesRepo>()));
+sl.registerLazySingleton(() => SubmitExamCubit(sl<CoursesRepo>()));
 
 
 // Profile
        sl.registerLazySingleton<ProfileApi>(() => ProfileApi(sl<DioClient>().dio));
   sl.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl(sl<ProfileApi>()));
   sl.registerLazySingleton(()=> ProfileCubit(sl<ProfileRepo>()));
-  sl.registerFactory(() => UpdateProfileCubit(sl<ProfileRepo>()));
+  sl.registerLazySingleton(() => UpdateProfileCubit(sl<ProfileRepo>()));
 
 
 
@@ -132,5 +136,13 @@ sl.registerFactory(() => SubmitExamCubit(sl<CoursesRepo>()));
   sl.registerLazySingleton(() => BuyCourseCubit(sl<PaymentRepo>()));
   sl.registerLazySingleton(() => BuyLessonCubit(sl<PaymentRepo>()));
   sl.registerLazySingleton(() => PayInstallmentCubit(sl<PaymentRepo>()));
+
+
+  // Filters
+  sl.registerLazySingleton<FilterDataApi>(() => FilterDataApi(sl<DioClient>().dio));
+  sl.registerLazySingleton<FilterDataRepo>(
+      () => FilterDataRepoImpl(sl<FilterDataApi>()));
+  sl.registerLazySingleton(() => FilterDataCubit(sl<FilterDataRepo>()));
+
 
 }

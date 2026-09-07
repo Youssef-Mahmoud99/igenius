@@ -28,8 +28,18 @@ class CoursesBody {
   @JsonKey(name: 'has_installment_plan')
   final int? hasInstallmentPlan;
 
+  @JsonKey(name: 'max_students')
+  final int? maxStudents;
+
   @JsonKey(name: 'per_page')
   final int? perPage;
+
+  @JsonKey(name: 'is_private')
+  final int? isPrivate;
+
+
+  @JsonKey(name: 'sort')
+  final String? sort;
 
   const CoursesBody({
     this.search,
@@ -41,6 +51,9 @@ class CoursesBody {
     this.hasInstallmentPlan,
     this.perPage,
         this.page,
+        this.maxStudents,
+        this.isPrivate,
+        this.sort,
   });
 
   factory CoursesBody.fromJson(Map<String, dynamic> json) =>
@@ -58,6 +71,10 @@ class CoursesBody {
     int? hasInstallmentPlan,
     int? perPage,
     int? page,
+    int? isPrivate,
+    String? sort,
+    int? maxStudents,
+    
   }) {
     return CoursesBody(
       search: search ?? this.search,
@@ -70,6 +87,9 @@ class CoursesBody {
           hasInstallmentPlan ?? this.hasInstallmentPlan,
       perPage: perPage ?? this.perPage,
       page: page ?? this.page,
+      isPrivate: isPrivate ?? this.isPrivate,
+      sort: sort ?? this.sort,
+      maxStudents: maxStudents ?? this.maxStudents,
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:igenius/core/services/secure_storage_service.dart';
 
 import 'app.dart';
 import 'core/constants/app_keys.dart';
-import 'core/services/token_service.dart';
 import 'core/utils/helpers/easy_loading_helper.dart';
 import 'injection/service_locator.dart';
 
