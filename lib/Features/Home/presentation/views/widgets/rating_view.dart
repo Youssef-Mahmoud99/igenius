@@ -18,15 +18,15 @@ class RatingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(Icons.star, color: AppColors.orange, size: 20.r),
         5.horizontalSpace,
         Text(rating.toString(), style: AppsStyles.s14Bold),
-        20.horizontalSpace,
-        SizedBox(
-          width: width ?? 100,
-          child: Text("$students Students", style: AppsStyles.s12Light),
-        ),
+        // SizedBox(
+        //   width: width ?? 100,
+        //   child: Text("$students Students", style: AppsStyles.s12Light),
+        // ),
       ],
     );
   }

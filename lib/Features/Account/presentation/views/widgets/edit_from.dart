@@ -44,8 +44,8 @@ class _EditFromState extends State<EditFrom> {
 
   @override
   void initState() {
-    email.text = currentUser?.user.email ?? '';
-    fullName.text = currentUser?.user.name ?? '';
+    email.text = currentUser?.user?.email ?? '';
+    fullName.text = currentUser?.user?.name ?? '';
     grade.text = currentUser?.grade.toString() ?? '';
     phoneNumber.text = currentUser?.phone ?? '';
     whatsappNumber.text = currentUser?.whatsapp ?? '';

@@ -36,6 +36,16 @@ import '../Features/Courses/presentation/cubits/lessons/lesson_content_cubit.dar
 import '../Features/Courses/presentation/cubits/lessons/mark_attendance_cubit.dart';
 import '../Features/Courses/presentation/cubits/my_courses/my_course_details_cubit.dart';
 import '../Features/Courses/presentation/cubits/my_courses/my_courses_cubit.dart';
+import '../Features/Home/data/network/home_api.dart';
+import '../Features/Home/data/repos/Home_repo_impl.dart';
+import '../Features/Home/data/repos/home_repo.dart';
+import '../Features/Home/presentation/cubits/get_about_cubit.dart';
+import '../Features/Home/presentation/cubits/get_home_data_cubit.dart';
+import '../Features/Teachers/data/network/teacher_api.dart';
+import '../Features/Teachers/data/repos/teacher_repo.dart';
+import '../Features/Teachers/data/repos/teacher_repo_impl.dart';
+import '../Features/Teachers/presentation/cubits/get_teacher_details_cubit.dart';
+import '../Features/Teachers/presentation/cubits/get_teachers_cubit.dart';
 import '../Features/filters/data/network/filter_data_api.dart';
 import '../Features/filters/data/repos/filter_data_repo.dart';
 import '../Features/filters/data/repos/filter_data_repo_impl.dart';
@@ -92,14 +102,12 @@ Future<void> init() async {
   sl.registerLazySingleton<CoursesApi>(() => CoursesApi(sl<DioClient>().dio));
   sl.registerLazySingleton<CoursesRepo>(() => CoursesRepoImpl(sl<CoursesApi>()));
 sl.registerLazySingleton(() => CoursesCubit(sl<CoursesRepo>()));
-  sl.registerLazySingleton(() => CourseDetailsCubit(sl<CoursesRepo>()));
-  sl.registerLazySingleton(() => HomeCoursesCubit(sl<CoursesRepo>()));
-  sl.registerLazySingleton(() => CoursesByTeacherCubit(sl<CoursesRepo>()));
+  sl.registerFactory(() => CourseDetailsCubit(sl<CoursesRepo>()));
 
 
   // My Courses
 sl.registerLazySingleton(() => MyCoursesCubit(sl<CoursesRepo>()));
-sl.registerLazySingleton(() => MyCourseDetailsCubit(sl<CoursesRepo>()));
+sl.registerFactory(() => MyCourseDetailsCubit(sl<CoursesRepo>()));
 
 // Lessons
 sl.registerLazySingleton(() => LessonContentCubit(sl<CoursesRepo>()));
@@ -145,4 +153,17 @@ sl.registerLazySingleton(() => SubmitExamCubit(sl<CoursesRepo>()));
   sl.registerLazySingleton(() => FilterDataCubit(sl<FilterDataRepo>()));
 
 
+
+   // Home
+   sl.registerLazySingleton<HomeApi>(() => HomeApi(sl<DioClient>().dio));
+  sl.registerLazySingleton<HomeRepo>(() => HomeRepoImpl(sl<HomeApi>()));
+  sl.registerLazySingleton(() => GetHomeDataCubit(sl<HomeRepo>()));
+  sl.registerLazySingleton(() => GetAboutCubit(sl<HomeRepo>()));
+  
+
+  // Teachers
+  sl.registerLazySingleton<TeacherApi>(() => TeacherApi(sl<DioClient>().dio));
+  sl.registerLazySingleton<TeacherRepo>(() => TeacherRepoImpl(sl<TeacherApi>()));
+  sl.registerLazySingleton<GetTeachersCubit>(() => GetTeachersCubit(sl<TeacherRepo>()));
+sl.registerFactory<GetTeacherDetailsCubit>(() => GetTeacherDetailsCubit(sl<TeacherRepo>()));
 }

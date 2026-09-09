@@ -34,6 +34,10 @@ import '../../Features/Courses/presentation/cubits/my_courses/my_course_details_
 import '../../Features/Courses/presentation/cubits/my_courses/my_courses_cubit.dart';
 import '../../Features/Courses/presentation/views/pages/course_details_screen.dart';
 import '../../Features/Courses/presentation/views/pages/courses_screen.dart';
+import '../../Features/Home/presentation/cubits/get_home_data_cubit.dart';
+import '../../Features/Teachers/data/models/teacher_model.dart';
+import '../../Features/Teachers/presentation/cubits/get_teacher_details_cubit.dart';
+import '../../Features/Teachers/presentation/cubits/get_teachers_cubit.dart';
 import '../../Features/filters/presentation/cubits/filter_data_cubit.dart';
 import '../../Features/filters/presentation/pages/filters_screen.dart';
 import '../../Features/Courses/presentation/views/pages/lesson_view_screen.dart';
@@ -88,9 +92,10 @@ class RoutesManager {
           final isGuest = args['isGuest'] as bool;
           return MultiBlocProvider(
             providers: [
-              BlocProvider(create: (context) => sl<HomeCoursesCubit>()),
               BlocProvider(create: (context) => sl<CoursesCubit>()),
+              BlocProvider(create: (context) => sl<GetTeachersCubit>()),
               BlocProvider(create: (context) => sl<ProfileCubit>()),
+              BlocProvider(create: (context) => sl<GetHomeDataCubit>()),
             ],
             child: LayoutScreen(isGuest: isGuest, key: layoutKey),
           );
@@ -117,11 +122,11 @@ class RoutesManager {
         path: AppRoutes.teacherProfile,
         pageBuilder: (context, state) {
           Map<String, dynamic> args = state.extra as Map<String, dynamic>;
-          final teacher = args['teacher'] as Teacher;
+          final teacherId = args['teacherId'] as int;
           return SlideFadeTransition(
             child: BlocProvider(
-              create: (context) => sl<CoursesByTeacherCubit>(),
-              child: TeacherProfile(teacher: teacher),
+              create: (context) => sl<GetTeacherDetailsCubit>(),
+              child: TeacherProfile(teacherId: teacherId),
             ),
           );
         },

@@ -164,7 +164,6 @@ class _CoursesScreenState extends State<CoursesScreen> {
                 ),
                 10.verticalSpace,
                 SearchResultLengthAndType(
-                  type: 'courses',
                   resultsLength: context.watch<CoursesCubit>().totalCourses,
                   onChanged: (value) {},
                 ),

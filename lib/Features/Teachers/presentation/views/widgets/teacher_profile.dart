@@ -1,47 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:igenius/Features/Teachers/presentation/cubits/get_teacher_details_cubit.dart';
 import 'package:igenius/core/utils/helpers/helper_methods.dart';
 import 'package:igenius/core/widgets/base_gradient.dart';
 import 'package:igenius/core/widgets/custom_appBar.dart';
 import 'package:igenius/core/widgets/custom_text.dart';
+import '../../../../../core/base/cubit/base_state.dart';
+import '../../../../../core/base/models/base_response.dart';
+import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
-import '../../../../Courses/data/models/teacher.dart';
-import '../../../../Courses/presentation/cubits/courses/courses_by_teacher_cubit.dart';
+import '../../../../../core/utils/helpers/app_navigtion.dart';
 import '../../../../Home/presentation/views/widgets/popular_courses.dart';
+import '../../../data/models/teacher_details_model.dart';
+import '../../../data/models/teacher_model.dart';
+import 'courses_section.dart';
 import 'teacher_info_card.dart';
 
 class TeacherProfile extends StatefulWidget {
-  const TeacherProfile({ Key? key, required this.teacher }) : super(key: key);
-  final Teacher teacher;
+  const TeacherProfile({Key? key, required this.teacherId}) : super(key: key);
+  final int teacherId;
+
   @override
   _TeacherProfileState createState() => _TeacherProfileState();
 }
 
 class _TeacherProfileState extends State<TeacherProfile> {
-    List<Map<String, dynamic>> qualifiacations = [
-    {
-      'certificate': 'PhD in Mathematics',
-      'university': 'Cambridge University',
-      "color": Colors.lightBlue.withOpacity(0.7),
-      'bacgroundColor': Colors.lightBlueAccent.withOpacity(0.3),
-    },
-    {
-      'certificate': 'PhD in Mathematics',
-      'university': 'Cambridge University',
-      "color": Colors.purple.withOpacity(0.7),
-      'bacgroundColor': Colors.purpleAccent.withOpacity(0.3),
-    },
-    {
-      'certificate': 'PhD in Mathematics',
-      'university': 'Cambridge University',
-      "color": Colors.green.withOpacity(0.7),
-      'bacgroundColor': Colors.greenAccent.withOpacity(0.3),
-    },
-  ];
+  @override
+  void initState() {
+    context.read<GetTeacherDetailsCubit>().getTeacherDetails(
+      widget.teacherId,
+    );
+    super.initState();
+  }
 
-  Widget aboutCard() {
+  Widget aboutCard(String description) {
     return Card(
       elevation: 10,
       shadowColor: Colors.grey.withOpacity(0.4),
@@ -59,22 +53,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
             ),
             10.verticalSpace,
             AppText(
-              text:
-                  'Dr. Robert Williams is a highly experienced educator with over 15 years of teaching IGCSE Mathematics and Physics. He holds a PhD in Mathematics from Cambridge University and has helped over 1,000 students achieve outstanding results in their IGCSE examinations.',
-              color: AppColors.black,
-              style: AppsStyles.s12Regular,
-            ),
-            10.verticalSpace,
-            AppText(
-              text:
-                  "His teaching approach focuses on building strong foundational concepts while making complex topics accessible and engaging. Dr. Williams is known for his ability to identify individual learning needs and provide personalized guidance to each student.",
-              color: AppColors.black,
-              style: AppsStyles.s12Regular,
-            ),
-            10.verticalSpace,
-            AppText(
-              text:
-                  "He has developed innovative teaching methods that combine traditional instruction with modern technology, ensuring students are well-prepared for both their exams and real-world applications of mathematical and physical concepts.",
+              text: description,
               color: AppColors.black,
               style: AppsStyles.s12Regular,
             ),
@@ -96,7 +75,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
         borderRadius: BorderRadius.circular(12),
         child: Container(
           color: backgroundColor,
-          padding: EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15),
           child: Icon(Icons.verified, color: color, size: 20.r),
         ),
       ),
@@ -107,97 +86,144 @@ class _TeacherProfileState extends State<TeacherProfile> {
       ),
     );
   }
-@override
-  void initState() {
-    context.read<CoursesByTeacherCubit>().getCourseByTeacher(widget.teacher.id ?? 0);
-    super.initState();
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-      centerTitle: false,
-      title: 'Teacher Profile',
-      showBack: true,
-      actions: [
-        IconButton(
-          onPressed: () {
-            HelperMethods.shareText('Share this teacher profile');
-          },
-          icon: const Icon(Icons.share, color: Colors.black),
-        ),
-      ],
-    ),
+        centerTitle: false,
+        title: 'Teacher Profile',
+        showBack: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              HelperMethods.shareText('Share this teacher profile');
+            },
+            icon: const Icon(Icons.share, color: Colors.black),
+          ),
+        ],
+      ),
       body: SafeArea(
-      child: BaseGradient(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TeacherInfoCard( teacher: widget.teacher),
-              Padding(
-                padding: const EdgeInsets.all(20.0).copyWith(top: 0),
-                child: Column(
-                  children: [
-                    // 20.verticalSpace,
-                    // GradientButton(
-                    //   text: 'Contact Teacher',
-                    //   onTap: () {
-                    //     UrlLauncherUtils.openWhatsApp('+201234567890');
-                    //   },
-                    //   height: 40.h,
-                    // ),
-                    20.verticalSpace,
-                    aboutCard(),
-                    Card(
-                      elevation: 10,
-                      shadowColor: Colors.grey.withOpacity(0.4),
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 4,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
+        child: BaseGradient(
+          child: BlocBuilder<GetTeacherDetailsCubit, BaseCubitState>(
+            builder: (context, state) {
+              // 1) Loading
+              if (state is LoadingState) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              // 2) Error
+              if (state is ErrorState) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 40,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          state.message ?? 'Something went wrong',
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              // 3) Success
+              if (state is SuccessState) {
+                final response =
+                    state.data as BaseResponse<TeacherDetailsModel>;
+                final details = response.data;
+
+                if (details == null) {
+                  return const Center(
+                    child: Text('Teacher details not available'),
+                  );
+                }
+
+                // ⚠️ عدّل أسامي الفيلدز دي تبقى مطابقة لـ TeacherDetailsModel الحقيقي عندك
+                final String description = details.description ?? '';
+                final qualifications = details.certificates ?? [];
+
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TeacherInfoCard(teacher: details),
+                      Padding(
+                        padding: const EdgeInsets.all(20.0).copyWith(top: 0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Qualifications', style: AppsStyles.s14Bold),
-                            ...qualifiacations.map(
-                              (qualification) => qualificationTile(
-                                qualification['certificate'],
-                                qualification['university'],
-                                qualification['color'],
-                                qualification['bacgroundColor'],
+                            20.verticalSpace,
+                            aboutCard(description),
+                            if (qualifications.isNotEmpty)
+                              Card(
+                                elevation: 10,
+                                shadowColor: Colors.grey.withOpacity(0.4),
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 4,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Qualifications',
+                                        style: AppsStyles.s14Bold,
+                                      ),
+
+                                      ...qualifications.map(
+                                        (qualification) => qualificationTile(
+                                          // ⚠️ عدّل الأسامي دي حسب الموديل الحقيقي
+                                          qualification.certificate ?? '',
+                                          qualification.university ?? '',
+                                          AppColors.primary,
+                                          AppColors.borderGrey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  'Courses by ${widget.teacher.name}',
-                  style: AppsStyles.s14Bold,
-                ),
-              ),
+                      CoursesRowSection(
+                        title: 'Courses by ${details.name}',
+                        courses: details.courses ?? [],
+                        onCourseTap: (course) {
+                          AppNavaigation.pushToPageWithParams(
+                            AppRoutes.courseDetails,
+                            {'courseId': course.id, 'isBought': false},
+                          );
+                        },
+                      ),
+                      20.verticalSpace,
+                    ],
+                  ),
+                );
+              }
 
-              PopularCourses(
-                isGuest: true,
-                scrollDirection: Axis.vertical,
-                inHome: false,
-              ),
-            ],
+              // 4) Initial state
+              return const SizedBox.shrink();
+            },
           ),
         ),
       ),
-    ));
+    );
   }
 }

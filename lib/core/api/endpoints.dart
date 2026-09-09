@@ -36,4 +36,12 @@ class EndPoints {
   static const String boards = "/boards";
   static const String systems = "/systems";
   static const String levels = "/levels";
+
+  // teachers
+  static const String teachers = "/teachers";
+
+  // home
+  static const String homeData = "/home";
+  static const String about = "/about";
+
 }

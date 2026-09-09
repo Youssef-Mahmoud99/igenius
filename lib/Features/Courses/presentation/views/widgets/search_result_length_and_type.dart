@@ -10,11 +10,9 @@ import '../../cubits/courses/courses_cubit.dart';
 class SearchResultLengthAndType extends StatefulWidget {
   const SearchResultLengthAndType({
     Key? key,
-    required this.type,
     this.onChanged,
     this.resultsLength,
   }) : super(key: key);
-  final String type;
   final Function(String?)? onChanged;
   final int? resultsLength;
 
@@ -33,6 +31,7 @@ class _SearchResultLengthAndTypeState extends State<SearchResultLengthAndType> {
     'Has Installment Plan': 'has_installment_plan',
   };
 
+
   String? selectedCategory;
   @override
   Widget build(BuildContext context) {
@@ -50,7 +49,7 @@ class _SearchResultLengthAndTypeState extends State<SearchResultLengthAndType> {
                 ),
                 TextSpan(
                   text:
-                      '${widget.type == 'courses' ? 'Courses' : 'Teachers'} found',
+                      'Courses found',
                   style: AppsStyles.s12Regular.copyWith(color: AppColors.grey),
                 ),
               ],

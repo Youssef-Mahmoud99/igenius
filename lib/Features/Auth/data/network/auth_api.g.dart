@@ -10,7 +10,7 @@ part of 'auth_api.dart';
 
 class _AuthApi implements AuthApi {
   _AuthApi(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'https://igeniuscourses.com/api/v1';
+    baseUrl ??= 'https://dev.igeniuscourses.com/api/v1';
   }
 
   final Dio _dio;

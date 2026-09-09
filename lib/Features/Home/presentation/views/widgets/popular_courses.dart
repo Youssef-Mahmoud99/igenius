@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Courses/presentation/views/widgets/home_course_card.dart';
+import 'package:igenius/Features/Home/data/models/home_data_model.dart';
+import 'package:igenius/Features/Teachers/data/models/teacher_details_model.dart';
+import 'package:igenius/Features/Teachers/presentation/cubits/get_teacher_details_cubit.dart';
 import '../../../../Courses/data/models/courses_body.dart';
-import '../../../../Courses/data/models/courses_model.dart';
 import '../../../../../core/base/models/base_response.dart';
 import '../../../../../core/base/cubit/base_state.dart';
-import '../../../../Courses/presentation/cubits/courses/courses_by_teacher_cubit.dart';
-import '../../../../Courses/presentation/cubits/courses/home_courses_cubit.dart';
+import '../../../../Courses/data/models/courses_model.dart';
+import '../../../../Courses/presentation/views/widgets/course_card.dart';
+import '../../cubits/get_home_data_cubit.dart';
 class PopularCourses extends StatefulWidget {
   final bool isGuest;
   final Axis scrollDirection;
   final bool inHome;
   final CoursesBody? params; // optional — home يعدي null أو default params
+  final List<CourseModel>? courses; // optional — home يعدي null أو default params
 
   const PopularCourses({
     Key? key,
@@ -20,6 +24,7 @@ class PopularCourses extends StatefulWidget {
     this.inHome = true,
     this.scrollDirection = Axis.horizontal,
     this.params,
+    this.courses,
   }) : super(key: key);
 
   @override
@@ -30,7 +35,7 @@ class _PopularCoursesState extends State<PopularCourses> {
   @override
   Widget build(BuildContext context) {
     return widget.scrollDirection == Axis.horizontal
-        ? BlocBuilder<HomeCoursesCubit, BaseCubitState>(
+        ? BlocBuilder<GetHomeDataCubit, BaseCubitState>(
           builder: (context, state) {
             // Loading
             if (state is LoadingState) {
@@ -46,8 +51,8 @@ class _PopularCoursesState extends State<PopularCourses> {
 
             // Success
             if (state is SuccessState) {
-              final response = state.data as BaseResponse<List<CourseModel>>;
-              final courses = response.data ?? [];
+              final response = state.data as BaseResponse<HomeDataModel>;
+              final courses = response.data?.popularCourses ?? [];
 
               if (courses.isEmpty) {
                 return const Center(child: Text('No courses available'));
@@ -87,28 +92,7 @@ class _PopularCoursesState extends State<PopularCourses> {
             return const SizedBox.shrink();
           },
         )
-        : BlocBuilder<CoursesByTeacherCubit, BaseCubitState>(
-          builder: (context, state) {
-            if (state is LoadingState) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            // Error
-            if (state is ErrorState) {
-              return Center(
-                child: Text(state.message ?? 'Something went wrong'),
-              );
-            }
-
-            // Success
-            if (state is SuccessState) {
-              final response = state.data as BaseResponse<List<CourseModel>>;
-              final courses = response.data ?? [];
-
-              if (courses.isEmpty) {
-                return const Center(child: Text('No courses available'));
-              }
-            return ListView.separated(
+        : ListView.separated(
               physics:
                   widget.scrollDirection == Axis.vertical
                       ? const NeverScrollableScrollPhysics()
@@ -116,32 +100,24 @@ class _PopularCoursesState extends State<PopularCourses> {
               shrinkWrap: true,
               scrollDirection: widget.scrollDirection,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              itemCount: courses.length,
+              itemCount: widget.courses?.length ?? 0,
               separatorBuilder:
                   (_, __) =>
                       widget.scrollDirection == Axis.horizontal
                           ? 15.horizontalSpace
                           : 15.verticalSpace,
               itemBuilder: (context, index) {
-                final course = courses[index];
+                final course = widget.courses![index];
                 return SizedBox(
                   height: 290.h,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: HomeCourseCard(
+                    child: CourseCard(
                       course: course,
-                      inHome: widget.inHome,
                     ),
                   ),
                 );
               },
             );
-       
-            }
-            else {
-              return const SizedBox.shrink();
-            }
-          },
-        );
   }
 }

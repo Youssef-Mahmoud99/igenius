@@ -168,7 +168,7 @@ class HomeCourseCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 3, 37, 58),
+            color: AppColors.primary,
             borderRadius: BorderRadius.circular(20),
           ),
           child: price(),
@@ -200,7 +200,7 @@ class HomeCourseCard extends StatelessWidget {
         )
         : AppText(
           text: '\$' + course.price.toString(),
-          style: AppsStyles.s14Bold.copyWith(color: AppColors.primary),
+          style: AppsStyles.s14Bold.copyWith(color: AppColors.white),
         );
   }
 

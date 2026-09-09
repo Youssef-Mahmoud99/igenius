@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Account/presentation/views/pages/account_screen.dart';
 import 'package:igenius/Features/Courses/presentation/views/pages/courses_screen.dart';
+import 'package:igenius/Features/Home/presentation/cubits/get_home_data_cubit.dart';
 import 'package:igenius/Features/Teachers/presentation/views/pages/teachers_screen.dart';
 import 'package:igenius/core/theme/app_colors.dart';
 import '../../injection/service_locator.dart';
@@ -11,6 +12,7 @@ import '../Auth/presentation/cubits/auth_cubit.dart';
 import '../Courses/presentation/cubits/courses/courses_cubit.dart';
 import '../Courses/presentation/cubits/courses/home_courses_cubit.dart';
 import '../Home/presentation/views/pages/Home_screen.dart';
+import '../Teachers/presentation/cubits/get_teachers_cubit.dart';
 import '../filters/presentation/cubits/filter_data_cubit.dart';
 
 class LayoutScreen extends StatefulWidget {
@@ -29,9 +31,9 @@ class LayoutScreenState extends State<LayoutScreen> {
   }
 
   initState() {
-    context.read<HomeCoursesCubit>().getHomeCourses();
     context.read<CoursesCubit>().getCourses();
     context.read<ProfileCubit>().getProfile();
+    context.read<GetHomeDataCubit>().getHomeData();
 
     super.initState();
   }
@@ -41,7 +43,7 @@ class LayoutScreenState extends State<LayoutScreen> {
     final List<Widget> _screens = [
       HomePage(isGuest: widget.isGuest),
       BlocProvider(create: (context) => sl<FilterDataCubit>(), child: CoursesScreen()),
-      TeachersScreen(),
+      BlocProvider(create: (context) => sl<FilterDataCubit>(), child: TeachersScreen()),
       BlocProvider(
         create: (context) => sl<AuthCubit>(),
         child: AccountScreen(),

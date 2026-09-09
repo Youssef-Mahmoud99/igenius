@@ -51,15 +51,6 @@ class AppTheme {
         ),
       ),
 
-      cardTheme: CardTheme(
-        color: Colors.white,
-        shadowColor: Colors.black.withOpacity(0.1),
-        elevation: 3,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-      ),
-
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.grey.shade100,
@@ -114,13 +105,6 @@ class AppTheme {
         textStyle: const TextStyle(fontSize: 15),
       ),
 
-      dialogTheme: DialogTheme(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-      ),
-
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: Colors.white,
         shape: const RoundedRectangleBorder(
@@ -162,14 +146,6 @@ class AppTheme {
       ),
       primaryTextTheme: base.primaryTextTheme.apply(
         fontFamily: 'Roboto',
-      ),
-      cardTheme: CardTheme(
-        color: const Color(0xFF2A292D),
-        shadowColor: Colors.black.withOpacity(0.2),
-        elevation: 3,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.primary,

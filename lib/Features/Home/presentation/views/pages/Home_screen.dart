@@ -4,7 +4,9 @@ import 'package:igenius/Features/Home/presentation/views/widgets/continue_learni
 import 'package:igenius/core/widgets/base_gradient.dart';
 import '../../../../../app.dart';
 import '../../../../../core/resources/styles_manager.dart';
+import '../../../../../core/utils/extensions/extensions.dart';
 import '../../../../../core/widgets/custom_text.dart';
+import '../../../../Teachers/presentation/views/widgets/popular_teachers.dart';
 import '../widgets/get_started.dart';
 import '../widgets/head_line.dart';
 import '../widgets/popular_courses.dart';
@@ -72,13 +74,16 @@ class _HomePageState extends State<HomePage> {
                           layoutKey.currentState?.setIndex(2);
                         },
                       ),
-                      TeachersView(isGuest: true, inHome: true),
+                      PopularTeachersSection(),
                       ReadyToStart(),
                     ]
                     : [
                       HeadLine(isGuest: false),
                       ContinueLearningCard(),
-                      UserCoursesDetails(),
+                      Padding(
+                        padding: 10.rPadding,
+                        child: UserCoursesDetails(),
+                      ),
                       ViewAll(
                         title: 'Explore Teachers',
                         viewallTitle: 'See All',
@@ -86,7 +91,9 @@ class _HomePageState extends State<HomePage> {
                           layoutKey.currentState?.setIndex(2);
                         },
                       ),
-                      TeachersView(isGuest: false, inHome: true),
+                      10.verticalSpace,
+                      PopularTeachersSection(),
+                      10.verticalSpace,
                       ViewAll(
                         title: 'Featured Courses',
                         viewallTitle: 'See All',
@@ -98,13 +105,6 @@ class _HomePageState extends State<HomePage> {
                         height: 320.h,
                         child: PopularCourses(isGuest: false),
                       ),
-                      10.verticalSpace,
-                      ViewAll(
-                        title: 'Upcoming Deadlines',
-                        viewallTitle: 'View All',
-                      ),
-                      10.verticalSpace,
-                      UpcomingDeadlines(),
                       20.verticalSpace,
                     ],
           ),

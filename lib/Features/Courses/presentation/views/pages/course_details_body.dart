@@ -423,7 +423,7 @@ class CourseDetailsBody extends StatelessWidget {
 
               onPressed: () {
                 AppNavaigation.pushToPageWithParams(AppRoutes.teacherProfile, {
-                  'teacher': courseDetails.teacher!,
+                  'teacherId': courseDetails.teacher?.id ?? 0,
                 });
               },
             ),

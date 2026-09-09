@@ -10,7 +10,7 @@ part of 'password_api.dart';
 
 class _PasswordApi implements PasswordApi {
   _PasswordApi(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'https://igeniuscourses.com/api/v1';
+    baseUrl ??= 'https://dev.igeniuscourses.com/api/v1';
   }
 
   final Dio _dio;
