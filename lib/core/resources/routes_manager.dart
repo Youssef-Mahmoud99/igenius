@@ -35,6 +35,9 @@ import '../../Features/Courses/presentation/cubits/my_courses/my_courses_cubit.d
 import '../../Features/Courses/presentation/views/pages/course_details_screen.dart';
 import '../../Features/Courses/presentation/views/pages/courses_screen.dart';
 import '../../Features/Home/presentation/cubits/get_home_data_cubit.dart';
+import '../../Features/Notifications/presentation/cubits/delete_notification_cubit.dart';
+import '../../Features/Notifications/presentation/cubits/mark_as_read_cubit.dart';
+import '../../Features/Notifications/presentation/cubits/notifications_cubit.dart';
 import '../../Features/Teachers/data/models/teacher_model.dart';
 import '../../Features/Teachers/presentation/cubits/get_teacher_details_cubit.dart';
 import '../../Features/Teachers/presentation/cubits/get_teachers_cubit.dart';
@@ -96,6 +99,7 @@ class RoutesManager {
               BlocProvider(create: (context) => sl<GetTeachersCubit>()),
               BlocProvider(create: (context) => sl<ProfileCubit>()),
               BlocProvider(create: (context) => sl<GetHomeDataCubit>()),
+                BlocProvider(create: (context) => sl<GetNotificationsCubit>()),
             ],
             child: LayoutScreen(isGuest: isGuest, key: layoutKey),
           );
@@ -170,7 +174,14 @@ class RoutesManager {
 
       GoRoute(
         path: AppRoutes.notificationsScreen,
-        builder: (context, state) => NotificationsScreen(),
+        builder: (context, state) => MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => sl<GetNotificationsCubit>()),
+            BlocProvider(create: (context) => sl<MarkNotificationAsReadCubit>()),
+            BlocProvider(create: (context) => sl<DeleteNotificationCubit>()),
+          ],
+          child: NotificationsScreen(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.lessonViewScreen,

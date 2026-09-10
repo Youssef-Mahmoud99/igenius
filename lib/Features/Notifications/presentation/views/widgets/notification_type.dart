@@ -4,22 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 
-class CustomType extends StatefulWidget {
-  CustomType({Key? key, required this.CustomTypes, this.onTypeSelected})
-    : super(key: key);
-  final List<String> CustomTypes;
-  final void Function(String?)? onTypeSelected;
-  @override
-  State<CustomType> createState() => _CustomTypeState();
-}
+class CustomType extends StatelessWidget {
+  const CustomType({
+    Key? key,
+    required this.CustomTypes,
+    required this.selectedType,
+    this.onTypeSelected,
+  }) : super(key: key);
 
-class _CustomTypeState extends State<CustomType> {
-  String? selectedType;
-  @override
-  void initState() {
-    selectedType = widget.CustomTypes[0];
-    super.initState();
-  }
+  final List<String> CustomTypes;
+  final String selectedType;
+  final void Function(String?)? onTypeSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -28,36 +23,31 @@ class _CustomTypeState extends State<CustomType> {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return CustomType('${widget.CustomTypes[index]}', index);
+          return _buildType(CustomTypes[index]);
         },
         separatorBuilder: (context, index) => 10.horizontalSpace,
-        itemCount: widget.CustomTypes.length,
+        itemCount: CustomTypes.length,
       ),
     );
   }
 
-  Widget CustomType(String type, int index) {
+  Widget _buildType(String type) {
+    final bool isSelected = selectedType == type;
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedType = type;
-        });
-        widget.onTypeSelected?.call(type);
-      },
+      onTap: () => onTypeSelected?.call(type),
       child: Container(
         margin: const EdgeInsets.only(top: 5, bottom: 5),
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
-          color:
-              selectedType == type ? AppColors.primary : AppColors.borderGrey,
+          color: isSelected ? AppColors.primary : AppColors.borderGrey,
         ),
         child: Center(
           child: Text(
             type,
             style: AppsStyles.s12SemiBold.copyWith(
               height: 1,
-              color: selectedType != type ? AppColors.black : AppColors.white,
+              color: isSelected ? AppColors.white : AppColors.black,
             ),
           ),
         ),

@@ -4,10 +4,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:igenius/Features/Account/data/network/profile_api.dart';
-import 'package:igenius/Features/Account/data/repos/profile_repo.dart';
+import 'package:igenius/Features/Account/data/repos/profile/profile_repo.dart';
 import 'package:igenius/Features/Auth/presentation/cubits/auth_cubit.dart';
 
-import '../Features/Account/data/repos/profile_repo_impl.dart';
+import '../Features/Account/data/repos/profile/profile_repo_impl.dart';
 import '../Features/Account/presentation/cubits/profile_cubit.dart';
 import '../Features/Account/presentation/cubits/update_profile_cubit.dart';
 import '../Features/Auth/data/network/auth_api.dart';
@@ -41,6 +41,12 @@ import '../Features/Home/data/repos/Home_repo_impl.dart';
 import '../Features/Home/data/repos/home_repo.dart';
 import '../Features/Home/presentation/cubits/get_about_cubit.dart';
 import '../Features/Home/presentation/cubits/get_home_data_cubit.dart';
+import '../Features/Notifications/data/network/notifications_api.dart';
+import '../Features/Notifications/data/repos/notifications_repo.dart';
+import '../Features/Notifications/data/repos/notifications_repo_impl.dart';
+import '../Features/Notifications/presentation/cubits/delete_notification_cubit.dart';
+import '../Features/Notifications/presentation/cubits/mark_as_read_cubit.dart';
+import '../Features/Notifications/presentation/cubits/notifications_cubit.dart';
 import '../Features/Teachers/data/network/teacher_api.dart';
 import '../Features/Teachers/data/repos/teacher_repo.dart';
 import '../Features/Teachers/data/repos/teacher_repo_impl.dart';
@@ -166,4 +172,13 @@ sl.registerLazySingleton(() => SubmitExamCubit(sl<CoursesRepo>()));
   sl.registerLazySingleton<TeacherRepo>(() => TeacherRepoImpl(sl<TeacherApi>()));
   sl.registerLazySingleton<GetTeachersCubit>(() => GetTeachersCubit(sl<TeacherRepo>()));
 sl.registerFactory<GetTeacherDetailsCubit>(() => GetTeacherDetailsCubit(sl<TeacherRepo>()));
+
+
+
+// Notifications
+  sl.registerLazySingleton<NotificationsApi>(() => NotificationsApi(sl<DioClient>().dio));
+  sl.registerLazySingleton<NotificationsRepo>(() => NotificationsRepoImpl(sl<NotificationsApi>()));
+  sl.registerFactory<GetNotificationsCubit>(() => GetNotificationsCubit(sl<NotificationsRepo>()));
+  sl.registerLazySingleton<MarkNotificationAsReadCubit>(() => MarkNotificationAsReadCubit(sl<NotificationsRepo>()));
+  sl.registerLazySingleton<DeleteNotificationCubit>(() => DeleteNotificationCubit(sl<NotificationsRepo>()));
 }

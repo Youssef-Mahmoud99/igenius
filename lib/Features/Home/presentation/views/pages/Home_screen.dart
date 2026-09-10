@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Home/presentation/views/widgets/continue_learning.dart';
 import 'package:igenius/core/widgets/base_gradient.dart';
@@ -6,6 +7,7 @@ import '../../../../../app.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/utils/extensions/extensions.dart';
 import '../../../../../core/widgets/custom_text.dart';
+import '../../../../Notifications/presentation/cubits/notifications_cubit.dart';
 import '../../../../Teachers/presentation/views/widgets/popular_teachers.dart';
 import '../widgets/get_started.dart';
 import '../widgets/head_line.dart';
@@ -26,12 +28,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // initState() {
-  //   context.read<HomeCoursesCubit>().getHomeCourses(
-
-  //   );
-  //   super.initState();
-  // }
+  @override
+  initState() {
+    context.read<GetNotificationsCubit>().getNotifications();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(

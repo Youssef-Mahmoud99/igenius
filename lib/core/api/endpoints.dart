@@ -44,4 +44,17 @@ class EndPoints {
   static const String homeData = "/home";
   static const String about = "/about";
 
+
+  // Reports
+  static const String reports = '/student/reports';
+  static const String reportsDownload = '/student/reports/download';
+
+  // Support
+  static const String support = '/student/support';
+
+  // Notifications
+  static const String notifications = '/student/notifications';
+  static const String notificationReadPath = '/student/notifications/{id}/read';
+  static const String notificationDeletePath = '/student/notifications/{id}';
+
 }

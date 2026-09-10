@@ -4,8 +4,8 @@ import 'package:igenius/Features/Account/data/models/profile_response_model.dart
 import 'package:igenius/Features/Account/data/network/profile_api.dart';
 import 'package:igenius/core/base/models/error_model.dart';
 
-import '../../../../core/base/models/base_response.dart';
-import '../../../Auth/data/models/auth_model.dart';
+import '../../../../../core/base/models/base_response.dart';
+import '../../../../Auth/data/models/auth_model.dart';
 import 'profile_repo.dart';
 
 class ProfileRepoImpl implements ProfileRepo {

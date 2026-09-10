@@ -7,7 +7,7 @@ import '../../../../core/base/cubit/base_state.dart';
 import '../../../../core/utils/helpers/app_navigtion.dart';
 import '../../../Auth/data/models/auth_model.dart';
 import '../../../Auth/data/models/auth_response_model.dart';
-import '../../data/repos/profile_repo.dart';
+import '../../data/repos/profile/profile_repo.dart';
 import 'profile_cubit.dart';
 
 class UpdateProfileCubit extends BaseCubit<BaseResponse> {

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Account/presentation/views/pages/account_screen.dart';
 import 'package:igenius/Features/Courses/presentation/views/pages/courses_screen.dart';
 import 'package:igenius/Features/Home/presentation/cubits/get_home_data_cubit.dart';
+import 'package:igenius/Features/Notifications/presentation/cubits/notifications_cubit.dart';
 import 'package:igenius/Features/Teachers/presentation/views/pages/teachers_screen.dart';
 import 'package:igenius/core/theme/app_colors.dart';
 import '../../injection/service_locator.dart';

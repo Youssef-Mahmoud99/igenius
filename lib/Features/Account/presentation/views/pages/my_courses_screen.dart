@@ -77,6 +77,7 @@ class _MyCoursesScreenState extends State<MyCoursesScreen> {
               child: Column(
                 children: [
                   CustomType(
+                    selectedType: "All Courses",
                     CustomTypes:  courseTypes,
                     onTypeSelected: (type) {
                       setState(() => selectedTab = type!);
