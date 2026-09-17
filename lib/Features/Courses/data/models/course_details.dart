@@ -45,6 +45,17 @@ class CourseDetails {
   final Teacher? board;
   final Teacher? system;
   final List<UnitModel>? units;
+  @JsonKey(name: 'is_has_lesson_bought')
+final bool? isHasLessonBought;
+
+@JsonKey(name: 'is_private')
+final bool? isPrivate;
+
+@JsonKey(name: 'max_students')
+final int? maxStudents;
+
+@JsonKey(name: 'enrollments_count')
+final int? enrollmentsCount;
 
   const CourseDetails({
     this.id,
@@ -67,6 +78,10 @@ class CourseDetails {
     this.system,
     this.units,
     this.isOwned,
+    this.isHasLessonBought,
+this.isPrivate,
+this.maxStudents,
+this.enrollmentsCount,
   });
 
   factory CourseDetails.fromJson(Map<String, dynamic> json) =>
@@ -304,12 +319,15 @@ class FileModel {
   final String? name;
   final String? url;
   final String? size;
+  @JsonKey(name: 'access_type')
+  final String? accessType;
 
   const FileModel({
     this.id,
     this.name,
      this.url,
      this.size,
+     this.accessType,
   });
 
   factory FileModel.fromJson(Map<String, dynamic> json) =>

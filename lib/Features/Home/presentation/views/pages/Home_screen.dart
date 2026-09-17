@@ -29,11 +29,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
-  initState() {
-    context.read<GetNotificationsCubit>().getNotifications();
-    super.initState();
-  }
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: BaseGradient(

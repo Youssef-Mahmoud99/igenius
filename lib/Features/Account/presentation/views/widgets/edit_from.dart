@@ -15,7 +15,7 @@ import '../../../../../core/widgets/custom_text_field.dart';
 import '../../../../../core/widgets/gradient_button.dart';
 import '../../../../Auth/presentation/views/widgets/choose_country_widget.dart';
 import '../../../../Auth/presentation/views/widgets/code_picker.dart';
-import '../../cubits/update_profile_cubit.dart';
+import '../../cubits/profile/update_profile_cubit.dart';
 import 'change_image.dart';
 
 class EditFrom extends StatefulWidget {
@@ -250,17 +250,29 @@ class _EditFromState extends State<EditFrom> {
                           10.verticalSpace,
                           AppText(text: 'Country', style: AppsStyles.s12Bold),
                           5.verticalSpace,
-                          CustomCountryCityField(
-                            initialCity: city.text,
-                            initialCountry: country.text,
-                            countryValidator: (value) {
-                              if (value == null || value.isEmpty)
+                          CustomTextField(
+                            controller: country,
+                            inputType: TextInputType.text,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
                                 return 'Country is required';
+                              }
                               return null;
                             },
-                            cityValidator: (value) {
-                              if (value == null || value.isEmpty)
+                          ),
+                          10.verticalSpace,
+                          AppText(
+                            text: 'City',
+                            style: AppsStyles.s12Bold,
+                          ),
+                          5.verticalSpace,
+                          CustomTextField(
+                            controller: city,
+                            inputType: TextInputType.text,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
                                 return 'City is required';
+                              }
                               return null;
                             },
                           ),

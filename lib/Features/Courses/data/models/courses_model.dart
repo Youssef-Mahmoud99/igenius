@@ -40,6 +40,17 @@ class CourseModel {
   final Teacher? level;
   final Teacher? board;
   final Teacher? system;
+  @JsonKey(name: 'is_has_lesson_bought')
+final bool? isHasLessonBought;
+
+@JsonKey(name: 'is_private')
+final bool? isPrivate;
+
+@JsonKey(name: 'max_students')
+final int? maxStudents;
+
+@JsonKey(name: 'enrollments_count')
+final int? enrollmentsCount;
 
   const CourseModel({
     this.id,
@@ -60,6 +71,11 @@ class CourseModel {
     this.board,
     this.system,
     this.isOwned,
+
+    this.isHasLessonBought,
+this.isPrivate,
+this.maxStudents,
+this.enrollmentsCount,
   });
 
 
@@ -87,6 +103,10 @@ class CourseModel {
     Teacher? board,
     Teacher? system,
     bool? isOwned,
+    bool? isHasLessonBought,
+bool? isPrivate,
+int? maxStudents,
+int? enrollmentsCount,
   }) {
     return CourseModel(
       id: id ?? this.id,
@@ -109,6 +129,10 @@ class CourseModel {
       board: board ?? this.board,
       system: system ?? this.system,
       isOwned: isOwned ?? this.isOwned,
+       isHasLessonBought: isHasLessonBought ?? this.isHasLessonBought,
+       isPrivate: isPrivate ?? this.isPrivate,
+       maxStudents: maxStudents ?? this.maxStudents,
+       enrollmentsCount: enrollmentsCount ?? this.enrollmentsCount,
     );
   }
 }

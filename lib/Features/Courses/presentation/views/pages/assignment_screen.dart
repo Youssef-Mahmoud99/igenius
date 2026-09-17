@@ -15,6 +15,7 @@ import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/helpers/helper_methods.dart';
 import '../../../../../core/widgets/base_gradient.dart';
 import '../../../../../injection/service_locator.dart';
+import '../../../data/models/attempts_model.dart';
 import '../../../data/models/course_details.dart';
 import '../../cubits/assignments/assignment_attemps_cubit.dart';
 import '../../cubits/assignments/assignment_details_cubit.dart';
@@ -111,6 +112,59 @@ class _TaskDetails {
   }
 }
 
+/// تمثيل موحّد لملف جوه attempt واحد، بيفرّق بين رابط التحميل (original)
+/// ورابط المعاينة (النسخة اللي عليها تعليقات المدرّس لو موجودة).
+class _AttemptFile {
+  final String name;
+  final String? size;
+  final String? downloadUrl;
+  final String? viewUrl;
+
+  const _AttemptFile({
+    required this.name,
+    this.size,
+    this.downloadUrl,
+    this.viewUrl,
+  });
+}
+
+/// تمثيل موحّد لمحاولة واحدة (Attempt)، سواء جاية من AttemptsModel
+/// (assignment attempts) أو من ExamModel (exam attempts).
+class _AttemptView {
+  final List<_AttemptFile> files;
+
+  const _AttemptView({this.files = const []});
+
+  factory _AttemptView.fromExam(ExamModel e) {
+    final List<_AttemptFile> files = [];
+    if (e.fileName != null) {
+      files.add(
+        _AttemptFile(
+          name: e.fileName!,
+          size: e.fileSize != null ? '${e.fileSize} KB' : null,
+          downloadUrl: e.fileUrl,
+          viewUrl: e.fileUrl,
+        ),
+      );
+    }
+    return _AttemptView(files: files);
+  }
+
+  factory _AttemptView.fromAssignmentAttempt(AttemptsModel a) {
+    final files =
+        (a.files ?? [])
+            .map(
+              (f) => _AttemptFile(
+                name: f.name ?? '',
+                downloadUrl: f.fileUrl,
+                viewUrl: f.fileWithCommentsUrl ?? f.fileUrl,
+              ),
+            )
+            .toList();
+    return _AttemptView(files: files);
+  }
+}
+
 class AssignmentScreen extends StatefulWidget {
   final int id;
   final String unitTitle;
@@ -128,6 +182,10 @@ class AssignmentScreen extends StatefulWidget {
 }
 
 class _AssignmentScreenState extends State<AssignmentScreen> {
+  /// الملف اللي المستخدم اختاره لسه ومش اتعمله submit، بنعرضه في مكانه
+  /// عشان يقدر يراجعه أو يمسحه قبل الإرسال الفعلي.
+  File? _pickedFile;
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -177,6 +235,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
       return BlocBuilder<MyExamDetailsCubit, BaseCubitState>(
         builder:
             (context, state) => _renderDetailsState(
+              context,
               state,
               (response) =>
                   (response as BaseResponse<ExamModel>).data == null
@@ -188,6 +247,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
     return BlocBuilder<AssignmentDetailsCubit, BaseCubitState>(
       builder:
           (context, state) => _renderDetailsState(
+            context,
             state,
             (response) =>
                 (response as BaseResponse<AssignmentModel>).data == null
@@ -196,8 +256,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           ),
     );
   }
-
   Widget _renderDetailsState(
+    BuildContext context,
     BaseCubitState state,
     _TaskDetails? Function(dynamic response) extractor,
   ) {
@@ -213,7 +273,6 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
     }
     return const Center(child: CircularProgressIndicator());
   }
-
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
       centerTitle: false,
@@ -321,7 +380,11 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                     backgroundColor: const Color(0xffF0FDF4),
                     iconColor: AppColors.red,
                     leadingImage: AppImages.assignment,
-                    trailingIcon: Icons.file_download_outlined,
+                    onDownload: () => HelperMethods.downloadFileSafely(
+                      context: context,
+                      url: file.url,
+                      fileName: file.name,
+                    ),
                   ),
                 ),
               )
@@ -338,14 +401,19 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             10.verticalSpace,
 
             if (canSubmit) ...[
-              UploadAssignmentWidget(
-                onFilePicked: () async {
-                  final file = await HelperMethods.pickAssignmentFile(context);
-                  if (file != null) {
-                    _onFilePicked(context, file);
-                  }
-                },
-              ),
+              if (_pickedFile != null)
+                _buildPickedFilePreview(context)
+              else
+                UploadAssignmentWidget(
+                  onFilePicked: () async {
+                    final file = await HelperMethods.pickAssignmentFile(
+                      context,
+                    );
+                    if (file != null) {
+                      setState(() => _pickedFile = file);
+                    }
+                  },
+                ),
               10.verticalSpace,
             ] else
               _buildBlockedBanner(deadlinePassed, attemptsExhausted),
@@ -361,6 +429,90 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             30.verticalSpace,
           ],
         ),
+      ),
+    );
+  }
+
+  // ---------------- PICKED FILE PREVIEW (قبل الـ Submit الفعلي) ----------------
+
+  Widget _buildPickedFilePreview(BuildContext context) {
+    final file = _pickedFile!;
+    final fileName = file.path.split('/').last;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withOpacity(0.06),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.primary.withOpacity(0.4)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.insert_drive_file_outlined,
+                color: AppColors.primary,
+                size: 20.r,
+              ),
+              8.horizontalSpace,
+              Expanded(
+                child: AppText(
+                  text: fileName,
+                  style: AppsStyles.s12Bold,
+                  maxLines: 2,
+                ),
+              ),
+              8.horizontalSpace,
+              GestureDetector(
+                onTap: () => setState(() => _pickedFile = null),
+                child: Icon(
+                  Icons.close_rounded,
+                  color: AppColors.red,
+                  size: 20.r,
+                ),
+              ),
+            ],
+          ),
+          10.verticalSpace,
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => setState(() => _pickedFile = null),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: AppColors.red),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'Remove',
+                    style: AppsStyles.s12Bold.copyWith(color: AppColors.red),
+                  ),
+                ),
+              ),
+              10.horizontalSpace,
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () => _onFilePicked(context, file),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'Submit',
+                    style: AppsStyles.s12Bold.copyWith(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -447,6 +599,9 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
 
   void _handleSubmitListener(BuildContext context, BaseCubitState state) {
     if (state is SuccessState) {
+      // الإرسال نجح: نمسح الملف المختار محليًا ونرجّع الصفحة لوضعها الطبيعي.
+      setState(() => _pickedFile = null);
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -482,116 +637,115 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
 
   // ---------------- ATTEMPTS SECTION ----------------
 
-Widget _buildAttemptsSection(BuildContext context) {
-  if (widget.isExam) {
-    return BlocBuilder<ExamAttemptsCubit, BaseCubitState>(
+  Widget _buildAttemptsSection(BuildContext context) {
+    if (widget.isExam) {
+      return BlocBuilder<ExamAttemptsCubit, BaseCubitState>(
+        builder: (context, state) {
+          return _renderAttemptsState(state, (response) {
+            final r = response as BaseResponse<List<ExamModel>>;
+            return r.data?.map(_AttemptView.fromExam).toList() ?? [];
+          });
+        },
+      );
+    }
+
+    return BlocBuilder<AssignmentAttemptsCubit, BaseCubitState>(
       builder: (context, state) {
         return _renderAttemptsState(state, (response) {
-          final r = response as BaseResponse<List<ExamModel>>;
-          final list = r.data;
-
-          return list?.map(_TaskDetails.fromExam).toList() ?? [];
+          final r = response as BaseResponse<List<AttemptsModel>>;
+          return r.data?.map(_AttemptView.fromAssignmentAttempt).toList() ??
+              [];
         });
       },
     );
   }
 
-  return BlocBuilder<AssignmentAttemptsCubit, BaseCubitState>(
-    builder: (context, state) {
-      return _renderAttemptsState(state, (response) {
-        final r = response as BaseResponse<List<AssignmentModel>>;
-        final list = r.data;
-
-        return list?.map(_TaskDetails.fromAssignment).toList() ?? [];
-      });
-    },
-  );
-}
- Widget _renderAttemptsState(
-  BaseCubitState state,
-  List<_TaskDetails> Function(dynamic response) extractor,
-) {
-  if (state is ErrorState) {
-    return AppText(
-      text: state.message,
-      style: AppsStyles.s12Regular.copyWith(
-        color: AppColors.grey,
-      ),
-    );
-  }
-
-  if (state is LoadingState) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
-
-  if (state is SuccessState) {
-    final attempts = extractor(state.data);
-
-    if (attempts.isEmpty) {
-      return const AppText(
-        text: 'No attempts submitted yet',
+  Widget _renderAttemptsState(
+    BaseCubitState state,
+    List<_AttemptView> Function(dynamic response) extractor,
+  ) {
+    if (state is ErrorState) {
+      return AppText(
+        text: state.message,
+        style: AppsStyles.s12Regular.copyWith(color: AppColors.grey),
       );
     }
 
-    return Column(
-      children: attempts.map((attempt) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Container(
-            decoration: BoxDecoration(
-              color: const Color(0xffBBF7D0).withOpacity(0.85),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.green),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (attempt.files.isNotEmpty)
-                    ...attempt.files.map(
-                      (file) => Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: CourseMaterial(
-                          title: file.name,
-                          subTitle: file.size ?? '',
-                          backgroundColor: const Color(0xffDCFCE7),
-                          iconColor: AppColors.green,
-                          leadingImage: AppImages.assignment,
-                          trailingIcon: Icons.visibility,
-                          needBorder: false,
+    if (state is LoadingState) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state is SuccessState) {
+      final attempts = extractor(state.data);
+
+      if (attempts.isEmpty) {
+        return const AppText(text: 'No attempts submitted yet');
+      }
+
+      return Column(
+        children: attempts.map((attempt) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color(0xffBBF7D0).withOpacity(0.85),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.green),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (attempt.files.isNotEmpty)
+                      ...attempt.files.map(
+                        (file) => Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: CourseMaterial(
+                            title: file.name,
+                            subTitle: file.size ?? '',
+                            backgroundColor: const Color(0xffDCFCE7),
+                            iconColor: AppColors.green,
+                            leadingImage: AppImages.assignment,
+                            needBorder: false,
+                            onView: () => HelperMethods.pushFileViewer(
+                              context: context,
+                              url: file.viewUrl,
+                              fileName: file.name,
+                            ),
+                            onDownload: () => HelperMethods.downloadFileSafely(
+                              context: context,
+                              url: file.downloadUrl,
+                              fileName: file.name,
+                            ),
+                          ),
                         ),
+                      )
+                    else
+                      const AppText(text: 'Submitted, awaiting review'),
+
+                    10.verticalSpace,
+
+                    MaterialDetails(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 5,
                       ),
-                    )
-                  else
-                    const AppText(
-                      text: 'Submitted, awaiting review',
+                      color: const Color(0xffDCFCE7),
+                      backgroundColor: const Color(0xff1E40AF),
+                      name: 'Under Review',
                     ),
-
-                  10.verticalSpace,
-
-                  MaterialDetails(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 5,
-                    ),
-                    color: const Color(0xffDCFCE7),
-                    backgroundColor: const Color(0xff1E40AF),
-                    name: 'Under Review',
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      }).toList(),
-    );
-  }
+          );
+        }).toList(),
+      );
+    }
 
-  return const SizedBox.shrink();
-}
+    return const SizedBox.shrink();
+  }
 
   // ---------------- HEADER (deadline + instructions) ----------------
 

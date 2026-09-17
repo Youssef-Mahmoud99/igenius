@@ -50,67 +50,111 @@ class CustomCountryCityField extends StatefulWidget {
   };
 
   @override
-  State<CustomCountryCityField> createState() => _CustomCountryCityFieldState();
+  State<CustomCountryCityField> createState() =>
+      _CustomCountryCityFieldState();
 }
 
 class _CustomCountryCityFieldState extends State<CustomCountryCityField> {
   String? selectedCountry;
   String? selectedCity;
-  initState() {
-    selectedCountry = widget.initialCountry;
-    selectedCity = widget.initialCity;
+
+  @override
+  void initState() {
     super.initState();
+
+    selectedCountry = _findMatchingValue(
+      widget.initialCountry,
+      CustomCountryCityField.countryCities.keys.toList(),
+    );
+
+    final cities = selectedCountry != null
+        ? CustomCountryCityField.countryCities[selectedCountry] ?? []
+        : <String>[];
+
+    selectedCity = _findMatchingValue(
+      widget.initialCity,
+      cities,
+    );
+  }
+
+  String? _findMatchingValue(
+    String? value,
+    List<String> items,
+  ) {
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+
+    for (final item in items) {
+      if (item.toLowerCase() == value.toLowerCase()) {
+        return item;
+      }
+    }
+
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    final cities =
-        selectedCountry != null
-            ? CustomCountryCityField.countryCities[selectedCountry] ?? []
-            : [];
+    final cities = selectedCountry != null
+        ? CustomCountryCityField.countryCities[selectedCountry] ?? []
+        : <String>[];
+
     return Column(
       children: [
         FormField<String>(
-          validator:  widget.initialCountry == null ? widget.countryValidator ?? (value) => null : null,
-          builder:
-              (field) => _buildDropdown(
-                hint: 'Select Country',
-                value: selectedCountry,
-                items: CustomCountryCityField.countryCities.keys.toList(),
-                hasError: field.hasError,
-                errorText: field.errorText,
-                onChanged: (value) {
-                  field.didChange(value);
-                  setState(() {
-                    selectedCountry = value;
-                    selectedCity = null;
-                  });
-                },
-              ),
+          initialValue: selectedCountry,
+          validator: widget.countryValidator,
+          builder: (field) => _buildDropdown(
+            hint: 'Select Country',
+            value: _findMatchingValue(
+              field.value ?? selectedCountry,
+              CustomCountryCityField.countryCities.keys.toList(),
+            ),
+            items: CustomCountryCityField.countryCities.keys.toList(),
+            hasError: field.hasError,
+            errorText: field.errorText,
+            onChanged: (value) {
+              field.didChange(value);
+
+              setState(() {
+                selectedCountry = value;
+                selectedCity = null;
+              });
+            },
+          ),
         ),
 
         10.verticalSpace,
 
         FormField<String>(
-          validator: widget.initialCity == null ? widget.cityValidator ?? (value) => null : null,
-          builder:
-              (field) => _buildDropdown(
-                hint: 'Select City',
-                value: selectedCity,
-                items: cities.cast<String>(),
-                enabled: selectedCountry != null,
-                hasError: field.hasError,
-                errorText: field.errorText,
-                onChanged: (value) {
-                  field.didChange(value);
-                  setState(() {
-                    selectedCity = value;
-                  });
-                  if (selectedCountry != null && value != null) {
-                    widget.onChanged?.call(selectedCountry!, value);
-                  }
-                },
-              ),
+          initialValue: selectedCity,
+          validator: widget.cityValidator,
+          builder: (field) => _buildDropdown(
+            hint: 'Select City',
+            value: _findMatchingValue(
+              field.value ?? selectedCity,
+              cities,
+            ),
+            items: cities,
+            enabled: selectedCountry != null,
+            hasError: field.hasError,
+            errorText: field.errorText,
+            onChanged: (value) {
+              field.didChange(value);
+
+              setState(() {
+                selectedCity = value;
+              });
+
+              if (selectedCountry != null && value != null) {
+                widget.onChanged?.call(
+                  selectedCountry!,
+                  value,
+                );
+              }
+            },
+          ),
         ),
       ],
     );
@@ -125,6 +169,10 @@ class _CustomCountryCityFieldState extends State<CustomCountryCityField> {
     bool hasError = false,
     String? errorText,
   }) {
+    // Safety check:
+    // value لازم تكون موجودة في items
+    final validValue = _findMatchingValue(value, items);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -134,13 +182,15 @@ class _CustomCountryCityFieldState extends State<CustomCountryCityField> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               width: 1,
-              color: hasError ? AppColors.error : AppColors.borderGrey,
+              color: hasError
+                  ? AppColors.error
+                  : AppColors.borderGrey,
             ),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              value: value,
+              value: validValue,
               isExpanded: true,
               hint: Text(
                 hint,
@@ -150,15 +200,19 @@ class _CustomCountryCityFieldState extends State<CustomCountryCityField> {
                   fontSize: 16.sp,
                 ),
               ),
-              items:
-                  items
-                      .map(
-                        (item) =>
-                            DropdownMenuItem(value: item, child: Text(item)),
-                      )
-                      .toList(),
+              items: items
+                  .map(
+                    (item) => DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(item),
+                    ),
+                  )
+                  .toList(),
               onChanged: enabled ? onChanged : null,
-              icon: Icon(Icons.keyboard_arrow_down, color: AppColors.grey),
+              icon: Icon(
+                Icons.keyboard_arrow_down,
+                color: AppColors.grey,
+              ),
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
@@ -166,12 +220,19 @@ class _CustomCountryCityFieldState extends State<CustomCountryCityField> {
             ),
           ),
         ),
+
         if (hasError && errorText != null)
           Padding(
-            padding: const EdgeInsets.only(top: 4, left: 8),
+            padding: const EdgeInsets.only(
+              top: 4,
+              left: 8,
+            ),
             child: Text(
               errorText,
-              style: TextStyle(color: AppColors.error, fontSize: 12),
+              style: TextStyle(
+                color: AppColors.error,
+                fontSize: 12,
+              ),
             ),
           ),
       ],

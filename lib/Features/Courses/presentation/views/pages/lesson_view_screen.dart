@@ -12,17 +12,22 @@ import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/helpers/app_navigtion.dart';
+import '../../../../../core/utils/helpers/helper_methods.dart';
+import '../../../../../core/utils/helpers/toast_helper.dart';
 import '../../../../../core/widgets/base_gradient.dart';
 import '../../../data/models/course_details.dart';
 import '../../cubits/lessons/lesson_content_cubit.dart';
+import '../widgets/meeting_button.dart';
 
 class LessonViewScreen extends StatefulWidget {
   final int lessonId;
   final String unitTitle;
+  final bool isOwned;
   const LessonViewScreen({
     Key? key,
     required this.lessonId,
     required this.unitTitle,
+    required this.isOwned,
   }) : super(key: key);
   @override
   _LessonViewScreenState createState() => _LessonViewScreenState();
@@ -77,58 +82,62 @@ class _LessonViewScreenState extends State<LessonViewScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                AppNavaigation.pushToPageWithParams(
-                                  AppRoutes.videoPlayerScreen,
-                                  {
-                                    'videoUrl': lesson.videoUrl,
-                                    "onProgressThresholdReached": () {
-                                      context
-                                          .read<MarkAttendanceCubit>()
-                                          .markAttendance(widget.lessonId);
-                                    },
+                            lesson.meetingUrl != null
+                                ? MeetingButton(
+                                  meetingUrl: lesson.meetingUrl ?? "",
+                                )
+                                : GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    AppNavaigation.pushToPageWithParams(
+                                      AppRoutes.videoPlayerScreen,
+                                      {
+                                        'videoUrl': lesson.videoUrl,
+                                        "onProgressThresholdReached": () {
+                                          context
+                                              .read<MarkAttendanceCubit>()
+                                              .markAttendance(widget.lessonId);
+                                        },
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      AppColors.buttonGradient1,
-                                      AppColors.buttonGradient2,
-                                    ],
-                                  ),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0,
-                                  vertical: 50,
-                                ),
-                                width: double.infinity,
-                                child: Card(
-                                  elevation: 10,
-                                  shadowColor: Colors.grey.withOpacity(0.4),
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal: 4,
-                                  ),
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          AppColors.buttonGradient1,
+                                          AppColors.buttonGradient2,
+                                        ],
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0,
+                                      vertical: 50,
+                                    ),
+                                    width: double.infinity,
+                                    child: Card(
+                                      elevation: 10,
+                                      shadowColor: Colors.grey.withOpacity(0.4),
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 10,
+                                        horizontal: 4,
+                                      ),
 
-                                  shape: CircleBorder(),
-                                  color: Colors.white,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Icon(
-                                      Icons.play_arrow_rounded,
-                                      color: AppColors.primary,
-                                      size: 48.r,
+                                      shape: CircleBorder(),
+                                      color: Colors.white,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Icon(
+                                          Icons.play_arrow_rounded,
+                                          color: AppColors.primary,
+                                          size: 48.r,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
                             Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: Column(
@@ -153,6 +162,8 @@ class _LessonViewScreenState extends State<LessonViewScreen> {
 
                                   (lesson.files?.isNotEmpty ?? false)
                                       ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           AppText(
                                             text: 'Materials',
@@ -161,16 +172,56 @@ class _LessonViewScreenState extends State<LessonViewScreen> {
                                           10.verticalSpace,
 
                                           ...lesson.files!.map((e) {
-                                            return CourseMaterial(
-                                              title: e.name ?? '',
-                                              subTitle: e.size ?? '',
-                                              backgroundColor: AppColors.primary
-                                                  .withOpacity(0.1),
-                                              iconColor: AppColors.primary,
-                                              leadingImage:
-                                                  AppImages.assignment,
-                                              trailingIcon:
-                                                  Icons.file_download_outlined,
+                                            final isSecure =
+                                                e.accessType == 'secure';
+
+                                            print(e.accessType);
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                bottom: 10,
+                                              ),
+                                              child: CourseMaterial(
+                                                isSecure: isSecure,
+                                                title: e.name ?? '',
+                                                subTitle: e.size ?? '',
+                                                backgroundColor: AppColors
+                                                    .primary
+                                                    .withOpacity(0.1),
+                                                iconColor: AppColors.primary,
+                                                leadingImage:
+                                                    AppImages.assignment,
+                                                onView: () {
+
+                                                  if (widget.isOwned) {
+                                                  HelperMethods.pushFileViewer(
+                                                    context: context,
+                                                    url: e.url,
+                                                    fileName: e.name ?? '',
+                                                  );
+
+                                                  }
+                                                  else{
+                                                    ToastHelper.showWarning("You can view this file only after purchasing the lesson");
+                                                  }
+                                                },
+                                                // لو الملف secure منديش زرار تحميل خالص
+                                                onDownload:
+                                                    isSecure
+                                                        ? null
+                                                        : () {
+                                                          if (widget.isOwned) {
+                                                          HelperMethods
+                                                              .downloadFileSafely(
+                                                            context: context,
+                                                            url: e.url,
+                                                            fileName: e.name ?? '',
+                                                          );
+                                                          }
+                                                          else{
+                                                            ToastHelper.showWarning("You can download this file only after purchasing the lesson");
+                                                          }
+                                                        }
+                                              ),
                                             );
                                           }).toList(),
                                         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/core/widgets/base/base_stateless.dart';
 import 'package:igenius/core/widgets/base_gradient.dart';
@@ -6,6 +7,9 @@ import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/url_launcher_utils.dart';
 import '../../../../../core/widgets/custom_appBar.dart';
+import '../../../../../injection/service_locator.dart';
+import '../../cubits/support/my_support_tickets_cubit.dart';
+import '../../cubits/support/send_support_ticket.dart';
 import '../widgets/contact_us_form.dart';
 
 class HelpAndSupportScreen extends BaseStatelessWidget {

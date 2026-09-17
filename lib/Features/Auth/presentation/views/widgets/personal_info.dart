@@ -169,20 +169,31 @@ class _PersonalInfoState extends State<PersonalInfo> {
           10.verticalSpace,
           RequiredFieldText(text: 'Country'),
           5.verticalSpace,
-          CustomCountryCityField(
-            countryValidator: (value) {
-              if (value == null || value.isEmpty) return 'Country is required';
+          CustomTextField(
+            onChanged: (value) {
+              registerParams = registerParams?.copyWith(country: value);
+            },
+            inputType: TextInputType.text,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Country is required';
+              }
               return null;
             },
-            cityValidator: (value) {
-              if (value == null || value.isEmpty) return 'City is required';
-              return null;
+          ),
+          10.verticalSpace,
+          RequiredFieldText(text: 'City'),
+          5.verticalSpace,
+          CustomTextField(
+            onChanged: (value) {
+              registerParams = registerParams?.copyWith(city: value);
             },
-            onChanged: (country, city) {
-              registerParams = registerParams?.copyWith(
-                country: country,
-                city: city,
-              );
+            inputType: TextInputType.text,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'City is required';
+              }
+              return null;
             },
           ),
         ],

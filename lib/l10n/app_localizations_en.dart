@@ -193,4 +193,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get resetFilter => 'Reset Filter';
 }

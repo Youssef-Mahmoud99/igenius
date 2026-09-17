@@ -20,34 +20,47 @@ class _ReportsApi implements ReportsApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<BaseResponse<ReportsResponseModel>> getReports({int? courseId}) async {
+  Future<HttpResponse<List<int>>> downloadReport({
+    int? courseId,
+    String type = 'full',
+    String from = '',
+    String to = '',
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'course_id': courseId};
+    final queryParameters = <String, dynamic>{
+      r'course_id': courseId,
+      r'type': type,
+      r'from': from,
+      r'to': to,
+    };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<BaseResponse<ReportsResponseModel>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
+    final _options = _setStreamType<HttpResponse<List<int>>>(
+      Options(
+            method: 'GET',
+            headers: _headers,
+            extra: _extra,
+            responseType: ResponseType.bytes,
+          )
           .compose(
             _dio.options,
-            '/student/reports',
+            '/student/reports/download',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late BaseResponse<ReportsResponseModel> _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<int> _value;
     try {
-      _value = BaseResponse<ReportsResponseModel>.fromJson(
-        _result.data!,
-        (json) => ReportsResponseModel.fromJson(json as Map<String, dynamic>),
-      );
+      _value = _result.data!.cast<int>();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
     }
-    return _value;
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

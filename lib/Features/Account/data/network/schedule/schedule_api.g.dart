@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'support_api.dart';
+part of 'schedule_api.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'support_api.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter
 
-class _SupportApi implements SupportApi {
-  _SupportApi(this._dio, {this.baseUrl, this.errorLogger}) {
+class _ScheduleApi implements ScheduleApi {
+  _ScheduleApi(this._dio, {this.baseUrl, this.errorLogger}) {
     baseUrl ??= 'https://dev.igeniuscourses.com/api/v1';
   }
 
@@ -20,29 +20,27 @@ class _SupportApi implements SupportApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<BaseResponse<SupportListModel>> getSupportTickets({
-    int perPage = 20,
-  }) async {
+  Future<BaseResponse<OverdueModel>> getOverdues() async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'per_page': perPage};
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<BaseResponse<SupportListModel>>(
+    final _options = _setStreamType<BaseResponse<OverdueModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/student/support',
+            '/student/overdue',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late BaseResponse<SupportListModel> _value;
+    late BaseResponse<OverdueModel> _value;
     try {
-      _value = BaseResponse<SupportListModel>.fromJson(
+      _value = BaseResponse<OverdueModel>.fromJson(
         _result.data!,
-        (json) => SupportListModel.fromJson(json as Map<String, dynamic>),
+        (json) => OverdueModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -52,34 +50,27 @@ class _SupportApi implements SupportApi {
   }
 
   @override
-  Future<BaseResponse<SupportTicketModel>> createSupportTicket(
-    String message,
-  ) async {
+  Future<BaseResponse<UpcomingModel>> getUpcomings() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = {'message': message};
-    final _options = _setStreamType<BaseResponse<SupportTicketModel>>(
-      Options(
-            method: 'POST',
-            headers: _headers,
-            extra: _extra,
-            contentType: 'application/x-www-form-urlencoded',
-          )
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<BaseResponse<UpcomingModel>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/student/support',
+            '/student/upcoming',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late BaseResponse<SupportTicketModel> _value;
+    late BaseResponse<UpcomingModel> _value;
     try {
-      _value = BaseResponse<SupportTicketModel>.fromJson(
+      _value = BaseResponse<UpcomingModel>.fromJson(
         _result.data!,
-        (json) => SupportTicketModel.fromJson(json as Map<String, dynamic>),
+        (json) => UpcomingModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

@@ -23,7 +23,7 @@ class HomeCourseCard extends StatelessWidget {
       onTap: () {
         AppNavaigation.pushToPageWithParams(
           AppRoutes.courseDetails,
-          {'courseId': course.id, 'isBought': false},
+          {'courseId': course.id, 'isBought': course.isOwned},
         );
       },
       child: Container(
@@ -39,6 +39,7 @@ class HomeCourseCard extends StatelessWidget {
           ],
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
@@ -51,7 +52,7 @@ class HomeCourseCard extends StatelessWidget {
                             course.image != null
                                 ? DecorationImage(
                                   image: NetworkImage(course.image ?? ''),
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fill,
                                 )
                                 : null,
                         color: AppColors.primary,
@@ -141,7 +142,7 @@ class HomeCourseCard extends StatelessWidget {
                               onPressed: () {
                                 AppNavaigation.pushToPageWithParams(
                                   AppRoutes.courseDetails,
-                                  {'courseId': course.id, 'isBought': false},
+                                  {'courseId': course.id, 'isBought': course.isOwned},
                                 );
                               },
                             ),

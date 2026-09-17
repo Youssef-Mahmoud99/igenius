@@ -57,4 +57,8 @@ class EndPoints {
   static const String notificationReadPath = '/student/notifications/{id}/read';
   static const String notificationDeletePath = '/student/notifications/{id}';
 
+  // Schedule
+  static const String overdues = '/student/overdue';
+  static const String upcomings = '/student/upcoming';
+
 }

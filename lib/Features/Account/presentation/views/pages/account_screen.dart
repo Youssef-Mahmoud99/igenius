@@ -14,10 +14,10 @@ import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/base_gradient.dart';
 import '../../../data/models/profile_response_model.dart';
-import '../../cubits/profile_cubit.dart';
+import '../../cubits/profile/profile_cubit.dart';
 
-class AccountScreen extends BaseStatelessWidget {
-  AccountScreen({Key? key}) : super(key: key);
+class AccountScreen extends StatelessWidget {
+ AccountScreen({ Key? key }) : super(key: key);
   List<Map<String, dynamic>> courseDetails = [
     {
       'title': 'My Profile',
@@ -34,6 +34,30 @@ class AccountScreen extends BaseStatelessWidget {
       "color": Colors.purple,
       'colors': [Color(0xFFFEFCE8), Color(0xFFFFEDD5)],
       'route': AppRoutes.myCoursesScreen,
+    },
+    {
+      'title': 'My Reports',
+      'data': 'Download your reports',
+      'icon': AppImages.upload,
+      "color": Colors.green,
+      'colors': [Color(0xFFFEFCE8), Color(0xFFFFEDD5)],
+      'route': AppRoutes.downloadReportScreen,
+    },
+    {
+      'title': 'My Upcomings',
+      'data': 'View your upcomings',
+      'icon': AppImages.time,
+      "color": Colors.grey,
+      'colors': [Color(0xFFFEFCE8), Color(0xFFFFEDD5)],
+      'route': AppRoutes.upcomingsScreen,
+    },
+    {
+      'title': 'My Overdues',
+      'data': 'View your overdues',
+      'icon': AppImages.time,
+      "color": Colors.red,
+      'colors': [Color(0xFFFEFCE8), Color(0xFFFFEDD5)],
+      'route': AppRoutes.overduesScreen,
     },
     {
       'title': 'Notification Center',
@@ -53,8 +77,9 @@ class AccountScreen extends BaseStatelessWidget {
       'route': AppRoutes.aboutUsScreen,
     },
   ];
+
   @override
-  Widget buildBody(BuildContext context) {
+  Widget build(BuildContext context){
     return SafeArea(
       child: BaseGradient(
         child: Column(
@@ -114,7 +139,7 @@ class AccountScreen extends BaseStatelessWidget {
                             SettingsItem(
                               title: 'Help & Support',
                               icon: Icons.help_outline,
-                              route: AppRoutes.helpAndSupportScreen,
+                              route: AppRoutes.myTicketsScreen,
                             ),
                             Divider(color: Colors.grey),
                             SettingsItem(
@@ -211,4 +236,7 @@ class AccountScreen extends BaseStatelessWidget {
       },
     );
   }
-}
+
+  }
+
+

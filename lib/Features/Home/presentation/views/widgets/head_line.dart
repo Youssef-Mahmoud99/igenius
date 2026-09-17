@@ -21,13 +21,7 @@ class HeadLine extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              Image.asset(AppImages.logo, scale: 3.5),
-              10.horizontalSpace,
-              Image.asset(AppImages.logo2, height: 40.h),
-            ],
-          ),
+                    Center(child: Image.asset(AppImages.logo, scale: 2)),
           isGuest
               ? CustomTextButton(
                 text: 'Login',

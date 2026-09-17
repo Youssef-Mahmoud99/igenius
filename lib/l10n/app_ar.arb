@@ -64,6 +64,7 @@
   "resend": "اعادة ارسال",
   "codeNotReceived": "لم يصلك الرمز؟",
   "home": "الرئيسية",
-  "cancel": "إلغاء"
+  "cancel": "إلغاء",
+   "resetFilter": "إعادة تعيين التصفية"
 
      }

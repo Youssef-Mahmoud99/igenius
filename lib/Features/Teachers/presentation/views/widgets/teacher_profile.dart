@@ -208,7 +208,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
                         onCourseTap: (course) {
                           AppNavaigation.pushToPageWithParams(
                             AppRoutes.courseDetails,
-                            {'courseId': course.id, 'isBought': false},
+                            {'courseId': course.id, 'isBought':  course.isOwned},
                           );
                         },
                       ),

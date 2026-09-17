@@ -33,14 +33,7 @@ class NewPasswordScreen extends BaseStatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Image.asset(AppImages.logo, scale: 3),
-                          10.horizontalSpace,
-                          Image.asset(AppImages.logo2, height: 50.h),
-                        ],
-                      ),
-                      30.verticalSpace,
+                    Center(child: Image.asset(AppImages.logo, scale: 1.5)),
                       AppText(
                         text: 'Enter your new password',
                         style: AppsStyles.s24Bold.copyWith(

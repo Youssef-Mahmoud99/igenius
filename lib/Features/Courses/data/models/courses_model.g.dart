@@ -40,6 +40,10 @@ CourseModel _$CourseModelFromJson(Map<String, dynamic> json) => CourseModel(
           ? null
           : Teacher.fromJson(json['system'] as Map<String, dynamic>),
   isOwned: json['is_owned'] as bool?,
+  isHasLessonBought: json['is_has_lesson_bought'] as bool?,
+  isPrivate: json['is_private'] as bool?,
+  maxStudents: (json['max_students'] as num?)?.toInt(),
+  enrollmentsCount: (json['enrollments_count'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$CourseModelToJson(CourseModel instance) =>
@@ -62,4 +66,8 @@ Map<String, dynamic> _$CourseModelToJson(CourseModel instance) =>
       'level': instance.level,
       'board': instance.board,
       'system': instance.system,
+      'is_has_lesson_bought': instance.isHasLessonBought,
+      'is_private': instance.isPrivate,
+      'max_students': instance.maxStudents,
+      'enrollments_count': instance.enrollmentsCount,
     };

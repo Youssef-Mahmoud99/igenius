@@ -5,7 +5,7 @@ class UrlLauncherUtils {
   static Future<void> openLink(String url) async {
     final uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      throw 'لا يمكن فتح الرابط: $url';
+      throw 'The link could not be opened';
     }
   }
 
@@ -21,7 +21,7 @@ class UrlLauncherUtils {
       query: 'subject=$subject&body=$body',
     );
     if (!await launchUrl(uri)) {
-      throw 'لا يمكن إرسال الإيميل: $email';
+      throw 'The email could not be sent';
     }
   }
 
@@ -29,7 +29,7 @@ class UrlLauncherUtils {
   static Future<void> makePhoneCall(String phoneNumber) async {
     final uri = Uri(scheme: 'tel', path: phoneNumber);
     if (!await launchUrl(uri)) {
-      throw 'لا يمكن الاتصال بالرقم: $phoneNumber';
+      throw 'The phone call could not be made';
     }
   }
 

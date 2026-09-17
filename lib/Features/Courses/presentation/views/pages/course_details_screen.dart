@@ -8,6 +8,7 @@ import 'package:igenius/Features/Courses/presentation/views/pages/course_details
 import 'package:igenius/core/widgets/custom_appBar.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/helpers/helper_methods.dart';
+import '../widgets/course_report_download_button.dart';
 
 class CourseDetailsScreen extends StatefulWidget {
   const CourseDetailsScreen({Key? key, required this.courseId, required this.isBought})
@@ -31,7 +32,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: widget.isBought != true ? const SizedBox.shrink() :  DownloadCourseReportButton(courseId: widget.courseId),
       appBar: CustomAppBar(
+         
         centerTitle: false,
 
         title: 'Course Details',

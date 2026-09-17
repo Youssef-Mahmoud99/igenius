@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:igenius/Features/Courses/data/models/attempts_model.dart';
 import 'package:retrofit/retrofit.dart';
 import '../../../../core/api/endpoints.dart';
 import '../../../../core/constants/app_constants.dart';
@@ -48,7 +49,7 @@ abstract class CoursesApi {
     @Path("id") String id,
   );
   @GET(EndPoints.assignments + "/{id}/attempts")
-  Future<BaseResponse<List<AssignmentModel>>> getAssignmentAttempts(
+  Future<BaseResponse<List<AttemptsModel>>> getAssignmentAttempts(
     @Path("id") String id,
   );
   @POST(EndPoints.assignments + "/{id}/submit")
@@ -62,7 +63,7 @@ abstract class CoursesApi {
   @GET(EndPoints.myExams + "/{id}")
   Future<BaseResponse<ExamModel>> getMyExamDetails(@Path("id") String id);
   @GET(EndPoints.myExams + "/{id}/attempts")
-  Future<BaseResponse<List<ExamModel>>> getExamAttempts(@Path("id") String id);
+  Future<BaseResponse<List<AttemptsModel>>> getExamAttempts(@Path("id") String id);
   @POST(EndPoints.myExams + "/{id}/submit")
   Future<BaseResponse> submitExam(@Path("id") String id, @Body() FormData data);
 }

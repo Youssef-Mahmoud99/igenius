@@ -466,6 +466,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// No description provided for @resetFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Filter'**
+  String get resetFilter;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

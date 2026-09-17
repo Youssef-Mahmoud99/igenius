@@ -33,27 +33,20 @@ class ForgetPasswordScreen extends BaseStatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Image.asset(AppImages.logo, scale: 3),
-                          10.horizontalSpace,
-                          Image.asset(AppImages.logo2, height: 50.h),
-                        ],
-                      ),
-                      30.verticalSpace,
+                    Center(child: Image.asset(AppImages.logo, scale: 1.5)),
                       AppText(
                         text: 'We will send you your password',
-                        style: AppsStyles.s24Bold.copyWith(
+                        style: AppsStyles.s20Bold.copyWith(
                           color: AppColors.primary,
                         ),
                       ),
                       AppText(
                         text: 'Check your email',
-                        style: AppsStyles.s16Regular.copyWith(
+                        style: AppsStyles.s14Regular.copyWith(
                           color: AppColors.grey,
                         ),
                       ),
-                      50.verticalSpace,
+                      30.verticalSpace,
 
                       Form(
                         key: _formKey,

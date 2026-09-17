@@ -9,6 +9,16 @@ import 'base_state.dart';
 abstract class BaseCubit<T> extends Cubit<BaseCubitState<T>> {
   BaseCubit() : super(const InitialState());
 
+  // 👇 الحل الجذري: أي emit في أي كلاس وارث بقى محمي تلقائيًا
+  @override
+  void emit(BaseCubitState<T> state) {
+    if (isClosed) {
+      log('⚠️ Tried to emit $state after $runtimeType was closed. Ignored.');
+      return;
+    }
+    super.emit(state);
+  }
+
   Future<void> execute<Params>({
     required Future<Either<ErrorModel, T>> Function(Params) useCase,
     required Params params,
@@ -32,22 +42,24 @@ abstract class BaseCubit<T> extends Cubit<BaseCubitState<T>> {
       EasyLoadingHelper.dismiss();
     }
 
+    // الـ Cubit اتقفل وهو مستني الـ useCase؟ متكملش
+    if (isClosed) return;
+
     result.fold(
       (failure) {
         EasyLoadingHelper.dismiss();
         final message =
             errorMessageExtractor?.call(failure) ?? failure.allErrorMessages;
-        emit(ErrorState(failure, message));
+
+        emit(ErrorState(failure, message)); // محمي جوا emit نفسها
         log("error: $message");
         ToastHelper.showError(message);
-
       },
       (data) {
         final message = successMessageExtractor?.call(data) ?? successMessage;
 
-        emit(SuccessState(data, message: message));
+        emit(SuccessState(data, message: message)); // محمي جوا emit نفسها
 
-        // 👇 شيل شرط isPost، خليه يظهر دايماً لو في message
         if (message != null) {
           ToastHelper.showSuccess(message);
         }
@@ -69,5 +81,11 @@ abstract class BaseCubit<T> extends Cubit<BaseCubitState<T>> {
     if (data is Map) return data.isEmpty;
     if (data is String) return data.isEmpty;
     return false;
+  }
+
+  @override
+  Future<void> close() {
+    // لو عندك أي CancelToken أو StreamSubscription لازم تتلغي هنا
+    return super.close();
   }
 }

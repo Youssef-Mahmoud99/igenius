@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:igenius/Features/Account/data/models/profile_response_model.dart';
 import 'package:retrofit/retrofit.dart';
-import '../../../../core/api/endpoints.dart';
-import '../../../../core/constants/app_constants.dart';
-import '../../../../core/base/models/base_response.dart';
-import '../../../Auth/data/models/auth_model.dart';
+import '../../../../../core/api/endpoints.dart';
+import '../../../../../core/constants/app_constants.dart';
+import '../../../../../core/base/models/base_response.dart';
+import '../../../../Auth/data/models/auth_model.dart';
 
 part 'profile_api.g.dart';
 

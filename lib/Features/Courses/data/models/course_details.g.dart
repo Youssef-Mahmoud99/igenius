@@ -46,6 +46,10 @@ CourseDetails _$CourseDetailsFromJson(Map<String, dynamic> json) =>
               ?.map((e) => UnitModel.fromJson(e as Map<String, dynamic>))
               .toList(),
       isOwned: json['is_owned'] as bool?,
+      isHasLessonBought: json['is_has_lesson_bought'] as bool?,
+      isPrivate: json['is_private'] as bool?,
+      maxStudents: (json['max_students'] as num?)?.toInt(),
+      enrollmentsCount: (json['enrollments_count'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$CourseDetailsToJson(CourseDetails instance) =>
@@ -70,6 +74,10 @@ Map<String, dynamic> _$CourseDetailsToJson(CourseDetails instance) =>
       'board': instance.board,
       'system': instance.system,
       'units': instance.units,
+      'is_has_lesson_bought': instance.isHasLessonBought,
+      'is_private': instance.isPrivate,
+      'max_students': instance.maxStudents,
+      'enrollments_count': instance.enrollmentsCount,
     };
 
 UnitModel _$UnitModelFromJson(Map<String, dynamic> json) => UnitModel(
@@ -223,6 +231,7 @@ FileModel _$FileModelFromJson(Map<String, dynamic> json) => FileModel(
   name: json['name'] as String?,
   url: json['url'] as String?,
   size: json['size'] as String?,
+  accessType: json['access_type'] as String?,
 );
 
 Map<String, dynamic> _$FileModelToJson(FileModel instance) => <String, dynamic>{
@@ -230,4 +239,5 @@ Map<String, dynamic> _$FileModelToJson(FileModel instance) => <String, dynamic>{
   'name': instance.name,
   'url': instance.url,
   'size': instance.size,
+  'access_type': instance.accessType,
 };

@@ -17,9 +17,18 @@ import 'package:igenius/Features/payment/presentation/cubits/buy_lesson_cubit.da
 import 'package:igenius/Features/payment/presentation/cubits/pay_installment_cubit.dart';
 import 'package:igenius/Features/payment/presentation/cubits/request_installment_cubit.dart';
 import 'package:igenius/splash_screen.dart';
-import '../../Features/Account/presentation/cubits/profile_cubit.dart';
-import '../../Features/Account/presentation/cubits/update_profile_cubit.dart';
+import '../../Features/Account/presentation/cubits/profile/profile_cubit.dart';
+import '../../Features/Account/presentation/cubits/profile/update_profile_cubit.dart';
+import '../../Features/Account/presentation/cubits/reports/download_report_cubit.dart';
+import '../../Features/Account/presentation/cubits/schedule/get_overdues_cubit.dart';
+import '../../Features/Account/presentation/cubits/schedule/get_upcomings_cubit.dart';
+import '../../Features/Account/presentation/cubits/support/my_support_tickets_cubit.dart';
+import '../../Features/Account/presentation/cubits/support/send_support_ticket.dart';
 import '../../Features/Account/presentation/views/pages/help_and_support_screen.dart';
+import '../../Features/Account/presentation/views/pages/my_tickets_screen.dart';
+import '../../Features/Account/presentation/views/pages/overdues_page.dart';
+import '../../Features/Account/presentation/views/pages/reports_download_page.dart';
+import '../../Features/Account/presentation/views/pages/upcomings_page.dart';
 import '../../Features/Auth/presentation/cubits/auth_cubit.dart';
 import '../../Features/Auth/presentation/cubits/password_cubit.dart';
 import '../../Features/Auth/presentation/views/pages/new_password_screen.dart';
@@ -34,6 +43,7 @@ import '../../Features/Courses/presentation/cubits/my_courses/my_course_details_
 import '../../Features/Courses/presentation/cubits/my_courses/my_courses_cubit.dart';
 import '../../Features/Courses/presentation/views/pages/course_details_screen.dart';
 import '../../Features/Courses/presentation/views/pages/courses_screen.dart';
+import '../../Features/Home/presentation/cubits/get_about_cubit.dart';
 import '../../Features/Home/presentation/cubits/get_home_data_cubit.dart';
 import '../../Features/Notifications/presentation/cubits/delete_notification_cubit.dart';
 import '../../Features/Notifications/presentation/cubits/mark_as_read_cubit.dart';
@@ -99,7 +109,8 @@ class RoutesManager {
               BlocProvider(create: (context) => sl<GetTeachersCubit>()),
               BlocProvider(create: (context) => sl<ProfileCubit>()),
               BlocProvider(create: (context) => sl<GetHomeDataCubit>()),
-                BlocProvider(create: (context) => sl<GetNotificationsCubit>()),
+              BlocProvider(create: (context) => sl<GetNotificationsCubit>()),
+              BlocProvider(create: (context) => sl<DownloadReportCubit>()),
             ],
             child: LayoutScreen(isGuest: isGuest, key: layoutKey),
           );
@@ -111,14 +122,15 @@ class RoutesManager {
           Map<String, dynamic> args = state.extra as Map<String, dynamic>;
           final isCourses = args['isCourses'] as bool;
           return SlideFadeTransition(
-            child:  MultiBlocProvider(providers: [
-          BlocProvider.value(value: sl<FilterDataCubit>()),
-          BlocProvider.value(value: sl<CoursesCubit>()), // ✅ .value مش create
-
-            ],
-            child: FiltersScreen(isCourses: isCourses),
-            )
-            
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: sl<FilterDataCubit>()),
+                BlocProvider.value(
+                  value: sl<CoursesCubit>(),
+                ), // ✅ .value مش create
+              ],
+              child: FiltersScreen(isCourses: isCourses),
+            ),
           );
         },
       ),
@@ -174,14 +186,19 @@ class RoutesManager {
 
       GoRoute(
         path: AppRoutes.notificationsScreen,
-        builder: (context, state) => MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => sl<GetNotificationsCubit>()),
-            BlocProvider(create: (context) => sl<MarkNotificationAsReadCubit>()),
-            BlocProvider(create: (context) => sl<DeleteNotificationCubit>()),
-          ],
-          child: NotificationsScreen(),
-        ),
+        builder:
+            (context, state) => MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (context) => sl<GetNotificationsCubit>()),
+                BlocProvider(
+                  create: (context) => sl<MarkNotificationAsReadCubit>(),
+                ),
+                BlocProvider(
+                  create: (context) => sl<DeleteNotificationCubit>(),
+                ),
+              ],
+              child: NotificationsScreen(),
+            ),
       ),
       GoRoute(
         path: AppRoutes.lessonViewScreen,
@@ -189,13 +206,14 @@ class RoutesManager {
           Map<String, dynamic> args = state.extra as Map<String, dynamic>;
           final lessonId = args['lessonId'] as int;
           final unitTitle = args['unitTitle'] as String;
+          final isOwned = args['isOwned'] as bool;
           return SlideFadeTransition(
             child: MultiBlocProvider(
               providers: [
                 BlocProvider(create: (context) => sl<LessonContentCubit>()),
                 BlocProvider(create: (context) => sl<MarkAttendanceCubit>()),
               ],
-              child: LessonViewScreen(unitTitle: unitTitle, lessonId: lessonId),
+              child: LessonViewScreen(unitTitle: unitTitle, lessonId: lessonId, isOwned: isOwned),
             ),
           );
         },
@@ -220,7 +238,10 @@ class RoutesManager {
 
       GoRoute(
         path: AppRoutes.aboutUsScreen,
-        builder: (context, state) => AboutUsScreen(),
+        builder: (context, state) =>  BlocProvider( 
+          create: (context) => sl<GetAboutCubit>()..getAbout(),
+        child: AboutUsScreen(),
+         ),
       ),
       GoRoute(
         path: AppRoutes.editProfileScreen,
@@ -243,8 +264,12 @@ class RoutesManager {
         builder: (context, state) => PrivacyPolicyScreen(),
       ),
       GoRoute(
-        path: AppRoutes.helpAndSupportScreen,
-        builder: (context, state) => HelpAndSupportScreen(),
+        path: AppRoutes.sendSuppotTicketScreen,
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => sl<SendSupportTicket>(),
+              child: HelpAndSupportScreen(),
+            ),
       ),
       GoRoute(
         path: AppRoutes.otpScreen,
@@ -253,6 +278,35 @@ class RoutesManager {
       GoRoute(
         path: AppRoutes.createNewPassword,
         builder: (context, state) => NewPasswordScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.downloadReportScreen,
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<DownloadReportCubit>(),
+          child: ReportsDownloadPage(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.overduesScreen,
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<GetOverduesCubit>(),
+          child: OverduePage(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes. upcomingsScreen,
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<GetUpcomingsCubit>(),
+          child: UpcomingPage(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.myTicketsScreen,
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => sl<MySupportTicketsCubit>(),
+              child: MySupportTicketsScreen(),
+            ),
       ),
 
       // GoRoute(

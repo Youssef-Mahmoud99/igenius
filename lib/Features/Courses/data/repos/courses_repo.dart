@@ -9,6 +9,7 @@ import '../../../../core/base/models/base_response.dart';
 import '../../../Account/data/models/my_course_details_model.dart';
 import '../../presentation/cubits/assignments/submit_assinment.dart';
 import '../../presentation/cubits/exams/submit_exam.dart';
+import '../models/attempts_model.dart';
 import '../models/course_details.dart';
 import '../models/courses_body.dart';
 
@@ -43,7 +44,7 @@ abstract class CoursesRepo {
     String id,
   );
 
-  Future<Either<ErrorModel, BaseResponse<List<AssignmentModel>>>> getAssignmentAttempts(
+  Future<Either<ErrorModel, BaseResponse<List<AttemptsModel>>>> getAssignmentAttempts(
     String id,
   );
 
@@ -57,7 +58,7 @@ abstract class CoursesRepo {
     String id,
   );
 
-  Future<Either<ErrorModel, BaseResponse<List<ExamModel>>>> getExamAttempts(
+  Future<Either<ErrorModel, BaseResponse<List<AttemptsModel>>>> getExamAttempts(
     String id,
   );
 

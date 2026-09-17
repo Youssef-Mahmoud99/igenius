@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:igenius/Features/Account/data/models/profile_response_model.dart';
-import 'package:igenius/Features/Account/data/network/profile_api.dart';
 import 'package:igenius/Features/Courses/data/models/courses_model.dart';
 import 'package:igenius/Features/Home/data/models/about_model.dart';
 import 'package:igenius/Features/Home/data/repos/home_repo.dart';

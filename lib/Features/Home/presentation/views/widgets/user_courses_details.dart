@@ -6,7 +6,7 @@ import '../../../../../core/base/models/base_response.dart';
 import '../../../../../core/resources/assets_manager.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../Account/data/models/profile_response_model.dart';
-import '../../../../Account/presentation/cubits/profile_cubit.dart';
+import '../../../../Account/presentation/cubits/profile/profile_cubit.dart';
 import 'stats_shimmer.dart';
 
 class UserCoursesDetails extends StatelessWidget {

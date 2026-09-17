@@ -101,4 +101,11 @@ class CoursesCubit extends BaseCubit<BaseResponse<List<CourseModel>>> {
       systemId: null,
     );
   }
+
+  void refreshCourses() {
+        body = CoursesBody(page: 1, perPage: body.perPage);
+    hasMore = true;
+
+    getCourses();
+  }
 }

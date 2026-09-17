@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:igenius/app.dart';
 import 'package:igenius/core/resources/assets_manager.dart';
 import 'package:igenius/core/resources/styles_manager.dart';
 import 'package:igenius/core/theme/app_colors.dart';
 import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 
 import '../../../../../core/constants/app_routes.dart';
+import '../../../../../core/utils/helpers/toast_helper.dart';
 import '../../../../../core/widgets/custom_text.dart';
 import 'preview_button.dart';
 
@@ -18,6 +20,7 @@ class LessonView extends StatelessWidget {
   final bool isPreview;
   final LessonType type;
   final int id;
+  final bool isOwned;
 
   const LessonView({
     super.key,
@@ -28,6 +31,7 @@ class LessonView extends StatelessWidget {
     this.isPreview = false,
     this.type = LessonType.lesson,
     required this.id,
+    required this.isOwned,
   });
 
   @override
@@ -40,26 +44,60 @@ class LessonView extends StatelessWidget {
 
           switch (type) {
             case LessonType.quiz:
-              AppNavaigation.pushToPageWithParams(AppRoutes.assignmentViewScreen, {
-                'id': id,
-                'unitTitle': unitTitle,
-                'isExam': false,
-              });
+              if (currentUser != null  ){
+                if (isOwned) {
+                  AppNavaigation.pushToPageWithParams(AppRoutes.assignmentViewScreen, {
+                    'id': id,
+                    'unitTitle': unitTitle,
+                    'isExam': false,
+                  });
+                }
+                else{
+                  print( "user Name: ${currentUser?.user?.name}");
+                  ToastHelper.showWarning("You can access this assignment only after purchasing it");
+                }
+              }
+              else{
+                ToastHelper.showWarning("Please login to access this  assignment");
+              }
               break;
 
             case LessonType.exam:
-              AppNavaigation.pushToPageWithParams(AppRoutes.assignmentViewScreen, {
-                'id': id,
-                'unitTitle': unitTitle,
-                'isExam': true,
-              });
+              if (currentUser != null  ){
+                if (isOwned) {
+                  AppNavaigation.pushToPageWithParams(AppRoutes.assignmentViewScreen, {
+                    'id': id,
+                    'unitTitle': unitTitle,
+                    'isExam': true,
+                  });
+                }
+                else{
+                  ToastHelper.showWarning("You can access this exam only after purchasing it");
+                }
+              }
+              else{
+                ToastHelper.showWarning("Please login to access this exam");
+              }
               break;
 
             case LessonType.lesson:
+            if (currentUser != null  ){
+              if ( isPreview || isOwned) {
               AppNavaigation.pushToPageWithParams(AppRoutes.lessonViewScreen, {
                 'lessonId': id,
                 'unitTitle': unitTitle,
+                'isOwned': isOwned,
               });
+
+              }
+              else{
+                ToastHelper.showWarning("You can access this lesson only after purchasing it");
+              }
+
+            }
+            else{
+              ToastHelper.showWarning("Please login to access this lesson");
+            }
               break;
           }
         },

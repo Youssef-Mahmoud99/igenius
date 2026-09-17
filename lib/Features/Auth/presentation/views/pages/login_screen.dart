@@ -23,23 +23,16 @@ class LoginScreen extends BaseStatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Image.asset(AppImages.logo, scale: 3),
-                    10.horizontalSpace,
-                    Image.asset(AppImages.logo2, height: 50.h),
-                  ],
-                ),
-                30.verticalSpace,
+                    Center(child: Image.asset(AppImages.logo, scale: 1.5)),
                 AppText(
                   text: 'Welcome Back!',
-                  style: AppsStyles.s24Bold.copyWith(color: AppColors.primary),
+                  style: AppsStyles.s20Bold.copyWith(color: AppColors.primary),
                 ),
                 AppText(
                   text: 'Sign in to continue learning',
-                  style: AppsStyles.s16Regular.copyWith(color: AppColors.grey),
+                  style: AppsStyles.s14Regular.copyWith(color: AppColors.grey),
                 ),
-                50.verticalSpace,
+                30.verticalSpace,
 
                 LoginForm(),
                 10.verticalSpace,

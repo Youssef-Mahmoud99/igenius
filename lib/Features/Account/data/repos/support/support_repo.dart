@@ -5,11 +5,11 @@ import '../../../../../core/base/models/base_response.dart';
 import '../../models/support/support_model.dart';
 
 abstract class SupportRepo {
-  Future<Either<ErrorModel, BaseResponse<SupportListModel>>> getSupportTickets({
+  Future<Either<ErrorModel, BaseResponse<List<SupportTicketModel>>>> getSupportTickets({
     int perPage = 20,
   });
 
-  Future<Either<ErrorModel, BaseResponse<SupportTicketModel>>> createSupportTicket(
+  Future<Either<ErrorModel, BaseResponse>> createSupportTicket(
     String message,
   );
 }

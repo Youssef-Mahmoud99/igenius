@@ -85,4 +85,10 @@ class GetTeachersCubit extends BaseCubit<BaseResponse<List<TeacherModel>>> {
   void resetFilters() {
     applyFilters(subjectId: null, levelId: null, boardId: null, systemId: null);
   }
+
+   void refreshTeachers() {
+        body = TeachersBody(page: 1, perPage: body.perPage);
+    hasMore = true;
+    getTeachers();
+  }
 }

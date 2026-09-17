@@ -3,13 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:igenius/Features/Account/data/network/profile_api.dart';
 import 'package:igenius/Features/Account/data/repos/profile/profile_repo.dart';
 import 'package:igenius/Features/Auth/presentation/cubits/auth_cubit.dart';
 
+import '../Features/Account/data/network/profile/profile_api.dart';
+import '../Features/Account/data/network/reports/reports_api.dart';
+import '../Features/Account/data/network/schedule/schedule_api.dart';
+import '../Features/Account/data/network/support/support_api.dart';
 import '../Features/Account/data/repos/profile/profile_repo_impl.dart';
-import '../Features/Account/presentation/cubits/profile_cubit.dart';
-import '../Features/Account/presentation/cubits/update_profile_cubit.dart';
+import '../Features/Account/data/repos/reports/reports_repo.dart';
+import '../Features/Account/data/repos/reports/reports_repo_impl.dart';
+import '../Features/Account/data/repos/schedule/schedule_repo.dart';
+import '../Features/Account/data/repos/schedule/schedule_repo_impl.dart';
+import '../Features/Account/data/repos/support/support_repo.dart';
+import '../Features/Account/data/repos/support/support_repo_impl.dart';
+import '../Features/Account/presentation/cubits/profile/profile_cubit.dart';
+import '../Features/Account/presentation/cubits/profile/update_profile_cubit.dart';
+import '../Features/Account/presentation/cubits/reports/download_report_cubit.dart';
+import '../Features/Account/presentation/cubits/schedule/get_overdues_cubit.dart';
+import '../Features/Account/presentation/cubits/schedule/get_upcomings_cubit.dart';
+import '../Features/Account/presentation/cubits/support/my_support_tickets_cubit.dart';
+import '../Features/Account/presentation/cubits/support/send_support_ticket.dart';
 import '../Features/Auth/data/network/auth_api.dart';
 import '../Features/Auth/data/network/password_api.dart';
 import '../Features/Auth/data/repos/auth_repo.dart';
@@ -107,35 +121,35 @@ Future<void> init() async {
   // Courses
   sl.registerLazySingleton<CoursesApi>(() => CoursesApi(sl<DioClient>().dio));
   sl.registerLazySingleton<CoursesRepo>(() => CoursesRepoImpl(sl<CoursesApi>()));
-sl.registerLazySingleton(() => CoursesCubit(sl<CoursesRepo>()));
+sl.registerFactory(() => CoursesCubit(sl<CoursesRepo>()));
   sl.registerFactory(() => CourseDetailsCubit(sl<CoursesRepo>()));
 
 
   // My Courses
-sl.registerLazySingleton(() => MyCoursesCubit(sl<CoursesRepo>()));
+sl.registerFactory(() => MyCoursesCubit(sl<CoursesRepo>()));
 sl.registerFactory(() => MyCourseDetailsCubit(sl<CoursesRepo>()));
 
 // Lessons
-sl.registerLazySingleton(() => LessonContentCubit(sl<CoursesRepo>()));
+sl.registerFactory(() => LessonContentCubit(sl<CoursesRepo>()));
 sl.registerLazySingleton(() => MarkAttendanceCubit(sl<CoursesRepo>()));
 
 // Assignments
 sl.registerLazySingleton(() => AssignmentsCubit(sl<CoursesRepo>()));
-sl.registerLazySingleton(() => AssignmentDetailsCubit(sl<CoursesRepo>()));
-sl.registerLazySingleton(() => AssignmentAttemptsCubit(sl<CoursesRepo>()));
-sl.registerLazySingleton(() => SubmitAssignmentCubit(sl<CoursesRepo>()));
+sl.registerFactory(() => AssignmentDetailsCubit(sl<CoursesRepo>()));
+sl.registerFactory(() => AssignmentAttemptsCubit(sl<CoursesRepo>()));
+sl.registerFactory(() => SubmitAssignmentCubit(sl<CoursesRepo>()));
 
 // Exams
 sl.registerLazySingleton(() => MyExamsCubit(sl<CoursesRepo>()));
-sl.registerLazySingleton(() => MyExamDetailsCubit(sl<CoursesRepo>()));
-sl.registerLazySingleton(() => ExamAttemptsCubit(sl<CoursesRepo>()));
-sl.registerLazySingleton(() => SubmitExamCubit(sl<CoursesRepo>()));
+sl.registerFactory(() => MyExamDetailsCubit(sl<CoursesRepo>()));
+sl.registerFactory(() => ExamAttemptsCubit(sl<CoursesRepo>()));
+sl.registerFactory(() => SubmitExamCubit(sl<CoursesRepo>()));
 
 
 // Profile
        sl.registerLazySingleton<ProfileApi>(() => ProfileApi(sl<DioClient>().dio));
   sl.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl(sl<ProfileApi>()));
-  sl.registerLazySingleton(()=> ProfileCubit(sl<ProfileRepo>()));
+  sl.registerFactory(()=> ProfileCubit(sl<ProfileRepo>()));
   sl.registerLazySingleton(() => UpdateProfileCubit(sl<ProfileRepo>()));
 
 
@@ -163,7 +177,7 @@ sl.registerLazySingleton(() => SubmitExamCubit(sl<CoursesRepo>()));
    // Home
    sl.registerLazySingleton<HomeApi>(() => HomeApi(sl<DioClient>().dio));
   sl.registerLazySingleton<HomeRepo>(() => HomeRepoImpl(sl<HomeApi>()));
-  sl.registerLazySingleton(() => GetHomeDataCubit(sl<HomeRepo>()));
+  sl.registerFactory(() => GetHomeDataCubit(sl<HomeRepo>()));
   sl.registerLazySingleton(() => GetAboutCubit(sl<HomeRepo>()));
   
 
@@ -181,4 +195,23 @@ sl.registerFactory<GetTeacherDetailsCubit>(() => GetTeacherDetailsCubit(sl<Teach
   sl.registerFactory<GetNotificationsCubit>(() => GetNotificationsCubit(sl<NotificationsRepo>()));
   sl.registerLazySingleton<MarkNotificationAsReadCubit>(() => MarkNotificationAsReadCubit(sl<NotificationsRepo>()));
   sl.registerLazySingleton<DeleteNotificationCubit>(() => DeleteNotificationCubit(sl<NotificationsRepo>()));
+
+
+  // Support
+  sl.registerLazySingleton<SupportApi>(() => SupportApi(sl<DioClient>().dio));
+  sl.registerLazySingleton<SupportRepo>(() => SupportRepoImpl(sl<SupportApi>()));
+  sl.registerFactory<MySupportTicketsCubit>(() => MySupportTicketsCubit(sl<SupportRepo>()));
+  sl.registerFactory<SendSupportTicket>(() => SendSupportTicket(sl<SupportRepo>()));
+
+  // Reports
+    sl.registerLazySingleton<ReportsApi>(() => ReportsApi(sl<DioClient>().dio));
+    sl.registerLazySingleton<ReportsRepo>(() => ReportsRepoImpl(sl<ReportsApi>()));
+
+  sl.registerLazySingleton<DownloadReportCubit>(() => DownloadReportCubit(sl<ReportsRepo>()));
+
+  // Schedule
+  sl.registerLazySingleton<ScheduleApi>(() => ScheduleApi(sl<DioClient>().dio));
+  sl.registerLazySingleton<ScheduleRepo>(() => ScheduleRepoImpl(sl<ScheduleApi>()));
+  sl.registerFactory<GetOverduesCubit>(() => GetOverduesCubit(sl<ScheduleRepo>()));
+  sl.registerFactory<GetUpcomingsCubit>(() => GetUpcomingsCubit(sl<ScheduleRepo>()));
 }

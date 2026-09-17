@@ -15,6 +15,7 @@ class CourseContent extends StatelessWidget {
 
         // Lessons
         items.addAll((unit.lessons ?? []).map((lesson) => LessonView(
+          isOwned:  courseDetails.isOwned ?? false,
           id: lesson.id ?? 0,
           type: LessonType.lesson,
               title: lesson.title ?? '',
@@ -26,6 +27,7 @@ class CourseContent extends StatelessWidget {
 
         // Assignments
         items.addAll((unit.assignments ?? []).map((assignment) => LessonView(
+          isOwned:  courseDetails.isOwned ?? false,
           id: assignment.id ?? 0,
           unitTitle: unit.title ?? '',
               title: assignment.title ?? '',
@@ -36,6 +38,7 @@ class CourseContent extends StatelessWidget {
 
         // Exams
         items.addAll((unit.exams ?? []).map((exam) => LessonView(
+          isOwned:  courseDetails.isOwned ?? false,
           id: exam.id ?? 0,
           unitTitle: unit.title ?? '',
               title: exam.title ?? '',

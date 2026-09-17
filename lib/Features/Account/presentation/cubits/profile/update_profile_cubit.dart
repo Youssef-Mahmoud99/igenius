@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/base/cubit/base_cubit.dart';
+import '../../../../../core/base/cubit/base_state.dart';
 import '../../../../../core/base/models/base_response.dart';
-import '../../../../core/base/cubit/base_state.dart';
-import '../../../../core/utils/helpers/app_navigtion.dart';
-import '../../../Auth/data/models/auth_model.dart';
-import '../../../Auth/data/models/auth_response_model.dart';
-import '../../data/repos/profile/profile_repo.dart';
+import '../../../../../core/utils/helpers/app_navigtion.dart';
+import '../../../../Auth/data/models/auth_model.dart';
+import '../../../data/repos/profile/profile_repo.dart';
 import 'profile_cubit.dart';
 
 class UpdateProfileCubit extends BaseCubit<BaseResponse> {

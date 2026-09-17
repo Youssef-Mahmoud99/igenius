@@ -17,7 +17,7 @@ class ToastHelper {
   }
 
   static void showWarning(String message) {
-    _showToast(message, backgroundColor: AppColors.warning);
+    _showToast(message, backgroundColor: AppColors.warning,color: Colors.black );
   }
 
   static void showInfo(String message) {
@@ -29,13 +29,15 @@ class ToastHelper {
     required Color backgroundColor,
     ToastGravity gravity = ToastGravity.BOTTOM,
     Toast toastLength = Toast.LENGTH_SHORT,
+    Color? color,
   }) {
     Fluttertoast.showToast(
+
       msg: message,
       gravity: gravity,
       toastLength: toastLength,
       backgroundColor: backgroundColor,
-      textColor: Colors.white,
+      textColor: color?? Colors.white,
       fontSize: 16.0,
     );
   }

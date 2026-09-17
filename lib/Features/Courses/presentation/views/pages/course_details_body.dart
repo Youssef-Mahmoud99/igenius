@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../../../app.dart';
 import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/helpers/app_navigtion.dart';
+import '../../../../../core/utils/helpers/toast_helper.dart';
 import '../../../../../core/widgets/custom_listtile.dart';
 import '../../../../../core/widgets/custom_text.dart';
 import '../../../../../core/widgets/gradient_button.dart';
@@ -340,11 +342,18 @@ class CourseDetailsBody extends StatelessWidget {
                       text: 'Enroll Now',
 
                       onTap: () {
-                        print( "hasInstallments: ${courseDetails.hasInstallmentPlan}");
-                        showEnrollToCourseBottomSheet(
-                          context,
-                          courseDetails,
+                        print(
+                          "hasInstallments: ${courseDetails.hasInstallmentPlan}",
                         );
+                        if (currentUser?.parentEmail != null) {
+                          ToastHelper.showWarning(
+                            "Please login to enroll in this course",
+                          );
+
+                          return;
+                        }
+
+                        showEnrollToCourseBottomSheet(context, courseDetails);
                       },
 
                       height: 50,

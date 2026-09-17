@@ -32,7 +32,7 @@ class FakeAppbar extends StatelessWidget {
             ),
           ),
 
-          Image.asset(AppImages.logo3),
+          Image.asset(AppImages.logo),
         ],
       ),
     );

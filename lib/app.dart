@@ -6,7 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:igenius/Features/Auth/data/models/auth_model.dart';
 import 'package:igenius/Features/Auth/data/models/password_params.dart';
 import 'Features/Account/data/models/profile_response_model.dart';
-import 'Features/Account/presentation/cubits/profile_cubit.dart';
+import 'Features/Account/presentation/cubits/profile/profile_cubit.dart';
 import 'Features/layout/layout_screen.dart';
 import 'core/network/connectivity_monitor.dart';
 import 'core/resources/routes_manager.dart';

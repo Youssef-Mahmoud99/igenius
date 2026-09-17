@@ -1,11 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:igenius/Features/Account/data/models/profile_response_model.dart';
-import 'package:igenius/Features/Account/data/network/profile_api.dart';
 import 'package:igenius/core/base/models/error_model.dart';
 
 import '../../../../core/base/models/base_response.dart';
-import '../../../Auth/data/models/auth_model.dart';
 import '../models/teacher_details_model.dart';
 import '../models/teacher_model.dart';
 import '../models/teachers_body.dart';

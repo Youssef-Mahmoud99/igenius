@@ -36,7 +36,6 @@ class _StepsProgressState extends State<StepsProgress> {
     return Container(
       height: 35.h,
       width: 35.h,
-      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         border:
             widget.currentStep - 1 < index
@@ -53,14 +52,20 @@ class _StepsProgressState extends State<StepsProgress> {
                 : Colors.transparent,
       ),
       child: Center(
-        child: Text(
-          "${index + 1}",
-          style: AppsStyles.s14Bold.copyWith(
-            color:
-                widget.currentStep - 1 == index ||
-                        widget.currentStep - 1 > index
-                    ? Colors.white
-                    : Color(0xff9CA3AF),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: Text(
+              "${index + 1}",
+              style: AppsStyles.s14Bold.copyWith(
+                color:
+                    widget.currentStep - 1 == index ||
+                            widget.currentStep - 1 > index
+                        ? Colors.white
+                        : Color(0xff9CA3AF),
+              ),
+            ),
           ),
         ),
       ),

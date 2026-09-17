@@ -18,6 +18,10 @@ class AppRoutes {
   static const String editProfileScreen = '/edit_profile_screen';
   static const String myCoursesScreen = '/myCoursesScreen';
     static const String privacyPolicyScreen = '/privacyPolicyScreen';
-    static const String helpAndSupportScreen = '/helpAndSupportScreen';
+    static const String sendSuppotTicketScreen = '/sendSupportTicketScreen';
+    static const String myTicketsScreen = '/myTicketsScreen';
     static const String videoPlayerScreen = '/videoPlayerScreen';
+    static const String downloadReportScreen = '/downloadReportScreen';
+    static const String upcomingsScreen = '/upcomingsScreen';
+    static const String overduesScreen = '/overduesScreen';
 }

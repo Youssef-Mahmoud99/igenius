@@ -34,11 +34,13 @@ dependencies:
   dartz: ^0.10.1
   equatable: ^2.0.7
   permission_handler: ^12.0.1
+  flutter_pdfview:
   go_router: ^16.1.0
   flutter_screenutil:
   get_it: ^8.2.0
   dio: ^5.9.0
-  html: ^0.15.6
+  flutter_html:
+  path_provider:
   fluttertoast: 8.2.12
   intl: ^0.20.2
   url_launcher: ^6.3.2

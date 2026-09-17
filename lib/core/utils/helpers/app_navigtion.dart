@@ -11,6 +11,7 @@ class AppNavaigation {
 
   // GoRouter navigation
   static void goToPage(String page) => context.go(page);
+  static void replacePage(String page) => context.pushReplacement(page);
 
   static void goToPageWithParams(String page, Map<String, dynamic> params) =>
       context.go(page, extra: params);

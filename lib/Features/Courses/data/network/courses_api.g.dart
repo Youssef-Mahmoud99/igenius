@@ -279,14 +279,14 @@ class _CoursesApi implements CoursesApi {
   }
 
   @override
-  Future<BaseResponse<List<AssignmentModel>>> getAssignmentAttempts(
+  Future<BaseResponse<List<AttemptsModel>>> getAssignmentAttempts(
     String id,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<BaseResponse<List<AssignmentModel>>>(
+    final _options = _setStreamType<BaseResponse<List<AttemptsModel>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -297,16 +297,15 @@ class _CoursesApi implements CoursesApi {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late BaseResponse<List<AssignmentModel>> _value;
+    late BaseResponse<List<AttemptsModel>> _value;
     try {
-      _value = BaseResponse<List<AssignmentModel>>.fromJson(
+      _value = BaseResponse<List<AttemptsModel>>.fromJson(
         _result.data!,
         (json) =>
             json is List<dynamic>
                 ? json
-                    .map<AssignmentModel>(
-                      (i) =>
-                          AssignmentModel.fromJson(i as Map<String, dynamic>),
+                    .map<AttemptsModel>(
+                      (i) => AttemptsModel.fromJson(i as Map<String, dynamic>),
                     )
                     .toList()
                 : List.empty(),
@@ -413,12 +412,12 @@ class _CoursesApi implements CoursesApi {
   }
 
   @override
-  Future<BaseResponse<List<ExamModel>>> getExamAttempts(String id) async {
+  Future<BaseResponse<List<AttemptsModel>>> getExamAttempts(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<BaseResponse<List<ExamModel>>>(
+    final _options = _setStreamType<BaseResponse<List<AttemptsModel>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -429,15 +428,15 @@ class _CoursesApi implements CoursesApi {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late BaseResponse<List<ExamModel>> _value;
+    late BaseResponse<List<AttemptsModel>> _value;
     try {
-      _value = BaseResponse<List<ExamModel>>.fromJson(
+      _value = BaseResponse<List<AttemptsModel>>.fromJson(
         _result.data!,
         (json) =>
             json is List<dynamic>
                 ? json
-                    .map<ExamModel>(
-                      (i) => ExamModel.fromJson(i as Map<String, dynamic>),
+                    .map<AttemptsModel>(
+                      (i) => AttemptsModel.fromJson(i as Map<String, dynamic>),
                     )
                     .toList()
                 : List.empty(),

@@ -186,7 +186,7 @@ class _MyCoursesScreenState extends State<MyCoursesScreen> {
             decoration: BoxDecoration(
             image: course.course?.image != null ? DecorationImage(
               image: NetworkImage(course.course?.image ?? ''),
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ) : null,
               color: AppColors.primary,
               borderRadius: const BorderRadius.only(
@@ -298,7 +298,7 @@ class _MyCoursesScreenState extends State<MyCoursesScreen> {
                     AppNavaigation.pushToPageWithParams(
                       AppRoutes.courseDetails,
                       {"courseId": course.course?.id, 
-                        "isBought": true,
+                        "isBought": true
                       },
                     );
                   },

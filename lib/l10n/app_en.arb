@@ -64,7 +64,8 @@
   "resend": "Resend",
   "codeNotReceived": "Didn't receive the code?",
   "home": "Home",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "resetFilter": "Reset Filter"
 
   
  

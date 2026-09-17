@@ -34,14 +34,7 @@ class OtpScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Image.asset(AppImages.logo, scale: 3),
-                          10.horizontalSpace,
-                          Image.asset(AppImages.logo2, height: 50.h),
-                        ],
-                      ),
-                      30.verticalSpace,
+                    Center(child: Image.asset(AppImages.logo, scale: 1.5)),
                       AppText(
                         text: 'Enter the code we just sent you',
                         style: AppsStyles.s20Bold.copyWith(

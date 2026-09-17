@@ -14,6 +14,7 @@ import '../../../../core/base/models/base_response.dart';
 import '../../../../core/base/models/error_model.dart';
 import '../../../Account/data/models/my_course_details_model.dart';
 import '../../../Account/data/models/my_course_model.dart';
+import '../models/attempts_model.dart';
 import '../models/courses_body.dart';
 import '../models/courses_model.dart';
 import '../network/courses_api.dart';
@@ -134,7 +135,7 @@ Future<Either<ErrorModel, BaseResponse<AssignmentModel>>> getAssignmentDetails(
 }
 
 @override
-Future<Either<ErrorModel, BaseResponse<List<AssignmentModel>>>> getAssignmentAttempts(
+Future<Either<ErrorModel, BaseResponse<List<AttemptsModel>>>> getAssignmentAttempts(
     String id) async {
   try {
     final response = await coursesApi.getAssignmentAttempts(id);
@@ -151,7 +152,7 @@ Future<Either<ErrorModel, BaseResponse>> submitAssignment(
     SubmitAssignmentParams params) async {
   try {
 final formData = FormData.fromMap({
-  'file': [
+  'files[]': [
     await MultipartFile.fromFile(
       params. file.path,
       filename:  params.file.path.split('/').last,
@@ -197,7 +198,7 @@ Future<Either<ErrorModel, BaseResponse<ExamModel>>> getMyExamDetails(
 }
 
 @override
-Future<Either<ErrorModel, BaseResponse<List<ExamModel>>>> getExamAttempts(
+Future<Either<ErrorModel, BaseResponse<List<AttemptsModel>>>> getExamAttempts(
     String id) async {
   try {
     final response = await coursesApi.getExamAttempts(id);
@@ -217,7 +218,7 @@ Future<Either<ErrorModel, BaseResponse<List<ExamModel>>>> getExamAttempts(
 Future<Either<ErrorModel, BaseResponse>> submitExam( SubmitExamParams params) async {
   try {
 final formData = FormData.fromMap({
-  'file': [
+  'files[]': [
     await MultipartFile.fromFile(
       params. file.path,
       filename:  params.file.path.split('/').last,

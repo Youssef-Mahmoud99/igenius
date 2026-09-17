@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:igenius/core/base/models/error_model.dart';
 import '../../../../../core/base/models/base_response.dart';
 import '../../models/support/support_model.dart';
-import '../../network/support_api.dart';
+import '../../network/support/support_api.dart';
 import 'support_repo.dart';
 
 class SupportRepoImpl implements SupportRepo {
@@ -12,7 +12,7 @@ class SupportRepoImpl implements SupportRepo {
   SupportRepoImpl(this.api);
 
   @override
-  Future<Either<ErrorModel, BaseResponse<SupportListModel>>> getSupportTickets({
+  Future<Either<ErrorModel, BaseResponse<List<SupportTicketModel>>>> getSupportTickets({
     int perPage = 20,
   }) async {
     try {
@@ -26,7 +26,7 @@ class SupportRepoImpl implements SupportRepo {
   }
 
   @override
-  Future<Either<ErrorModel, BaseResponse<SupportTicketModel>>> createSupportTicket(
+  Future<Either<ErrorModel, BaseResponse>> createSupportTicket(
     String message,
   ) async {
     try {

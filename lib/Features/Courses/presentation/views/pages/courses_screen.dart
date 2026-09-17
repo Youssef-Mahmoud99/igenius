@@ -86,93 +86,100 @@ class _CoursesScreenState extends State<CoursesScreen> {
         ],
       ),
       body: BaseGradient(
-        child: SingleChildScrollView(
-          controller: _scrollController, // <-- هنا الأساس
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 20.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: 10.rPadding,
-                  color: AppColors.white,
-                  child: Column(
-                    children: [
-                      CustomTextField(
-                        controller: searchController,
-                        suffix:
-                            context
-                                        .watch<CoursesCubit>()
-                                        .body
-                                        .search
-                                        ?.isNotEmpty ==
-                                    true
-                                ? IconButton(
-                                  onPressed: () {
-                                    searchController.clear();
-                                    search('');
-                                  },
-                                  icon: Icon(
-                                    Icons.clear,
-                                    color: AppColors.primary,
-                                  ),
-                                )
-                                : null,
-                        onChanged: (value) => search(value),
-                        fillColor: AppColors.borderGrey,
-                        hint: 'Search Courses...',
-                        prefix: const Icon(
-                          Icons.search,
-                          color: AppColors.grey,
-                          size: 20,
+        child: RefreshIndicator(
+                     onRefresh: () async {
+  final cubit = context.read<CoursesCubit>();
+            searchController.clear();
+            cubit.refreshCourses();          },
+
+          child: SingleChildScrollView(
+            controller: _scrollController, // <-- هنا الأساس
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 20.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: 10.rPadding,
+                    color: AppColors.white,
+                    child: Column(
+                      children: [
+                        CustomTextField(
+                          controller: searchController,
+                          suffix:
+                              context
+                                          .watch<CoursesCubit>()
+                                          .body
+                                          .search
+                                          ?.isNotEmpty ==
+                                      true
+                                  ? IconButton(
+                                    onPressed: () {
+                                      searchController.clear();
+                                      search('');
+                                    },
+                                    icon: Icon(
+                                      Icons.clear,
+                                      color: AppColors.primary,
+                                    ),
+                                  )
+                                  : null,
+                          onChanged: (value) => search(value),
+                          fillColor: AppColors.borderGrey,
+                          hint: 'Search Courses...',
+                          prefix: const Icon(
+                            Icons.search,
+                            color: AppColors.grey,
+                            size: 20,
+                          ),
                         ),
-                      ),
-                      10.verticalSpace,
-                      BlocBuilder<FilterDataCubit, BaseCubitState>(
-                        builder: (context, state) {
-                          final filterCubit = context.read<FilterDataCubit>();
-                          final coursesCubit = context.watch<CoursesCubit>();
-
-                          if (filterCubit.isSubjectsLoading) {
-                            return const CustomTypeShimmer(
-                               
-                            ); // أو أي شيمر أفقي لو عندك واحد مخصص
-                          }
-
-                          final items = <CourseTypeItem>[
-                            const CourseTypeItem(id: null, name: 'All Courses'),
-                            ...filterCubit.subjects.map(
-                              (s) =>
-                                  CourseTypeItem(id: s.id, name: s.name ?? ''),
-                            ),
-                          ];
-
-                          return CourseType(
-                            courseTypes: items,
-                            selectedId: coursesCubit.body.subjectId,
-                            onTypeSelected: (id) {
-                              context.read<CoursesCubit>().applyFilters(
-                                subjectId: id,
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ],
+                        10.verticalSpace,
+                        BlocBuilder<FilterDataCubit, BaseCubitState>(
+                          builder: (context, state) {
+                            final filterCubit = context.read<FilterDataCubit>();
+                            final coursesCubit = context.watch<CoursesCubit>();
+          
+                            if (filterCubit.isSubjectsLoading) {
+                              return const CustomTypeShimmer(
+                                 
+                              ); // أو أي شيمر أفقي لو عندك واحد مخصص
+                            }
+          
+                            final items = <CourseTypeItem>[
+                              const CourseTypeItem(id: null, name: 'All Courses'),
+                              ...filterCubit.subjects.map(
+                                (s) =>
+                                    CourseTypeItem(id: s.id, name: s.name ?? ''),
+                              ),
+                            ];
+          
+                            return CourseType(
+                              courseTypes: items,
+                              selectedId: coursesCubit.body.subjectId,
+                              onTypeSelected: (id) {
+                                context.read<CoursesCubit>().applyFilters(
+                                  subjectId: id,
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                10.verticalSpace,
-                SearchResultLengthAndType(
-                  resultsLength: context.watch<CoursesCubit>().totalCourses,
-                  onChanged: (value) {},
-                ),
-                10.verticalSpace,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: CoursesView(),
-                ),
-              ],
+                  10.verticalSpace,
+                  SearchResultLengthAndType(
+                    resultsLength: context.watch<CoursesCubit>().totalCourses,
+                    onChanged: (value) {},
+                  ),
+                  10.verticalSpace,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: CoursesView(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

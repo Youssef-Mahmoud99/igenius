@@ -32,11 +32,11 @@ class _FiltersScreenState extends State<FiltersScreen> {
   int? selectedBoardId;
   int? selectedSystemId;
 
-  String selectedSession = "All Sessions";
-  String selectedRating = "All Ratings";
+  // String selectedSession = "All Sessions";
+  // String selectedRating = "All Ratings";
 
-  final sessions = ["All Sessions", "Live Sessions", "Recorded Sessions"];
-  final ratings = ["All Ratings", "4.0+ ⭐", "4.5+ ⭐", "4.8+ ⭐"];
+  // final sessions = ["All Sessions", "Live Sessions", "Recorded Sessions"];
+  // final ratings = ["All Ratings", "4.0+ ⭐", "4.5+ ⭐", "4.8+ ⭐"];
 
   @override
   void initState() {
@@ -79,26 +79,26 @@ class _FiltersScreenState extends State<FiltersScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ..._buildDynamicFilters(cubit),
-                        _sectionTitle("Session Type"),
-                        ...sessions.map(
-                          (type) => CustomRadioTile(
-                            title: type,
-                            value: type,
-                            groupValue: selectedSession,
-                            onChanged: (value) =>
-                                setState(() => selectedSession = value!),
-                          ),
-                        ),
-                        _sectionTitle("Minimum Rating"),
-                        ...ratings.map(
-                          (rating) => CustomRadioTile(
-                            title: rating,
-                            value: rating,
-                            groupValue: selectedRating,
-                            onChanged: (value) =>
-                                setState(() => selectedRating = value!),
-                          ),
-                        ),
+                        // _sectionTitle("Session Type"),
+                        // ...sessions.map(
+                        //   (type) => CustomRadioTile(
+                        //     title: type,
+                        //     value: type,
+                        //     groupValue: selectedSession,
+                        //     onChanged: (value) =>
+                        //         setState(() => selectedSession = value!),
+                        //   ),
+                        // ),
+                        // _sectionTitle("Minimum Rating"),
+                        // ...ratings.map(
+                        //   (rating) => CustomRadioTile(
+                        //     title: rating,
+                        //     value: rating,
+                        //     groupValue: selectedRating,
+                        //     onChanged: (value) =>
+                        //         setState(() => selectedRating = value!),
+                        //   ),
+                        // ),
                         20.verticalSpace,
                       ],
                     );
@@ -214,8 +214,8 @@ List<Widget> _buildDynamicFilters(FilterDataCubit cubit) {
       selectedLevelId = null;
       selectedBoardId = null;
       selectedSystemId = null;
-      selectedSession = "All Sessions";
-      selectedRating = "All Ratings";
+      // selectedSession = "All Sessions";
+      // selectedRating = "All Ratings";
     });
 
     // بينادي الـ Cubit مباشرة عشان يمسح الفلاتر ويجيب الكورسات تاني

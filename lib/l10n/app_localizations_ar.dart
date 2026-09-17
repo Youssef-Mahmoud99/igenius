@@ -193,4 +193,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cancel => 'إلغاء';
+
+  @override
+  String get resetFilter => 'إعادة تعيين التصفية';
 }
