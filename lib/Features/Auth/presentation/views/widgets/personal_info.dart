@@ -30,6 +30,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
   String? city;
   String? school;
   String? grade;
+  String? birthDate;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +94,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
           RequiredFieldText(text: 'Telegram '),
           5.verticalSpace,
           CustomTextField(
-            
             onChanged: (value) {
               registerParams = registerParams?.copyWith(telegram: value);
             },
@@ -126,6 +126,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
           RequiredFieldText(text: 'School Name'),
           5.verticalSpace,
           CustomTextField(
+            hint: 'University of Egypt',
             onChanged: (value) {
               registerParams = registerParams?.copyWith(school: value);
             },
@@ -139,21 +140,26 @@ class _PersonalInfoState extends State<PersonalInfo> {
           ),
           10.verticalSpace,
           CustomTextField(
+            controller:  TextEditingController(text: birthDate ?? ''),
+            hint: '2002-01-01',
             readOnly: true,
             prefix: IconButton(
               onPressed: () async {
-                String? birthDate;
                 await HelperMethods.selectDate(context, birthDate).then((
                   value,
                 ) {
                   if (value != null) {
+                    print("Date selected: $value");
+                    setState(() {
+                      birthDate = value;
+                    });
                     registerParams = registerParams?.copyWith(birthDate: value);
                   }
                 });
               },
               icon: Icon(
                 FontAwesomeIcons.calendarAlt,
-                color: AppColors.grey,
+                color: AppColors.primary,
                 size: 15,
               ),
             ),
@@ -170,6 +176,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
           RequiredFieldText(text: 'Country'),
           5.verticalSpace,
           CustomTextField(
+            hint: 'Egypt',
             onChanged: (value) {
               registerParams = registerParams?.copyWith(country: value);
             },
@@ -185,6 +192,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
           RequiredFieldText(text: 'City'),
           5.verticalSpace,
           CustomTextField(
+            hint: 'Cairo',
             onChanged: (value) {
               registerParams = registerParams?.copyWith(city: value);
             },

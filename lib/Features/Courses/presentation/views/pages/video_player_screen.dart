@@ -8,6 +8,7 @@ import 'package:video_player/video_player.dart';
 
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/utils/helpers/screen_protection_helper.dart';
 import '../../../../../core/widgets/custom_text.dart';
 
 /// Custom Video Player Widget
@@ -66,6 +67,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   @override
   void initState() {
     super.initState();
+    ScreenSecurityHelper.enableScreenProtection();
     _initializePlayer();
   }
 
@@ -116,6 +118,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
 
   @override
   void dispose() {
+    ScreenSecurityHelper.disableScreenProtection();
     _videoPlayerController.removeListener(_checkProgress);
     _videoPlayerController.dispose();
     _chewieController?.dispose();

@@ -44,6 +44,7 @@ dependencies:
   fluttertoast: 8.2.12
   intl: ^0.20.2
   url_launcher: ^6.3.2
+  screen_secure:
   flutter_linkify: ^6.0.0
   get_storage: ^2.1.1
   dropdown_button2:
