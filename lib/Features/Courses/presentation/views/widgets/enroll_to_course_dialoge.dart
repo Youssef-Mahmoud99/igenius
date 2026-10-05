@@ -8,18 +8,22 @@ import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 import 'package:igenius/core/widgets/custom_text.dart';
 import 'package:igenius/core/widgets/primary_button.dart';
 import 'package:igenius/injection/service_locator.dart';
+import '../../../../../core/base/cubit/base_state.dart';
+import '../../../../../core/base/models/base_response.dart';
+import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/gradient_button.dart';
 import '../../../../payment/data/models/buy_course_params.dart';
 import '../../../../payment/data/models/pay_installment_params.dart';
+import '../../../../payment/data/models/payment_response.dart';
 import '../../../../payment/presentation/cubits/request_installment_cubit.dart';
 import '../../../data/models/course_details.dart';
 
-void showEnrollToCourseBottomSheet(
+Future<bool?> showEnrollToCourseBottomSheet(
   BuildContext context,
   CourseDetails courseDetails,
 ) {
-  showModalBottomSheet(
+  return showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
@@ -234,60 +238,87 @@ class _EnrollToCourseBottomSheetState extends State<EnrollToCourseBottomSheet> {
   // ===================== Tab 1: Pay in Full =====================
 
   Widget fullPaymentTab(CourseDetails details) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        moneyDisplay(
-          AppColors.greyDarker,
-          AppColors.greyDarker,
-          'Course Price',
-          "\$${details.price}",
-        ),
-        5.verticalSpace,
-        details.hasDiscount == true
-            ? moneyDisplay(
-              AppColors.green,
-              AppColors.green,
-              'Limited Time Discount',
-              "-\$${double.parse(details.priceAfterDiscount.toString()) - double.parse(details.price.toString())}",
-            )
-            : SizedBox.shrink(),
-        5.verticalSpace,
-        const Divider(color: Colors.grey, height: 1, thickness: 1),
-        10.verticalSpace,
-        moneyDisplay(
-          AppColors.black,
-          AppColors.primary,
-          'Total',
-          "\$${details.hasDiscount == true ? details.priceAfterDiscount : details.price}",
-          textStyle: AppsStyles.s14Bold,
-        ),
-        10.verticalSpace,
-        includedCard(),
-        10.verticalSpace,
-        GradientButton(
-          height: 40.h,
-          text: 'Complete Enrollment',
-          onTap: () {
-              context.read<BuyCourseCubit>().buyCourse(
-                BuyCourseParams(method: "card_dummy", id: widget.courseDetails.id!),
+    return BlocListener<BuyCourseCubit, BaseCubitState>(
+      listener: (context, state) async {
+        if (state is ErrorState) {
+          print("Error: ${state.message}");
+        }
+        if (state is SuccessState) {
+          final response = state.data as BaseResponse<PaymentResponseModel>;
+          final paymentResponse = response.data;
+          if (paymentResponse?.checkoutUrl == null) return;
+
+          // افتح صفحة الدفع واستنى النتيجة
+          bool? success =
+              await AppNavaigation.pushandReturnValueToPageWithParams(
+                AppRoutes.paymentWebViewScreen,
+                {'paymentUrl': paymentResponse!.checkoutUrl!},
               );
-          },
-        ),
-        10.verticalSpace,
-        Appbutton(
-          height: 40.h,
-          borderRadius: 12,
-          borderColor: AppColors.grey,
-          needBorder: true,
-          color: AppColors.white,
-          textColor: AppColors.black,
-          onPressed: () {
-            AppNavaigation.pop();
-          },
-          text: 'Cancel',
-        ),
-      ],
+
+          // اقفل الشيت وارجّع النتيجة للصفحة اللي نادت عليه
+          if (context.mounted) {
+            Navigator.of(context).pop(success ?? false);
+          }
+        }
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          moneyDisplay(
+            AppColors.greyDarker,
+            AppColors.greyDarker,
+            'Course Price',
+            "\$${details.price}",
+          ),
+          5.verticalSpace,
+          details.hasDiscount == true
+              ? moneyDisplay(
+                AppColors.green,
+                AppColors.green,
+                'Limited Time Discount',
+                "-\$${double.parse(details.priceAfterDiscount.toString()) - double.parse(details.price.toString())}",
+              )
+              : SizedBox.shrink(),
+          5.verticalSpace,
+          const Divider(color: Colors.grey, height: 1, thickness: 1),
+          10.verticalSpace,
+          moneyDisplay(
+            AppColors.black,
+            AppColors.primary,
+            'Total',
+            "\$${details.hasDiscount == true ? details.priceAfterDiscount : details.price}",
+            textStyle: AppsStyles.s14Bold,
+          ),
+          10.verticalSpace,
+          includedCard(),
+          10.verticalSpace,
+          GradientButton(
+            height: 40.h,
+            text: 'Complete Enrollment',
+            onTap: () {
+              context.read<BuyCourseCubit>().buyCourse(
+                BuyCourseParams(
+                  method: "paymob_card",
+                  id: widget.courseDetails.id!,
+                ),
+              );
+            },
+          ),
+          10.verticalSpace,
+          Appbutton(
+            height: 40.h,
+            borderRadius: 12,
+            borderColor: AppColors.grey,
+            needBorder: true,
+            color: AppColors.white,
+            textColor: AppColors.black,
+            onPressed: () {
+              AppNavaigation.pop();
+            },
+            text: 'Cancel',
+          ),
+        ],
+      ),
     );
   }
 
@@ -365,12 +396,18 @@ class _EnrollToCourseBottomSheetState extends State<EnrollToCourseBottomSheet> {
         10.verticalSpace,
         includedCard(),
         10.verticalSpace,
-        GradientButton(height: 40.h, text: 'Complete Enrollment', onTap: () {
-              context.read<PayInstallmentCubit>().payInstallment(
-                PayInstallmentParams(method: "card_dummy" , id: widget.courseDetails.id!),
-              );
-
-        }),
+        GradientButton(
+          height: 40.h,
+          text: 'Complete Enrollment',
+          onTap: () {
+            context.read<PayInstallmentCubit>().payInstallment(
+              PayInstallmentParams(
+                method: "card_dummy",
+                id: widget.courseDetails.id!,
+              ),
+            );
+          },
+        ),
         10.verticalSpace,
         Appbutton(
           height: 40.h,

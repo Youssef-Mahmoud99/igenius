@@ -9,6 +9,7 @@ import '../models/installment_model.dart';
 import '../models/installment_params.dart';
 import '../models/pay_installment_params.dart';
 import '../models/payment_model.dart';
+import '../models/payment_response.dart';
 import '../network/payment_api.dart';
 import 'payment_repo.dart';
 
@@ -71,7 +72,7 @@ class PaymentRepoImpl implements PaymentRepo {
   }
 
   @override
-  Future<Either<ErrorModel, BaseResponse>> buyCourse(
+  Future<Either<ErrorModel, BaseResponse<PaymentResponseModel>>> buyCourse(
       BuyCourseParams params ) async {
     try {
       final response = await paymentApi.buyCourse(params.id.toString() , params);

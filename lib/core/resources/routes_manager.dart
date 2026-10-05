@@ -43,6 +43,7 @@ import '../../Features/Courses/presentation/cubits/my_courses/my_course_details_
 import '../../Features/Courses/presentation/cubits/my_courses/my_courses_cubit.dart';
 import '../../Features/Courses/presentation/views/pages/course_details_screen.dart';
 import '../../Features/Courses/presentation/views/pages/courses_screen.dart';
+import '../../Features/Courses/presentation/views/pages/payment_screen.dart';
 import '../../Features/Home/presentation/cubits/get_about_cubit.dart';
 import '../../Features/Home/presentation/cubits/get_home_data_cubit.dart';
 import '../../Features/Notifications/presentation/cubits/delete_notification_cubit.dart';
@@ -183,6 +184,17 @@ class RoutesManager {
           );
         },
       ),
+            GoRoute(
+        path: AppRoutes.paymentWebViewScreen,
+        pageBuilder: (context, state) {
+          Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+          final paymentUrl = args['paymentUrl'] as String;
+          return SlideFadeTransition(
+            child: PaymentWebViewScreen(paymentUrl: paymentUrl),
+          );
+        },
+      ),
+
 
       GoRoute(
         path: AppRoutes.notificationsScreen,

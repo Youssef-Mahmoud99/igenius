@@ -9,6 +9,7 @@ import '../models/installment_params.dart';
 import '../models/pay_installment_params.dart';
 import '../models/payment_model.dart';
 import '../models/installment_model.dart';
+import '../models/payment_response.dart';
 
 part 'payment_api.g.dart';
 
@@ -26,8 +27,8 @@ abstract class PaymentApi {
   Future<BaseResponse> requestInstallment(@Body() InstallmentParams body);
 
   @POST(EndPoints.buyCourse + '/{id}')
-  Future<BaseResponse> buyCourse(
-    @Path('id') String method,
+  Future<BaseResponse<PaymentResponseModel>> buyCourse(
+    @Path('id') String id,
     @Body() BuyCourseParams body,
   );
 

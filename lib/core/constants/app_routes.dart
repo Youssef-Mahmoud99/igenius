@@ -24,4 +24,5 @@ class AppRoutes {
     static const String downloadReportScreen = '/downloadReportScreen';
     static const String upcomingsScreen = '/upcomingsScreen';
     static const String overduesScreen = '/overduesScreen';
+    static const String paymentWebViewScreen = '/paymentWebViewScreen';
 }

@@ -114,8 +114,8 @@ class _PaymentApi implements PaymentApi {
   }
 
   @override
-  Future<BaseResponse<dynamic>> buyCourse(
-    String method,
+  Future<BaseResponse<PaymentResponseModel>> buyCourse(
+    String id,
     BuyCourseParams body,
   ) async {
     final _extra = <String, dynamic>{};
@@ -123,22 +123,22 @@ class _PaymentApi implements PaymentApi {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _options = _setStreamType<BaseResponse<dynamic>>(
+    final _options = _setStreamType<BaseResponse<PaymentResponseModel>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/student/purchase/course/${method}',
+            '/student/purchase/course/${id}',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late BaseResponse<dynamic> _value;
+    late BaseResponse<PaymentResponseModel> _value;
     try {
-      _value = BaseResponse<dynamic>.fromJson(
+      _value = BaseResponse<PaymentResponseModel>.fromJson(
         _result.data!,
-        (json) => json as dynamic,
+        (json) => PaymentResponseModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

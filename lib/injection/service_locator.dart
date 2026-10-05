@@ -161,7 +161,7 @@ sl.registerFactory(() => SubmitExamCubit(sl<CoursesRepo>()));
   sl.registerLazySingleton(() => GetPaymentsCubit(sl<PaymentRepo>()));
   sl.registerLazySingleton(() => GetInstallmentsCubit(sl<PaymentRepo>()));
   sl.registerLazySingleton(() => RequestInstallmentCubit(sl<PaymentRepo>()));
-  sl.registerLazySingleton(() => BuyCourseCubit(sl<PaymentRepo>()));
+  sl.registerFactory(() => BuyCourseCubit(sl<PaymentRepo>()));
   sl.registerLazySingleton(() => BuyLessonCubit(sl<PaymentRepo>()));
   sl.registerLazySingleton(() => PayInstallmentCubit(sl<PaymentRepo>()));
 

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:igenius/Features/Courses/presentation/cubits/courses/courses_cubit.dart';
 import '../../../../../core/base/cubit/base_state.dart';
 import '../../../../../core/base/models/base_response.dart';
 import '../../../../../core/widgets/custom_text.dart';
+import '../../../../../injection/service_locator.dart';
 import '../../../data/models/course_details.dart';
 import '../../cubits/courses/course_details_cubit.dart';
 import 'course_details_body.dart';

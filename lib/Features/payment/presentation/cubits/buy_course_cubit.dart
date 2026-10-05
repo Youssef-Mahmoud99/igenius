@@ -1,9 +1,10 @@
 import '../../../../core/base/cubit/base_cubit.dart';
 import '../../../../core/base/models/base_response.dart';
 import '../../data/models/buy_course_params.dart';
+import '../../data/models/payment_response.dart';
 import '../../data/repos/payment_repo.dart';
 
-class BuyCourseCubit extends BaseCubit<BaseResponse> {
+class BuyCourseCubit extends BaseCubit<BaseResponse<PaymentResponseModel>> {
   final PaymentRepo repo;
 
   BuyCourseCubit(this.repo);

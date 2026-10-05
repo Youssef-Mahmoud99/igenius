@@ -8,6 +8,7 @@ import '../models/installment_model.dart';
 import '../models/installment_params.dart';
 import '../models/pay_installment_params.dart';
 import '../models/payment_model.dart';
+import '../models/payment_response.dart';
 
 abstract class PaymentRepo {
   Future<Either<ErrorModel, BaseResponse<PaymentModel>>> getPayments();
@@ -18,7 +19,7 @@ abstract class PaymentRepo {
   Future<Either<ErrorModel, BaseResponse>> requestInstallment(
       InstallmentParams params);
 
-  Future<Either<ErrorModel, BaseResponse>> buyCourse(
+  Future<Either<ErrorModel, BaseResponse<PaymentResponseModel>>> buyCourse(
       BuyCourseParams params );
 
   Future<Either<ErrorModel, BaseResponse>> buyLesson(

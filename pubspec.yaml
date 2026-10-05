@@ -74,6 +74,7 @@ dependencies:
   font_awesome_flutter:
   video_player: 
   chewie:
+  webview_flutter:
   flutter_localizations:
     sdk: flutter
 

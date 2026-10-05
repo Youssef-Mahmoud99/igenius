@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:igenius/Features/Courses/presentation/cubits/courses/courses_cubit.dart';
 
 import '../../../../../app.dart';
 import '../../../../../core/constants/app_routes.dart';
@@ -341,11 +343,11 @@ class CourseDetailsBody extends StatelessWidget {
                     child: GradientButton(
                       text: 'Enroll Now',
 
-                      onTap: () {
+                      onTap: () async {
                         print(
                           "hasInstallments: ${courseDetails.hasInstallmentPlan}",
                         );
-                        if (currentUser?.parentEmail != null) {
+                        if (currentUser == null) {
                           ToastHelper.showWarning(
                             "Please login to enroll in this course",
                           );
@@ -353,7 +355,16 @@ class CourseDetailsBody extends StatelessWidget {
                           return;
                         }
 
-                        showEnrollToCourseBottomSheet(context, courseDetails);
+                        bool? success = await showEnrollToCourseBottomSheet(
+                          context,
+                          courseDetails,
+                        );
+                        if (success == true) {
+                          await Future.delayed(
+                            const Duration(milliseconds: 300),
+                          );
+                          AppNavaigation.goToHome();
+                        }
                       },
 
                       height: 50,
