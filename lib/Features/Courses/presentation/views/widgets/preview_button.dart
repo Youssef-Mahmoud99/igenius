@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:igenius/core/localization/strings_manager.dart';
 import 'package:igenius/core/resources/styles_manager.dart';
 
 class PreviewButton extends StatefulWidget {

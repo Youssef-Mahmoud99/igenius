@@ -12,7 +12,7 @@ class PayInstallmentCubit extends BaseCubit<BaseResponse> {
 
   Future<void> payInstallment(PayInstallmentParams params) async {
     await execute(
-      useCase: repo.buyInstallment,
+      useCase: repo.payInstallment,
       params: params,
       requestMethod: 'POST',
       errorMessageExtractor: (failure) => failure.allErrorMessages,

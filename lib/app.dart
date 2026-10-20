@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
       child: BlocProvider(
         create: (context) => sl<ProfileCubit>(),
         child: MaterialApp.router(
+        
           routerConfig: RoutesManager.router,
           debugShowCheckedModeBanner: false,
           title: 'Igenius',

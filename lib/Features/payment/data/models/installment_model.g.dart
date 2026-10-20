@@ -19,7 +19,12 @@ InstallmentRequestModel _$InstallmentRequestModelFromJson(
       json['course'] == null
           ? null
           : CourseModel.fromJson(json['course'] as Map<String, dynamic>),
-  installments: json['installments'] as List<dynamic>?,
+  installments:
+      (json['installments'] as List<dynamic>?)
+          ?.map(
+            (e) => InstallmentDetailsModel.fromJson(e as Map<String, dynamic>),
+          )
+          .toList(),
 );
 
 Map<String, dynamic> _$InstallmentRequestModelToJson(
@@ -32,5 +37,29 @@ Map<String, dynamic> _$InstallmentRequestModelToJson(
   'requested_at': instance.requestedAt,
   'reviewed_at': instance.reviewedAt,
   'course': instance.course?.toJson(),
-  'installments': instance.installments,
+  'installments': instance.installments?.map((e) => e.toJson()).toList(),
+};
+
+InstallmentDetailsModel _$InstallmentDetailsModelFromJson(
+  Map<String, dynamic> json,
+) => InstallmentDetailsModel(
+  id: (json['id'] as num?)?.toInt(),
+  dueDate: json['due_date'] as String?,
+  amount: json['amount'] as num?,
+  isPaid: json['is_paid'] as bool?,
+  paidAt: json['paid_at'] as String?,
+  forgivenessDays: (json['forgiveness_days'] as num?)?.toInt(),
+  isOverdue: json['is_overdue'] as bool?,
+);
+
+Map<String, dynamic> _$InstallmentDetailsModelToJson(
+  InstallmentDetailsModel instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'due_date': instance.dueDate,
+  'amount': instance.amount,
+  'is_paid': instance.isPaid,
+  'paid_at': instance.paidAt,
+  'forgiveness_days': instance.forgivenessDays,
+  'is_overdue': instance.isOverdue,
 };

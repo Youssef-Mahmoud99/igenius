@@ -50,16 +50,64 @@ class _PaymentApi implements PaymentApi {
   }
 
   @override
-  Future<BaseResponse<InstallmentRequestModel>> myInstallmentRequests() async {
+  Future<BaseResponse<List<InstallmentRequestModel>>> myInstallmentRequests(
+    CoursesBody? body,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body?.toJson() ?? <String, dynamic>{});
+    final _options =
+        _setStreamType<BaseResponse<List<InstallmentRequestModel>>>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/student/installment-requests',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late BaseResponse<List<InstallmentRequestModel>> _value;
+    try {
+      _value = BaseResponse<List<InstallmentRequestModel>>.fromJson(
+        _result.data!,
+        (json) =>
+            json is List<dynamic>
+                ? json
+                    .map<InstallmentRequestModel>(
+                      (i) => InstallmentRequestModel.fromJson(
+                        i as Map<String, dynamic>,
+                      ),
+                    )
+                    .toList()
+                : List.empty(),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<BaseResponse<InstallmentRequestModel>> requestTwoMonthInstallment(
+    String id,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<BaseResponse<InstallmentRequestModel>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
+      Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/student/installment-requests',
+            '/student/courses/${id}/installments/instant',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -81,7 +129,7 @@ class _PaymentApi implements PaymentApi {
   }
 
   @override
-  Future<BaseResponse<dynamic>> requestInstallment(
+  Future<BaseResponse<dynamic>> requestPlanInstallment(
     InstallmentParams body,
   ) async {
     final _extra = <String, dynamic>{};
@@ -148,7 +196,7 @@ class _PaymentApi implements PaymentApi {
   }
 
   @override
-  Future<BaseResponse<dynamic>> buyLesson(
+  Future<BaseResponse<PaymentResponseModel>> buyLesson(
     String id,
     BuylessonParams body,
   ) async {
@@ -157,7 +205,7 @@ class _PaymentApi implements PaymentApi {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _options = _setStreamType<BaseResponse<dynamic>>(
+    final _options = _setStreamType<BaseResponse<PaymentResponseModel>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -168,11 +216,11 @@ class _PaymentApi implements PaymentApi {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late BaseResponse<dynamic> _value;
+    late BaseResponse<PaymentResponseModel> _value;
     try {
-      _value = BaseResponse<dynamic>.fromJson(
+      _value = BaseResponse<PaymentResponseModel>.fromJson(
         _result.data!,
-        (json) => json as dynamic,
+        (json) => PaymentResponseModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -182,7 +230,7 @@ class _PaymentApi implements PaymentApi {
   }
 
   @override
-  Future<BaseResponse<dynamic>> buyInstallment(
+  Future<BaseResponse<PaymentResponseModel>> payInstallment(
     String id,
     PayInstallmentParams body,
   ) async {
@@ -191,7 +239,7 @@ class _PaymentApi implements PaymentApi {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _options = _setStreamType<BaseResponse<dynamic>>(
+    final _options = _setStreamType<BaseResponse<PaymentResponseModel>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -202,11 +250,11 @@ class _PaymentApi implements PaymentApi {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late BaseResponse<dynamic> _value;
+    late BaseResponse<PaymentResponseModel> _value;
     try {
-      _value = BaseResponse<dynamic>.fromJson(
+      _value = BaseResponse<PaymentResponseModel>.fromJson(
         _result.data!,
-        (json) => json as dynamic,
+        (json) => PaymentResponseModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

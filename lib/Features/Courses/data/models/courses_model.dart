@@ -9,7 +9,7 @@ class CourseModel {
   final String? title;
   final String? description;
   final String? image;
-  final int? price;
+  final num? price;
 
   @JsonKey(name: 'price_after_discount')
   final int? priceAfterDiscount;
@@ -89,7 +89,7 @@ this.enrollmentsCount,
     String? title,
     String? description,
     String? image,
-    int? price,
+    num? price,
     int? priceAfterDiscount,
     int? effectivePrice,
     bool? hasDiscount,

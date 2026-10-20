@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:igenius/Features/payment/presentation/cubits/buy_lesson_cubit.dart';
 import 'package:igenius/app.dart';
 import 'package:igenius/core/resources/assets_manager.dart';
 import 'package:igenius/core/resources/styles_manager.dart';
@@ -10,6 +12,7 @@ import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/utils/helpers/toast_helper.dart';
 import '../../../../../core/widgets/custom_text.dart';
+import '../../../../payment/data/models/buy_lesson_params.dart';
 import 'preview_button.dart';
 
 class LessonView extends StatelessWidget {
@@ -20,7 +23,9 @@ class LessonView extends StatelessWidget {
   final bool isPreview;
   final LessonType type;
   final int id;
-  final bool isOwned;
+  final bool isOwned; // الكورس مشترى
+  final bool isLessonOwned; // الدرس نفسه مشترى
+  final num? price; // لو > 0 الدرس متاح للشراء
 
   const LessonView({
     super.key,
@@ -32,85 +37,112 @@ class LessonView extends StatelessWidget {
     this.type = LessonType.lesson,
     required this.id,
     required this.isOwned,
+    this.isLessonOwned = false,
+    this.price,
   });
+
+  /// عنده صلاحية (الكورس كله أو الدرس لوحده مشترى)
+  bool get _hasAccess => isOwned || isLessonOwned;
+
+  /// الدرس مقفول فعلاً (مش مشترى ومش preview)
+  bool get _isReallyLocked => isLocked && !_hasAccess && !isPreview;
+
+  /// يظهر زرار preview
+  bool get _showPreview =>
+      type == LessonType.lesson && isPreview && !_hasAccess;
+
+  /// يظهر زرار Buy: درس، ليه سعر حقيقي، ومش مملوك
+  bool get _showBuy =>
+      type == LessonType.lesson &&
+      !_hasAccess &&
+      price != null &&
+      price! > 0;
+
+  /// الباهت يتطبق على الأيقونة والعنوان بس
+  double get _contentOpacity => isLocked && !_hasAccess ? 0.6 : 1;
+
+  void _openLesson() {
+    AppNavaigation.pushToPageWithParams(
+      AppRoutes.lessonViewScreen,
+      {
+        'lessonId': id,
+        'unitTitle': unitTitle,
+        'isOwned': _hasAccess,
+      },
+    );
+  }
+
+  void _onTap() {
+    if (_isReallyLocked && !_showBuy) return;
+
+    switch (type) {
+      case LessonType.quiz:
+        if (currentUser != null) {
+          if (isOwned) {
+            AppNavaigation.pushToPageWithParams(
+              AppRoutes.assignmentViewScreen,
+              {'id': id, 'unitTitle': unitTitle, 'isExam': false},
+            );
+          } else {
+            ToastHelper.showWarning(
+              "You can access this assignment only after purchasing it",
+            );
+          }
+        } else {
+          ToastHelper.showWarning("Please login to access this assignment");
+        }
+        break;
+
+      case LessonType.exam:
+        if (currentUser != null) {
+          if (isOwned) {
+            AppNavaigation.pushToPageWithParams(
+              AppRoutes.assignmentViewScreen,
+              {'id': id, 'unitTitle': unitTitle, 'isExam': true},
+            );
+          } else {
+            ToastHelper.showWarning(
+              "You can access this exam only after purchasing it",
+            );
+          }
+        } else {
+          ToastHelper.showWarning("Please login to access this exam");
+        }
+        break;
+
+      case LessonType.lesson:
+        if (currentUser != null) {
+          if (isPreview || _hasAccess) {
+            _openLesson();
+          } else {
+            ToastHelper.showWarning(
+              "You can access this lesson only after purchasing it",
+            );
+          }
+        } else {
+          ToastHelper.showWarning("Please login to access this lesson");
+        }
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: isLocked ? 0.6 : 1,
-      child: GestureDetector(
-        onTap: () {
-          if (isLocked) return;
-
-          switch (type) {
-            case LessonType.quiz:
-              if (currentUser != null  ){
-                if (isOwned) {
-                  AppNavaigation.pushToPageWithParams(AppRoutes.assignmentViewScreen, {
-                    'id': id,
-                    'unitTitle': unitTitle,
-                    'isExam': false,
-                  });
-                }
-                else{
-                  print( "user Name: ${currentUser?.user?.name}");
-                  ToastHelper.showWarning("You can access this assignment only after purchasing it");
-                }
-              }
-              else{
-                ToastHelper.showWarning("Please login to access this  assignment");
-              }
-              break;
-
-            case LessonType.exam:
-              if (currentUser != null  ){
-                if (isOwned) {
-                  AppNavaigation.pushToPageWithParams(AppRoutes.assignmentViewScreen, {
-                    'id': id,
-                    'unitTitle': unitTitle,
-                    'isExam': true,
-                  });
-                }
-                else{
-                  ToastHelper.showWarning("You can access this exam only after purchasing it");
-                }
-              }
-              else{
-                ToastHelper.showWarning("Please login to access this exam");
-              }
-              break;
-
-            case LessonType.lesson:
-            if (currentUser != null  ){
-              if ( isPreview || isOwned) {
-              AppNavaigation.pushToPageWithParams(AppRoutes.lessonViewScreen, {
-                'lessonId': id,
-                'unitTitle': unitTitle,
-                'isOwned': isOwned,
-              });
-
-              }
-              else{
-                ToastHelper.showWarning("You can access this lesson only after purchasing it");
-              }
-
-            }
-            else{
-              ToastHelper.showWarning("Please login to access this lesson");
-            }
-              break;
-          }
-        },
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 4),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          decoration: BoxDecoration(
-            color: const Color(0xfff8f8f8),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            children: [
-              ClipRRect(
+    return GestureDetector(
+      onTap: _onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(
+          color: const Color(0xfff8f8f8),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          children: [
+            // ---------- الأيقونة (باهتة لو مقفول) ----------
+            Opacity(
+              opacity: _contentOpacity,
+              child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
                   width: 40.w,
@@ -119,36 +151,69 @@ class LessonView extends StatelessWidget {
                   child: _buildIcon(),
                 ),
               ),
+            ),
 
-              10.horizontalSpace,
+            10.horizontalSpace,
 
-              Expanded(
+            // ---------- العنوان (باهت لو مقفول) ----------
+            Expanded(
+              child: Opacity(
+                opacity: _contentOpacity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText(text: title, style: AppsStyles.s12Bold),
-                    5.verticalSpace,
-                    type == LessonType.lesson
-                        ? Row(
-                          children: [
-                            AppText(
-                              text: duration! + "m",
-                              style: AppsStyles.s10Regular.copyWith(
-                                color: AppColors.grey,
-                              ),
-                            ),
-                          ],
-                        )
-                        : SizedBox.shrink(),
+                    if (type == LessonType.lesson &&
+                        (duration?.isNotEmpty ?? false)) ...[
+                      5.verticalSpace,
+                      AppText(
+                        text: "${duration}m",
+                        style: AppsStyles.s10Regular.copyWith(
+                          color: AppColors.grey,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
+            ),
 
-              if (isPreview) PreviewButton(onPressed: () {}),
+            // ---------- الأزرار (برّا الـ Opacity => لونها كامل) ----------
+            if (_showPreview || _showBuy)
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  if (_showPreview)
+                    PreviewButton(
+                      onPressed: () {
+                        if (currentUser != null) {
+                          _openLesson();
+                        } else {
+                          ToastHelper.showWarning(
+                            "Please login to access this lesson",
+                          );
+                        }
+                      },
+                    ),
 
-              if (isLocked) PreviewButton(onPressed: () {}, text: 'Buy'),
-            ],
-          ),
+                  if (_showPreview && _showBuy) 6.verticalSpace,
+
+                  if (_showBuy)
+                    PreviewButton(
+                      text: 'Buy Lesson',
+                      onPressed: () {
+                        context.read<BuyLessonCubit>().buyLesson(
+                              BuylessonParams(
+                                method: "paymob_card",
+                                id: id,
+                              ),
+                            );
+                      },
+                    ),
+                ],
+              ),
+          ],
         ),
       ),
     );
@@ -157,6 +222,7 @@ class LessonView extends StatelessWidget {
   // ---------------- UI HELPERS ----------------
 
   Widget _buildIcon() {
+    final locked = isLocked && !_hasAccess;
     switch (type) {
       case LessonType.exam:
         return Icon(
@@ -170,32 +236,25 @@ class LessonView extends StatelessWidget {
 
       case LessonType.lesson:
         return Icon(
-          isLocked ? Icons.lock_outline : Icons.play_circle_outlined,
-          color: isLocked ? Colors.grey : Colors.blueAccent,
+          locked ? Icons.lock_outline : Icons.play_circle_outlined,
+          color: locked ? Colors.grey : Colors.blueAccent,
         );
     }
   }
 
   Color _iconBgColor() {
+    final locked = isLocked && !_hasAccess;
     switch (type) {
       case LessonType.exam:
-        return const Color(0xffFEE2E2); // light red
+        return const Color(0xffFEE2E2);
 
       case LessonType.quiz:
-        return Colors.amberAccent.withOpacity(0.2); // gray
+        return Colors.amberAccent.withOpacity(0.2);
 
       case LessonType.lesson:
-        return isLocked
-            ? const Color(0xffE5E7EB)
-            : const Color(0xffBFDBFE); // blue
+        return locked ? const Color(0xffE5E7EB) : const Color(0xffBFDBFE);
     }
   }
 }
 
-// ---------------- ENUM ----------------
-
-enum LessonType {
-  lesson,
-  quiz, // assignment
-  exam,
-}
+enum LessonType { lesson, quiz, exam }

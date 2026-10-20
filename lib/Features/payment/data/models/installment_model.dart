@@ -23,7 +23,7 @@ class InstallmentRequestModel {
 
   final CourseModel? course;
 
-  final List<dynamic>? installments;
+  final List<InstallmentDetailsModel>? installments;
 
   const InstallmentRequestModel({
     this.id,
@@ -41,4 +41,44 @@ class InstallmentRequestModel {
 
   Map<String, dynamic> toJson() =>
       _$InstallmentRequestModelToJson(this);
+}
+
+
+
+@JsonSerializable()
+class InstallmentDetailsModel {
+  final int? id;
+
+  @JsonKey(name: 'due_date')
+  final String? dueDate;
+
+  final num? amount;
+
+  @JsonKey(name: 'is_paid')
+  final bool? isPaid;
+
+  @JsonKey(name: 'paid_at')
+  final String? paidAt;
+
+  @JsonKey(name: 'forgiveness_days')
+  final int? forgivenessDays;
+
+  @JsonKey(name: 'is_overdue')
+  final bool? isOverdue;
+
+  const InstallmentDetailsModel({
+    this.id,
+    this.dueDate,
+    this.amount,
+    this.isPaid,
+    this.paidAt,
+    this.forgivenessDays,
+    this.isOverdue,
+  });
+
+  factory InstallmentDetailsModel.fromJson(Map<String, dynamic> json) =>
+      _$InstallmentDetailsModelFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$InstallmentDetailsModelToJson(this);
 }

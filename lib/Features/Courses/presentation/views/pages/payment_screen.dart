@@ -1,13 +1,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:igenius/core/constants/app_routes.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../../../core/utils/helpers/app_navigtion.dart';
+
+enum PaymentStatus { success, failed, unknown }
+
 class PaymentResult {
-  final bool success;
+  final PaymentStatus status;
   final String? reason;
 
-  const PaymentResult(this.success, [this.reason]);
+  const PaymentResult(this.status, [this.reason]);
+
+  bool get isSuccess => status == PaymentStatus.success;
 }
 
 class PaymentWebViewScreen extends StatefulWidget {
@@ -27,7 +34,7 @@ class PaymentWebViewScreen extends StatefulWidget {
 class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
   late final WebViewController _controller;
   int _progress = 0;
-  bool _paymentHandled = false;
+  bool _finished = false;
 
   void _log(String tag, String message) {
     debugPrint('[PaymentWebView][$tag] $message');
@@ -44,83 +51,91 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
           ..setBackgroundColor(Colors.white)
           ..addJavaScriptChannel(
             'PaymentChannel',
-            onMessageReceived: (JavaScriptMessage msg) {
+            onMessageReceived: (msg) {
               _log('JS_CHANNEL', msg.message);
               final m = msg.message.trim().toLowerCase();
               if (m == 'success') {
-                handleSuccess(msg.message);
+                _finish(const PaymentResult(PaymentStatus.success));
               } else if (m == 'failed' || m == 'failure') {
-                handleFailure(msg.message, null);
+                _finish(const PaymentResult(PaymentStatus.failed));
               }
             },
           )
           ..setNavigationDelegate(
             NavigationDelegate(
-              onPageStarted: (url) => _log('PAGE_STARTED', url),
-              onPageFinished: (url) => _log('PAGE_FINISHED', url),
+              onPageStarted: (url) {
+                _log('PAGE_STARTED', url);
+                _checkUrl(url);
+              },
+              onPageFinished: (url) {
+                _log('PAGE_FINISHED', url);
+                _checkUrl(url);
+              },
               onProgress: (p) {
-                _log('PROGRESS', '$p%');
                 if (mounted) setState(() => _progress = p);
               },
-              onUrlChange: (change) => _log('URL_CHANGE', '${change.url}'),
+              onUrlChange: (change) {
+                final u = change.url;
+                _log('URL_CHANGE', '$u');
+                if (u != null) _checkUrl(u);
+              },
               onNavigationRequest: (request) {
-                _log(
-                  'NAV_REQUEST',
-                  'url=${request.url} | isMainFrame=${request.isMainFrame}',
-                );
-
-                final result = evaluateUrl(request.url);
-                if (result != null) {
-                  if (result.success) {
-                    handleSuccess(request.url);
-                  } else {
-                    handleFailure(request.url, result.reason);
-                  }
-                  return NavigationDecision.prevent; // يمنع التحميل لـ /login
-                }
-                return NavigationDecision.navigate;
+                _log('NAV_REQUEST', request.url);
+                // لو اللينك ده نهاية الدفع، امنع تحميله وقفل الصفحة
+                return _checkUrl(request.url)
+                    ? NavigationDecision.prevent
+                    : NavigationDecision.navigate;
               },
-              onHttpError: (error) {
-                _log(
-                  'HTTP_ERROR',
-                  'status=${error.response?.statusCode} | uri=${error.request?.uri}',
-                );
-              },
-              onWebResourceError: (error) {
-                _log(
-                  'WEB_RESOURCE_ERROR',
-                  'code=${error.errorCode} | type=${error.errorType} | '
-                      'mainFrame=${error.isForMainFrame} | desc=${error.description} | url=${error.url}',
-                );
-              },
+              onHttpError:
+                  (e) => _log(
+                    'HTTP_ERROR',
+                    'status=${e.response?.statusCode} | uri=${e.request?.uri}',
+                  ),
+              onWebResourceError:
+                  (e) => _log(
+                    'WEB_RESOURCE_ERROR',
+                    'code=${e.errorCode} | desc=${e.description} | url=${e.url}',
+                  ),
             ),
-          );
-
-    _controller.setOnConsoleMessage((JavaScriptConsoleMessage m) {
-      _log('CONSOLE_${m.level.name}', m.message);
-    });
-
-    _controller.loadRequest(Uri.parse(widget.paymentUrl));
+          )
+          ..setOnConsoleMessage(
+            (m) => _log('CONSOLE_${m.level.name}', m.message),
+          )
+          ..loadRequest(Uri.parse(widget.paymentUrl));
   }
 
+  /// بيفحص اللينك. لو هو نهاية الدفع بيقفل الصفحة ويرجّع true.
+  bool _checkUrl(String url) {
+    final result = evaluateUrl(url);
+    if (result == null) return false;
+    _finish(result);
+    return true;
+  }
 
   PaymentResult? evaluateUrl(String url) {
     final uri = Uri.tryParse(url);
     if (uri == null) return null;
-    if (!uri.path.contains(widget.returnPathContains)) return null;
 
-    final q = uri.queryParameters;
-    final ok =
-        q['success'] == 'true' &&
-        q['pending'] != 'true' &&
-        q['error_occured'] != 'true' &&
-        q['txn_response_code'] == 'APPROVED';
-    if (ok) return const PaymentResult(true);
+    // 1) صفحة الـ return بتاعت الباك اند
+    if (uri.path.contains(widget.returnPathContains)) {
+      final q = uri.queryParameters;
+      bool isTrue(String k) => q[k]?.toLowerCase() == 'true';
 
-    return PaymentResult(false, _extractFailureReason(q));
+      if (isTrue('success') && !isTrue('pending') && !isTrue('error_occured')) {
+        return const PaymentResult(PaymentStatus.success);
+      }
+      return PaymentResult(PaymentStatus.failed, _extractFailureReason(q));
+    }
+
+    // 2) الباك اند بيعمل redirect لـ /login بعد الدفع (اللي كنت ماسكه قبل كده)
+    //    مش عارفين النتيجة من اللينك، فبنرجّع unknown والـ caller يسأل السيرفر
+    if (uri.path == '/login' || uri.path.endsWith('/login')) {
+      return const PaymentResult(PaymentStatus.unknown);
+    }
+
+    return null;
   }
 
-  /// بيطلع سبب الفشل من الـ query parameters
   String _extractFailureReason(Map<String, String> q) {
     if (q['pending'] == 'true') {
       return 'Your payment is still pending. Please check again later.';
@@ -139,43 +154,35 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
     return 'The payment could not be completed.';
   }
 
+  void _finish(PaymentResult result) {
+    if (_finished) return;
+    _finished = true;
+    _log('FINISH', 'status=${result.status} reason=${result.reason}');
 
-  void handleSuccess(String? url) {
-    if (_paymentHandled) return;
-    _paymentHandled = true;
-    _log('PAYMENT_SUCCESS', 'url=$url');
-    _finish(true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      GoRouter.of(context).pop<PaymentResult>(result);
+    });
   }
 
-  void handleFailure(String? url, String? reason) {
-    if (_paymentHandled) return;
-    _paymentHandled = true;
-    _log('PAYMENT_FAILED', 'reason=$reason | url=$url');
-    _finish(false);
-  }
-
-  /// يقفل الصفحة ويرجّع النتيجة للي نادى عليها
-  void _finish(bool success) {
-    if (!mounted) return;
-    context.pop<bool>(success);
-  }
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: true,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop) _log('CLOSED', 'payment page closed | result=$result');
-      },
-      child: Scaffold(
-        body: SafeArea(
-          child: Stack(
-            children: [
-              WebViewWidget(controller: _controller),
-              if (_progress < 100)
-                LinearProgressIndicator(value: _progress / 100, minHeight: 3),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 44,
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () => _finish(const PaymentResult(PaymentStatus.unknown)),
+        ),
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            WebViewWidget(controller: _controller),
+            if (_progress < 100)
+              LinearProgressIndicator(value: _progress / 100, minHeight: 3),
+          ],
         ),
       ),
     );

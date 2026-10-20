@@ -12,7 +12,7 @@ CourseDetails _$CourseDetailsFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String?,
       description: json['description'] as String?,
       image: json['image'] as String?,
-      price: (json['price'] as num?)?.toInt(),
+      price: json['price'] as num?,
       priceAfterDiscount: (json['price_after_discount'] as num?)?.toInt(),
       effectivePrice: (json['effective_price'] as num?)?.toInt(),
       hasDiscount: json['has_discount'] as bool?,
@@ -120,7 +120,7 @@ LessonModel _$LessonModelFromJson(Map<String, dynamic> json) => LessonModel(
   order: (json['order'] as num?)?.toInt(),
   isPreview: json['is_preview'] as bool?,
   isBuyable: json['is_buyable'] as bool?,
-  price: (json['price'] as num?)?.toInt(),
+  price: json['price'] as num?,
   isLive: json['is_live'] as bool?,
   meetingUrl: json['meeting_url'] as String?,
   meetingDate: json['meeting_date'] as String?,
@@ -131,6 +131,7 @@ LessonModel _$LessonModelFromJson(Map<String, dynamic> json) => LessonModel(
           ?.map((e) => FileModel.fromJson(e as Map<String, dynamic>))
           .toList(),
   attendance: json['attendance'],
+  isOwned: json['is_owned'] as bool?,
 );
 
 Map<String, dynamic> _$LessonModelToJson(LessonModel instance) =>
@@ -145,6 +146,7 @@ Map<String, dynamic> _$LessonModelToJson(LessonModel instance) =>
       'order': instance.order,
       'is_preview': instance.isPreview,
       'is_buyable': instance.isBuyable,
+      'is_owned': instance.isOwned,
       'price': instance.price,
       'is_live': instance.isLive,
       'meeting_url': instance.meetingUrl,

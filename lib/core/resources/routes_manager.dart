@@ -15,7 +15,7 @@ import 'package:igenius/Features/home/presentation/views/pages/Home_screen.dart'
 import 'package:igenius/Features/layout/layout_screen.dart';
 import 'package:igenius/Features/payment/presentation/cubits/buy_lesson_cubit.dart';
 import 'package:igenius/Features/payment/presentation/cubits/pay_installment_cubit.dart';
-import 'package:igenius/Features/payment/presentation/cubits/request_installment_cubit.dart';
+import 'package:igenius/Features/payment/presentation/cubits/request_installment_plan_cubit.dart';
 import 'package:igenius/splash_screen.dart';
 import '../../Features/Account/presentation/cubits/profile/profile_cubit.dart';
 import '../../Features/Account/presentation/cubits/profile/update_profile_cubit.dart';
@@ -25,6 +25,7 @@ import '../../Features/Account/presentation/cubits/schedule/get_upcomings_cubit.
 import '../../Features/Account/presentation/cubits/support/my_support_tickets_cubit.dart';
 import '../../Features/Account/presentation/cubits/support/send_support_ticket.dart';
 import '../../Features/Account/presentation/views/pages/help_and_support_screen.dart';
+import '../../Features/Account/presentation/views/pages/my_installements_screen.dart';
 import '../../Features/Account/presentation/views/pages/my_tickets_screen.dart';
 import '../../Features/Account/presentation/views/pages/overdues_page.dart';
 import '../../Features/Account/presentation/views/pages/reports_download_page.dart';
@@ -59,6 +60,7 @@ import '../../Features/Notifications/presentation/views/pages/notifications_scre
 import '../../Features/Teachers/presentation/views/pages/teachers_screen.dart';
 import '../../Features/Teachers/presentation/views/widgets/teacher_profile.dart';
 import '../../Features/payment/presentation/cubits/buy_course_cubit.dart';
+import '../../Features/payment/presentation/cubits/get_installments_cubit.dart';
 import '../../app.dart';
 import '../../injection/service_locator.dart';
 import '../animations/page_transitions.dart';
@@ -126,9 +128,7 @@ class RoutesManager {
             child: MultiBlocProvider(
               providers: [
                 BlocProvider.value(value: sl<FilterDataCubit>()),
-                BlocProvider.value(
-                  value: sl<CoursesCubit>(),
-                ), // ✅ .value مش create
+                BlocProvider(create: (context) => sl<CoursesCubit>()),
               ],
               child: FiltersScreen(isCourses: isCourses),
             ),
@@ -174,7 +174,6 @@ class RoutesManager {
               providers: [
                 BlocProvider(create: (context) => sl<CourseDetailsCubit>()),
                 BlocProvider(create: (context) => sl<MyCourseDetailsCubit>()),
-                BlocProvider(create: (context) => sl<BuyLessonCubit>()),
               ],
               child: CourseDetailsScreen(
                 isBought: isBought,
@@ -184,7 +183,7 @@ class RoutesManager {
           );
         },
       ),
-            GoRoute(
+      GoRoute(
         path: AppRoutes.paymentWebViewScreen,
         pageBuilder: (context, state) {
           Map<String, dynamic> args = state.extra as Map<String, dynamic>;
@@ -194,7 +193,6 @@ class RoutesManager {
           );
         },
       ),
-
 
       GoRoute(
         path: AppRoutes.notificationsScreen,
@@ -225,7 +223,11 @@ class RoutesManager {
                 BlocProvider(create: (context) => sl<LessonContentCubit>()),
                 BlocProvider(create: (context) => sl<MarkAttendanceCubit>()),
               ],
-              child: LessonViewScreen(unitTitle: unitTitle, lessonId: lessonId, isOwned: isOwned),
+              child: LessonViewScreen(
+                unitTitle: unitTitle,
+                lessonId: lessonId,
+                isOwned: isOwned,
+              ),
             ),
           );
         },
@@ -250,10 +252,11 @@ class RoutesManager {
 
       GoRoute(
         path: AppRoutes.aboutUsScreen,
-        builder: (context, state) =>  BlocProvider( 
-          create: (context) => sl<GetAboutCubit>()..getAbout(),
-        child: AboutUsScreen(),
-         ),
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => sl<GetAboutCubit>()..getAbout(),
+              child: AboutUsScreen(),
+            ),
       ),
       GoRoute(
         path: AppRoutes.editProfileScreen,
@@ -270,6 +273,11 @@ class RoutesManager {
               create: (context) => sl<MyCoursesCubit>(),
               child: MyCoursesScreen(),
             ),
+      ),
+      GoRoute(
+        path: AppRoutes.myInstallmentsScreen,
+        builder:
+            (context, state) => InstallmentsPage(),
       ),
       GoRoute(
         path: AppRoutes.privacyPolicyScreen,
@@ -293,24 +301,27 @@ class RoutesManager {
       ),
       GoRoute(
         path: AppRoutes.downloadReportScreen,
-        builder: (context, state) => BlocProvider(
-          create: (context) => sl<DownloadReportCubit>(),
-          child: ReportsDownloadPage(),
-        ),
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => sl<DownloadReportCubit>(),
+              child: ReportsDownloadPage(),
+            ),
       ),
       GoRoute(
         path: AppRoutes.overduesScreen,
-        builder: (context, state) => BlocProvider(
-          create: (context) => sl<GetOverduesCubit>(),
-          child: OverduePage(),
-        ),
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => sl<GetOverduesCubit>(),
+              child: OverduePage(),
+            ),
       ),
       GoRoute(
-        path: AppRoutes. upcomingsScreen,
-        builder: (context, state) => BlocProvider(
-          create: (context) => sl<GetUpcomingsCubit>(),
-          child: UpcomingPage(),
-        ),
+        path: AppRoutes.upcomingsScreen,
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => sl<GetUpcomingsCubit>(),
+              child: UpcomingPage(),
+            ),
       ),
       GoRoute(
         path: AppRoutes.myTicketsScreen,

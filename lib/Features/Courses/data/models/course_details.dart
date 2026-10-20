@@ -9,7 +9,7 @@ class CourseDetails {
   final String? title;
   final String? description;
   final String? image;
-  final int? price;
+  final num? price;
 
   @JsonKey(name: 'price_after_discount')
   final int? priceAfterDiscount;
@@ -38,7 +38,6 @@ class CourseDetails {
   @JsonKey(name: 'is_owned')
   final bool? isOwned;
 
-
   final Teacher? teacher;
   final Teacher? subject;
   final Teacher? level;
@@ -46,16 +45,16 @@ class CourseDetails {
   final Teacher? system;
   final List<UnitModel>? units;
   @JsonKey(name: 'is_has_lesson_bought')
-final bool? isHasLessonBought;
+  final bool? isHasLessonBought;
 
-@JsonKey(name: 'is_private')
-final bool? isPrivate;
+  @JsonKey(name: 'is_private')
+  final bool? isPrivate;
 
-@JsonKey(name: 'max_students')
-final int? maxStudents;
+  @JsonKey(name: 'max_students')
+  final int? maxStudents;
 
-@JsonKey(name: 'enrollments_count')
-final int? enrollmentsCount;
+  @JsonKey(name: 'enrollments_count')
+  final int? enrollmentsCount;
 
   const CourseDetails({
     this.id,
@@ -79,9 +78,9 @@ final int? enrollmentsCount;
     this.units,
     this.isOwned,
     this.isHasLessonBought,
-this.isPrivate,
-this.maxStudents,
-this.enrollmentsCount,
+    this.isPrivate,
+    this.maxStudents,
+    this.enrollmentsCount,
   });
 
   factory CourseDetails.fromJson(Map<String, dynamic> json) =>
@@ -89,7 +88,6 @@ this.enrollmentsCount,
 
   Map<String, dynamic> toJson() => _$CourseDetailsToJson(this);
 }
-
 
 @JsonSerializable(genericArgumentFactories: true) // شيل ignoreUnannotated
 class UnitModel {
@@ -142,8 +140,10 @@ class LessonModel {
 
   @JsonKey(name: 'is_buyable')
   final bool? isBuyable;
+  @JsonKey(name: 'is_owned')
+  final bool? isOwned;
 
-  final int? price;
+  final num? price;
 
   @JsonKey(name: 'is_live')
   final bool? isLive;
@@ -183,6 +183,7 @@ class LessonModel {
     this.deadlineDate,
     this.files,
     this.attendance,
+    this.isOwned,
   });
 
   factory LessonModel.fromJson(Map<String, dynamic> json) =>
@@ -190,8 +191,6 @@ class LessonModel {
 
   Map<String, dynamic> toJson() => _$LessonModelToJson(this);
 }
-
-
 
 @JsonSerializable(genericArgumentFactories: true)
 class AssignmentModel {
@@ -244,7 +243,6 @@ class AssignmentModel {
 
   Map<String, dynamic> toJson() => _$AssignmentModelToJson(this);
 }
-
 
 @JsonSerializable(genericArgumentFactories: true)
 class ExamModel {
@@ -311,8 +309,6 @@ class ExamModel {
   Map<String, dynamic> toJson() => _$ExamModelToJson(this);
 }
 
-
-
 @JsonSerializable(genericArgumentFactories: true) // شيل ignoreUnannotated
 class FileModel {
   final int? id;
@@ -322,13 +318,7 @@ class FileModel {
   @JsonKey(name: 'access_type')
   final String? accessType;
 
-  const FileModel({
-    this.id,
-    this.name,
-     this.url,
-     this.size,
-     this.accessType,
-  });
+  const FileModel({this.id, this.name, this.url, this.size, this.accessType});
 
   factory FileModel.fromJson(Map<String, dynamic> json) =>
       _$FileModelFromJson(json);

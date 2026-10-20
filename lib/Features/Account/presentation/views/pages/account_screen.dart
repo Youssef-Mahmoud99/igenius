@@ -136,6 +136,13 @@ class AccountScreen extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
+
+                            SettingsItem(
+                              title: 'My Installements',
+                              icon: Icons.monetization_on,
+                              route: AppRoutes.myInstallmentsScreen ,
+                            ),
+                            Divider(color: Colors.grey),
                             SettingsItem(
                               title: 'Help & Support',
                               icon: Icons.help_outline,

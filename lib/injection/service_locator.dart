@@ -78,7 +78,8 @@ import '../Features/payment/presentation/cubits/buy_lesson_cubit.dart';
 import '../Features/payment/presentation/cubits/get_installments_cubit.dart';
 import '../Features/payment/presentation/cubits/get_payments_cubit.dart';
 import '../Features/payment/presentation/cubits/pay_installment_cubit.dart';
-import '../Features/payment/presentation/cubits/request_installment_cubit.dart';
+import '../Features/payment/presentation/cubits/request_installment_plan_cubit.dart';
+import '../Features/payment/presentation/cubits/request_two_month_installement.dart';
 import '../core/network/dio_client.dart';
 import '../core/network/network_info.dart';
 import '../core/services/localization_service.dart';
@@ -159,11 +160,12 @@ sl.registerFactory(() => SubmitExamCubit(sl<CoursesRepo>()));
   sl.registerLazySingleton<PaymentRepo>(
       () => PaymentRepoImpl(sl<PaymentApi>()));
   sl.registerLazySingleton(() => GetPaymentsCubit(sl<PaymentRepo>()));
-  sl.registerLazySingleton(() => GetInstallmentsCubit(sl<PaymentRepo>()));
-  sl.registerLazySingleton(() => RequestInstallmentCubit(sl<PaymentRepo>()));
+  sl.registerFactory(() => GetInstallmentsCubit(sl<PaymentRepo>()));
+  sl.registerFactory(() => RequestInstallmentPlanCubit(sl<PaymentRepo>()));
+  sl.registerFactory(() => RequestTwoMonthInstallement(sl<PaymentRepo>()));
   sl.registerFactory(() => BuyCourseCubit(sl<PaymentRepo>()));
-  sl.registerLazySingleton(() => BuyLessonCubit(sl<PaymentRepo>()));
-  sl.registerLazySingleton(() => PayInstallmentCubit(sl<PaymentRepo>()));
+  sl.registerFactory(() => BuyLessonCubit(sl<PaymentRepo>()));
+  sl.registerFactory(() => PayInstallmentCubit(sl<PaymentRepo>()));
 
 
   // Filters

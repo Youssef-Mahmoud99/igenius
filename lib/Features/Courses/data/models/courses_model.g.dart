@@ -11,7 +11,7 @@ CourseModel _$CourseModelFromJson(Map<String, dynamic> json) => CourseModel(
   title: json['title'] as String?,
   description: json['description'] as String?,
   image: json['image'] as String?,
-  price: (json['price'] as num?)?.toInt(),
+  price: json['price'] as num?,
   priceAfterDiscount: (json['price_after_discount'] as num?)?.toInt(),
   effectivePrice: (json['effective_price'] as num?)?.toInt(),
   hasDiscount: json['has_discount'] as bool?,

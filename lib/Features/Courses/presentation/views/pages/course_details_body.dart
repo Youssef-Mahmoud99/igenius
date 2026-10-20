@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:igenius/Features/Courses/presentation/cubits/courses/courses_cubit.dart';
 
 import '../../../../../app.dart';
+import '../../../../../core/base/cubit/base_state.dart';
+import '../../../../../core/base/models/base_response.dart';
 import '../../../../../core/constants/app_routes.dart';
+import '../../../../../core/resources/routes_manager.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/helpers/app_navigtion.dart';
@@ -14,10 +18,16 @@ import '../../../../../core/widgets/custom_listtile.dart';
 import '../../../../../core/widgets/custom_text.dart';
 import '../../../../../core/widgets/gradient_button.dart';
 import '../../../../../core/widgets/primary_button.dart';
+import '../../../../../injection/service_locator.dart';
+import '../../../../payment/data/models/payment_response.dart';
+import '../../../../payment/presentation/cubits/buy_lesson_cubit.dart';
 import '../../../data/models/course_details.dart';
+import '../../cubits/courses/course_details_cubit.dart';
+import '../../cubits/my_courses/my_course_details_cubit.dart';
 import '../widgets/course_content.dart';
 import '../widgets/enroll_to_course_dialoge.dart';
 import '../widgets/free_session_dialoge.dart';
+import 'payment_screen.dart';
 
 class CourseDetailsBody extends StatelessWidget {
   CourseDetailsBody({
@@ -60,6 +70,17 @@ class CourseDetailsBody extends StatelessWidget {
       return courseDetails.durationWeeks?.toString() ?? '' + ' weeks';
     } else {
       return courseDetails.hasInstallmentPlan == true ? 'Yes' : 'No';
+    }
+  }
+
+  /// بيعمل fetch جديد للكورسات من الصفحة الأولى
+  void _refreshCourses(BuildContext context) {
+    try {
+      context.read<CoursesCubit>().refreshCourses();
+    } catch (_) {
+      // لو الصفحة مفتوحة من مكان ملوش CoursesCubit في الـ context
+      final cubit = sl<CoursesCubit>();
+      cubit.refreshCourses();
     }
   }
 
@@ -265,8 +286,42 @@ class CourseDetailsBody extends StatelessWidget {
                       Text('Course Content', style: AppsStyles.s14Bold),
 
                       10.verticalSpace,
+                      BlocProvider(
+                        create: (context) => sl<BuyLessonCubit>(),
+                        child: BlocListener<BuyLessonCubit, BaseCubitState>(
+                          listener: (context, state) async {
+                            if (state is ErrorState) {
+                              ToastHelper.showWarning(state.message);
+                            }
+                            if (state is SuccessState) {
+                              final response =
+                                  state.data
+                                      as BaseResponse<PaymentResponseModel>;
+                              final checkoutUrl = response.data?.checkoutUrl;
+                              if (checkoutUrl == null) return;
 
-                      CourseContent(courseDetails: courseDetails),
+                              final result = await GoRouter.of(
+                                context,
+                              ).push<PaymentResult>(
+                                AppRoutes.paymentWebViewScreen,
+                                extra: {'paymentUrl': checkoutUrl},
+                              );
+                              if (!context.mounted) return;
+
+                              if (result?.status == PaymentStatus.failed &&
+                                  result?.reason != null) {
+                                ToastHelper.showWarning(result!.reason!);
+                              }
+
+                              // refresh تفاصيل الكورس عشان الدرس المشترى يتحدّث
+                              context
+                                  .read<CourseDetailsCubit>()
+                                  .getCourseDetails(courseDetails.id!);
+                            }
+                          },
+                          child: CourseContent(courseDetails: courseDetails),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -344,29 +399,41 @@ class CourseDetailsBody extends StatelessWidget {
                       text: 'Enroll Now',
 
                       onTap: () async {
-                        print(
-                          "hasInstallments: ${courseDetails.hasInstallmentPlan}",
-                        );
                         if (currentUser == null) {
                           ToastHelper.showWarning(
                             "Please login to enroll in this course",
                           );
-
                           return;
                         }
 
-                        bool? success = await showEnrollToCourseBottomSheet(
+                        // الكاش بتاع الـ context قبل أي await
+                        final coursesCubit = _tryGetCoursesCubit(context);
+
+                        final url = await showEnrollToCourseBottomSheet(
                           context,
                           courseDetails,
                         );
-                        if (success == true) {
-                          await Future.delayed(
-                            const Duration(milliseconds: 300),
-                          );
-                          AppNavaigation.goToHome();
-                        }
-                      },
+                        if (url == null) return;
+                        Navigator.of(context).pop();
+                        final result = await GoRouter.of(context)
+                            .push<PaymentResult>(
+                              AppRoutes.paymentWebViewScreen,
+                              extra: {'paymentUrl': url},
+                            );
 
+                        if (result?.status == PaymentStatus.failed) {
+                          if (result?.reason != null) {
+                            ToastHelper.showWarning(result!.reason!);
+                          }
+                          return;
+                        }
+
+                        // success أو unknown: fetch جديد للكورسات
+                        // (الـ webhook ممكن يتأخر ثواني، فنستنى شوية)
+                        await Future.delayed(const Duration(seconds: 2));
+                        coursesCubit?.refreshCourses();
+                        if (coursesCubit == null) _refreshCourses(context);
+                      },
                       height: 50,
                     ),
                   ),
@@ -376,6 +443,14 @@ class CourseDetailsBody extends StatelessWidget {
             : SizedBox.shrink(),
       ],
     );
+  }
+
+  CoursesCubit? _tryGetCoursesCubit(BuildContext context) {
+    try {
+      return context.read<CoursesCubit>();
+    } catch (_) {
+      return null;
+    }
   }
 
   Widget teacherTile(CourseDetails courseDetails) {
@@ -516,7 +591,7 @@ class CourseDetailsBody extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: color, size: 20.r),
+            Icon(icon, color: AppColors.grey, size: 15.r),
             5.verticalSpace,
             Text(
               title,

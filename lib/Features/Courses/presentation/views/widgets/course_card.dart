@@ -125,15 +125,20 @@ class CourseCard extends StatelessWidget {
                                 ),
                               ]
                               : [
-                                nameTag(
-                                  Icons.videocam_outlined,
-                                  (course.totalLessons?.toString() ?? "") +
-                                      " Lessons",
-                                ),
-                                5.horizontalSpace,
-                                nameTag(
+                                Column(
+                                  children: [
+                                    nameTag(
+                                      Icons.videocam_outlined,
+                                      (course.totalLessons?.toString() ?? "") +
+                                          " Lessons",
+                                    ),
+                                    5.verticalSpace,
+                                                                    nameTag(
                                   Icons.access_time,
                                   (course.durationWeeks?.toString() ?? "") + "w",
+                                ),
+
+                                  ],
                                 ),
                               ],
                     ),

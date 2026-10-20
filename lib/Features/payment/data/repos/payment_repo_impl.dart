@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 
 import '../../../../core/base/models/base_response.dart';
 import '../../../../core/base/models/error_model.dart';
+import '../../../Courses/data/models/courses_body.dart';
 import '../models/buy_course_params.dart';
 import '../models/buy_lesson_params.dart';
 import '../models/installment_model.dart';
@@ -36,10 +37,12 @@ class PaymentRepoImpl implements PaymentRepo {
   }
 
   @override
-  Future<Either<ErrorModel, BaseResponse<InstallmentRequestModel>>>
-      myInstallmentRequests() async {
+  Future<Either<ErrorModel, BaseResponse<List<InstallmentRequestModel>>>>
+      myInstallmentRequests(
+        CoursesBody? body,
+      ) async {
     try {
-      final response = await paymentApi.myInstallmentRequests();
+      final response = await paymentApi.myInstallmentRequests(body);
       return Right(response);
     } on DioException catch (e) {
       return Left(ErrorModel.fromJson(e.response?.data ?? {}));
@@ -54,10 +57,27 @@ class PaymentRepoImpl implements PaymentRepo {
   }
 
   @override
-  Future<Either<ErrorModel, BaseResponse>> requestInstallment(
+  Future<Either<ErrorModel, BaseResponse<InstallmentRequestModel>>> requestTwoMonthInstallment(
+      String id) async {
+    try {
+      final response = await paymentApi.requestTwoMonthInstallment(id);
+      return Right(response);
+    } on DioException catch (e) {
+      return Left(ErrorModel.fromJson(e.response?.data ?? {}));
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          success: false,
+          message: e.toString(),
+        ),
+      );
+    }
+  }
+  @override
+  Future<Either<ErrorModel, BaseResponse>> requestPlanInstallment(
       InstallmentParams params) async {
     try {
-      final response = await paymentApi.requestInstallment(params);
+      final response = await paymentApi.requestPlanInstallment(params);
       return Right(response);
     } on DioException catch (e) {
       return Left(ErrorModel.fromJson(e.response?.data ?? {}));
@@ -90,7 +110,7 @@ class PaymentRepoImpl implements PaymentRepo {
   }
 
   @override
-  Future<Either<ErrorModel, BaseResponse>> buyLesson(
+  Future<Either<ErrorModel, BaseResponse<PaymentResponseModel>>> buyLesson(
       BuylessonParams params ) async {
     try {
       final response = await paymentApi.buyLesson(params.id.toString() , params);
@@ -108,10 +128,10 @@ class PaymentRepoImpl implements PaymentRepo {
   }
 
   @override
-  Future<Either<ErrorModel, BaseResponse>> buyInstallment(
+  Future<Either<ErrorModel, BaseResponse<PaymentResponseModel>>> payInstallment(
       PayInstallmentParams params) async {
     try {
-      final response = await paymentApi.buyInstallment(params.id.toString() , params);
+      final response = await paymentApi.payInstallment(params.id.toString() , params);
       return Right(response);
     } on DioException catch (e) {
       return Left(ErrorModel.fromJson(e.response?.data ?? {}));

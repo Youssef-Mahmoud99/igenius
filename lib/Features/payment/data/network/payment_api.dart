@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:igenius/Features/Courses/data/models/courses_body.dart';
 import 'package:retrofit/retrofit.dart';
 import '../../../../core/api/endpoints.dart';
 import '../../../../core/constants/app_constants.dart';
@@ -21,10 +22,16 @@ abstract class PaymentApi {
   Future<BaseResponse<PaymentModel>> getPayments();
 
   @GET(EndPoints.getInstallments)
-  Future<BaseResponse<InstallmentRequestModel>> myInstallmentRequests();
+  Future<BaseResponse<List<InstallmentRequestModel>>> myInstallmentRequests(
+    @Body() CoursesBody? body,
+  );
 
+  @POST(EndPoints.myCourses + '/{id}' + "/installments/instant")
+  Future<BaseResponse<InstallmentRequestModel>> requestTwoMonthInstallment(
+    @Path('id') String id,
+  );
   @POST(EndPoints.getInstallments)
-  Future<BaseResponse> requestInstallment(@Body() InstallmentParams body);
+  Future<BaseResponse> requestPlanInstallment(@Body() InstallmentParams body);
 
   @POST(EndPoints.buyCourse + '/{id}')
   Future<BaseResponse<PaymentResponseModel>> buyCourse(
@@ -33,13 +40,13 @@ abstract class PaymentApi {
   );
 
   @POST(EndPoints.buyLesson + '/{id}')
-  Future<BaseResponse> buyLesson(
+  Future<BaseResponse<PaymentResponseModel>> buyLesson(
     @Path('id') String id,
     @Body() BuylessonParams body,
   );
 
   @POST(EndPoints.buyInstallment + '/{id}')
-  Future<BaseResponse> buyInstallment(
+  Future<BaseResponse<PaymentResponseModel>> payInstallment(
     @Path('id') String id,
     @Body() PayInstallmentParams body,
   );
