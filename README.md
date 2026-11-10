@@ -155,6 +155,13 @@ The application also provides flexible installment payment plans, allowing stude
 <p align="center">
   <img src="screenshots/7.jpeg" width="220"/>
   <img src="screenshots/8.jpeg" width="220"/>
+  <img src="screenshots/9.jpeg" width="220"/>
+</p>
+
+<p align="center">
+  <img src="screenshots/10.jpeg" width="220"/>
+  <img src="screenshots/11.jpeg" width="220"/>
+  <img src="screenshots/12.jpeg" width="220"/>
 </p>
 ---
 
