@@ -3,11 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:igenius/Features/Courses/data/models/courses_model.dart';
 import 'package:igenius/core/utils/helpers/app_navigtion.dart';
 import 'package:igenius/core/widgets/custom_text.dart';
-
 import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/resources/styles_manager.dart';
 import '../../../../../core/theme/app_colors.dart';
-import '../../../../../core/widgets/cached_network_image.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../../Home/presentation/views/widgets/material_details.dart';
 
@@ -52,7 +50,7 @@ class HomeCourseCard extends StatelessWidget {
                             course.image != null
                                 ? DecorationImage(
                                   image: NetworkImage(course.image ?? ''),
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.cover,
                                 )
                                 : null,
                         color: AppColors.primary,
@@ -182,7 +180,7 @@ class HomeCourseCard extends StatelessWidget {
     return course.priceAfterDiscount != null
         ? RichText(
           text: TextSpan(
-            text: '\$',
+            text: 'EGP',
             style: AppsStyles.s14Bold.copyWith(color: AppColors.white),
             children: [
               TextSpan(
@@ -200,7 +198,7 @@ class HomeCourseCard extends StatelessWidget {
           ),
         )
         : AppText(
-          text: '\$' + course.price.toString(),
+          text: course.price.toString() + ' EGP',
           style: AppsStyles.s14Bold.copyWith(color: AppColors.white),
         );
   }

@@ -16,58 +16,79 @@ class HeadLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-                    Center(child: Image.asset(AppImages.logo, scale: 2)),
-          isGuest
-              ? CustomTextButton(
-                text: 'Login',
-                color: AppColors.primary,
-                fontWeight: FontWeight.w500,
-                onPressed: () {
-                  AppNavaigation.push(AppRoutes.login);
-                },
-              )
-              : Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      AppNavaigation.push(AppRoutes.notificationsScreen);
-                    },
-                    icon: ImageIcon(
-                      AssetImage(AppImages.notifications),
-                      size: 30.r,
-                    ),
-                  ),
-                  Positioned(
-                    top: 2.h,
-                    right: 5.w,
-                    child:
-                    ValueListenableBuilder<int>(
-                  valueListenable:
-                      context.read<GetNotificationsCubit>().unreadCountNotifier,
-                  builder: (context, count, _) => 
-                    
-                   Container(
-                    padding: const EdgeInsets.all(3.0),
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      child: count > 0 ? Text(
-                         style: TextStyle(fontSize: 10.sp, color: Colors.white, fontWeight: FontWeight.bold),
-                        count.toString()) : null,
-                    ) 
-                ),
-                     
-                  ),
-                ],
-              ),
+          Image.asset(AppImages.logo, height: 40.h, fit: BoxFit.contain),
+          isGuest ? _buildLogin() : _buildNotificationIcon(context),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLogin() {
+    return CustomTextButton(
+      text: 'Login',
+      color: AppColors.primary,
+      fontWeight: FontWeight.w500,
+      onPressed: () => AppNavaigation.push(AppRoutes.login),
+    );
+  }
+
+  Widget _buildNotificationIcon(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => AppNavaigation.push(AppRoutes.notificationsScreen),
+      child: SizedBox(
+        width: 44.r,
+        height: 44.r,
+        child: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            ImageIcon(
+              AssetImage(AppImages.notifications),
+              size: 28.r,
+              color: Colors.black87,
+            ),
+            Positioned(
+              top: 4.r,
+              right: 4.r,
+              child: ValueListenableBuilder<int>(
+                valueListenable:
+                    context.read<GetNotificationsCubit>().unreadCountNotifier,
+                builder: (context, count, _) {
+                  if (count <= 0) return const SizedBox.shrink();
+
+                  return Container(
+                    constraints: BoxConstraints(
+                      minWidth: 18.r,
+                      minHeight: 18.r,
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 4.w),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10.r),
+                      border: Border.all(color: Colors.white, width: 1.5),
+                    ),
+                    child: Text(
+                      count > 99 ? '99+' : count.toString(),
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        height: 1,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

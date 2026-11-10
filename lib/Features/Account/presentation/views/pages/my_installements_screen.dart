@@ -28,8 +28,7 @@ class InstallmentsPage extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => sl<GetInstallmentsCubit>()..refresh()),
         BlocProvider(create: (_) => sl<PayInstallmentCubit>()),
-        BlocProvider(create: (_) => sl<CoursesCubit>()),
-      ],
+BlocProvider.value(value: sl<CoursesCubit>()),      ],
       child: const _InstallmentsView(),
     );
   }

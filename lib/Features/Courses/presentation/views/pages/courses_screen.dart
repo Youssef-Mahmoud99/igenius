@@ -63,6 +63,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         centerTitle: false,
+        showBack: false,
         title: 'Browse Courses',
         actions: [
           Padding(

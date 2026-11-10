@@ -79,7 +79,7 @@ class CourseRowCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '\$${course.effectivePrice ?? course.price ?? 0}',
+                    '${course.effectivePrice ?? course.price ?? 0} EGP',
                     style: AppsStyles.s14Bold.copyWith(color: AppColors.primary),
                   ),
                 ],

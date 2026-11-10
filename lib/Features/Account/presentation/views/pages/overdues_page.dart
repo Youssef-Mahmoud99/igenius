@@ -91,28 +91,46 @@ class _OverduePageState extends State<OverduePage>
   Widget _buildHeader() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
+      padding: const EdgeInsets.fromLTRB(8, 12, 20, 24),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF8B1E1E), Color(0xFFC94A4A)],
         ),
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Overdue Items',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
+          IconButton(
+            onPressed: () => AppNavaigation.pop(),
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            color: Colors.white,
+            iconSize: 20,
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.white.withOpacity(0.18),
             ),
           ),
-          SizedBox(height: 6),
-          Text(
-            'Assignments and exams that are overdue',
-            style: TextStyle(color: Colors.white70, fontSize: 14),
+          const SizedBox(height: 8),
+          const Padding(
+            padding: EdgeInsets.only(left: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Overdue Items',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  'Assignments and exams that are overdue',
+                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -130,14 +148,24 @@ class _OverduePageState extends State<OverduePage>
       child: TabBar(
         controller: _tabController,
         dividerColor: Colors.transparent,
+        indicatorSize: TabBarIndicatorSize.tab, // 👈 على قد الـ tab كله
+        indicatorPadding: EdgeInsets.zero,
+        splashBorderRadius: BorderRadius.circular(10),
         indicator: BoxDecoration(
-          color: const Color(0xFFB83232),
+          color: const Color(0xFFB83232), // في Upcoming: Color(0xFF243B72)
           borderRadius: BorderRadius.circular(10),
         ),
         labelColor: Colors.white,
         unselectedLabelColor: Colors.grey.shade600,
         labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
-        tabs: const [Tab(text: 'Assignments'), Tab(text: 'Exams')],
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 13,
+        ),
+        tabs: const [
+          Tab(height: 40, text: 'Assignments'),
+          Tab(height: 40, text: 'Exams'),
+        ],
       ),
     );
   }
@@ -231,7 +259,7 @@ class _OverdueCard extends StatelessWidget {
     required this.title,
     required this.date,
     required this.itemId,
-     required this.isExam,
+    required this.isExam,
   });
 
   @override
@@ -239,14 +267,11 @@ class _OverdueCard extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        AppNavaigation.pushToPageWithParams(
-          AppRoutes.assignmentViewScreen,
-            {
-              "isExam":  isExam,
-              "id": itemId,
-              "unitTitle": '',
-            }
-        );
+        AppNavaigation.pushToPageWithParams(AppRoutes.assignmentViewScreen, {
+          "isExam": isExam,
+          "id": itemId,
+          "unitTitle": '',
+        });
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),

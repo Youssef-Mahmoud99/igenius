@@ -108,7 +108,7 @@ class RoutesManager {
           final isGuest = args['isGuest'] as bool;
           return MultiBlocProvider(
             providers: [
-              BlocProvider(create: (context) => sl<CoursesCubit>()),
+BlocProvider.value(value: sl<CoursesCubit>()),
               BlocProvider(create: (context) => sl<GetTeachersCubit>()),
               BlocProvider(create: (context) => sl<ProfileCubit>()),
               BlocProvider(create: (context) => sl<GetHomeDataCubit>()),
@@ -128,7 +128,7 @@ class RoutesManager {
             child: MultiBlocProvider(
               providers: [
                 BlocProvider.value(value: sl<FilterDataCubit>()),
-                BlocProvider(create: (context) => sl<CoursesCubit>()),
+                BlocProvider.value(value: sl<CoursesCubit>()),
               ],
               child: FiltersScreen(isCourses: isCourses),
             ),
@@ -276,8 +276,7 @@ class RoutesManager {
       ),
       GoRoute(
         path: AppRoutes.myInstallmentsScreen,
-        builder:
-            (context, state) => InstallmentsPage(),
+        builder: (context, state) => InstallmentsPage(),
       ),
       GoRoute(
         path: AppRoutes.privacyPolicyScreen,

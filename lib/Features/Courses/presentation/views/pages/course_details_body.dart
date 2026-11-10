@@ -192,53 +192,53 @@ class CourseDetailsBody extends StatelessWidget {
 
                       10.verticalSpace,
 
-                      GradientButton(
-                        gradientColors: [Color(0xFFEF4444), Color(0xFFEC4899)],
+                      // GradientButton(
+                      //   gradientColors: [Color(0xFFEF4444), Color(0xFFEC4899)],
 
-                        height: 40.h,
+                      //   height: 40.h,
 
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
 
-                          children: [
-                            Container(
-                              width: 8.w,
+                      //     children: [
+                      //       Container(
+                      //         width: 8.w,
 
-                              height: 8.h,
+                      //         height: 8.h,
 
-                              decoration: BoxDecoration(
-                                color: Colors.white,
+                      //         decoration: BoxDecoration(
+                      //           color: Colors.white,
 
-                                shape: BoxShape.circle,
-                              ),
-                            ),
+                      //           shape: BoxShape.circle,
+                      //         ),
+                      //       ),
 
-                            5.horizontalSpace,
+                      //       5.horizontalSpace,
 
-                            Text(
-                              'Join Free Live Session',
+                      //       Text(
+                      //         'Join Free Live Session',
 
-                              style: AppsStyles.s14Bold.copyWith(
-                                color: AppColors.white,
-                              ),
-                            ),
+                      //         style: AppsStyles.s14Bold.copyWith(
+                      //           color: AppColors.white,
+                      //         ),
+                      //       ),
 
-                            10.horizontalSpace,
+                      //       10.horizontalSpace,
 
-                            Icon(
-                              Icons.play_circle_outline_sharp,
+                      //       Icon(
+                      //         Icons.play_circle_outline_sharp,
 
-                              color: AppColors.white,
+                      //         color: AppColors.white,
 
-                              size: 20.r,
-                            ),
-                          ],
-                        ),
+                      //         size: 20.r,
+                      //       ),
+                      //     ],
+                      //   ),
 
-                        onTap: () {
-                          showFreeSessionBottomSheet(context, courseDetails);
-                        },
-                      ),
+                      //   onTap: () {
+                      //     showFreeSessionBottomSheet(context, courseDetails);
+                      //   },
+                      // ),
                     ],
                   ),
                 ),
@@ -494,6 +494,8 @@ class CourseDetailsBody extends StatelessWidget {
 
           subtitle: Text(
             courseDetails.teacher?.description ?? '',
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
 
             style: AppsStyles.s12Regular.copyWith(color: AppColors.grey),
           ),
@@ -550,14 +552,14 @@ class CourseDetailsBody extends StatelessWidget {
           courseDetails.priceAfterDiscount == null
               ? [
                 Text(
-                  '\$${courseDetails.price}',
+                  '${courseDetails.price} EGP',
 
                   style: AppsStyles.s18Bold.copyWith(color: AppColors.primary),
                 ),
               ]
               : [
                 Text(
-                  '\$${courseDetails.price}',
+                  '${courseDetails.price} EGP',
 
                   style: AppsStyles.s12Regular.copyWith(
                     color: AppColors.grey,
@@ -566,7 +568,7 @@ class CourseDetailsBody extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '\$${courseDetails.priceAfterDiscount}',
+                  '${courseDetails.priceAfterDiscount} EGP',
 
                   style: AppsStyles.s18Bold.copyWith(color: AppColors.primary),
                 ),

@@ -186,7 +186,7 @@ class _MyCoursesScreenState extends State<MyCoursesScreen> {
             decoration: BoxDecoration(
             image: course.course?.image != null ? DecorationImage(
               image: NetworkImage(course.course?.image ?? ''),
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
             ) : null,
               color: AppColors.primary,
               borderRadius: const BorderRadius.only(

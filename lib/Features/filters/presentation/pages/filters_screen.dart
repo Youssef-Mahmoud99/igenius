@@ -42,7 +42,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
   void initState() {
     context.read<FilterDataCubit>().getAllFilters();
 
-
     final coursesBody = context.read<CoursesCubit>().body;
     print("selectedSubjectId = ${coursesBody.subjectId}");
     selectedSubjectId = coursesBody.subjectId;
@@ -148,58 +147,58 @@ class _FiltersScreenState extends State<FiltersScreen> {
     );
   }
 
-List<Widget> _buildDynamicFilters(FilterDataCubit cubit) {
-  return [
-    _sectionTitle("Subject"),
-    if (cubit.isSubjectsLoading)
-      const FilterShimmerSection(itemCount: 5)
-    else
-      ...cubit.subjects.map(
-        (subject) => CustomRadioTile(
-          title: subject.name ?? "",
-          value: subject.id,
-          groupValue: selectedSubjectId,
-          onChanged: (value) => setState(() => selectedSubjectId = value),
+  List<Widget> _buildDynamicFilters(FilterDataCubit cubit) {
+    return [
+      _sectionTitle("Subject"),
+      if (cubit.isSubjectsLoading)
+        const FilterShimmerSection(itemCount: 5)
+      else
+        ...cubit.subjects.map(
+          (subject) => CustomRadioTile(
+            title: subject.name ?? "",
+            value: subject.id,
+            groupValue: selectedSubjectId,
+            onChanged: (value) => setState(() => selectedSubjectId = value),
+          ),
         ),
-      ),
-    _sectionTitle("Level"),
-    if (cubit.isLevelsLoading)
-      const FilterShimmerSection(itemCount: 3)
-    else
-      ...cubit.levels.map(
-        (level) => CustomRadioTile(
-          title: level.name ?? "",
-          value: level.id,
-          groupValue: selectedLevelId,
-          onChanged: (value) => setState(() => selectedLevelId = value),
+      _sectionTitle("Level"),
+      if (cubit.isLevelsLoading)
+        const FilterShimmerSection(itemCount: 3)
+      else
+        ...cubit.levels.map(
+          (level) => CustomRadioTile(
+            title: level.name ?? "",
+            value: level.id,
+            groupValue: selectedLevelId,
+            onChanged: (value) => setState(() => selectedLevelId = value),
+          ),
         ),
-      ),
-    _sectionTitle("Course Provider"),
-    if (cubit.isBoardsLoading)
-      const FilterShimmerSection(itemCount: 3)
-    else
-      ...cubit.boards.map(
-        (board) => CustomRadioTile(
-          title: board.name ?? "",
-          value: board.id,
-          groupValue: selectedBoardId,
-          onChanged: (value) => setState(() => selectedBoardId = value),
+      _sectionTitle("Course Provider"),
+      if (cubit.isBoardsLoading)
+        const FilterShimmerSection(itemCount: 3)
+      else
+        ...cubit.boards.map(
+          (board) => CustomRadioTile(
+            title: board.name ?? "",
+            value: board.id,
+            groupValue: selectedBoardId,
+            onChanged: (value) => setState(() => selectedBoardId = value),
+          ),
         ),
-      ),
-    _sectionTitle("Educational System"),
-    if (cubit.isSystemsLoading)
-      const FilterShimmerSection(itemCount: 3)
-    else
-      ...cubit.systems.map(
-        (system) => CustomRadioTile(
-          title: system.name ?? "",
-          value: system.id,
-          groupValue: selectedSystemId,
-          onChanged: (value) => setState(() => selectedSystemId = value),
+      _sectionTitle("Educational System"),
+      if (cubit.isSystemsLoading)
+        const FilterShimmerSection(itemCount: 3)
+      else
+        ...cubit.systems.map(
+          (system) => CustomRadioTile(
+            title: system.name ?? "",
+            value: system.id,
+            groupValue: selectedSystemId,
+            onChanged: (value) => setState(() => selectedSystemId = value),
+          ),
         ),
-      ),
-  ];
-}
+    ];
+  }
 
   Widget _sectionTitle(String title) {
     return Padding(
@@ -227,12 +226,11 @@ List<Widget> _buildDynamicFilters(FilterDataCubit cubit) {
   void _applyFilters() {
     // بينادي الـ Cubit مباشرة بالقيم المختارة
     context.read<CoursesCubit>().applyFilters(
-          subjectId: selectedSubjectId,
-          levelId: selectedLevelId,
-          boardId: selectedBoardId,
-          systemId: selectedSystemId,
-        );
-
-    AppNavaigation.pop();
+      subjectId: selectedSubjectId,
+      levelId: selectedLevelId,
+      boardId: selectedBoardId,
+      systemId: selectedSystemId,
+    );
+    Navigator.of(context).pop();
   }
 }

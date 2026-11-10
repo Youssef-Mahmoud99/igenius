@@ -319,7 +319,7 @@ Future<void> _openPaymentAndClose(String url) async {
             AppColors.greyDarker,
             AppColors.greyDarker,
             'Course Price',
-            "\$${details.price}",
+            "${details.price} EGP",
           ),
           5.verticalSpace,
           details.hasDiscount == true
@@ -327,7 +327,7 @@ Future<void> _openPaymentAndClose(String url) async {
                 AppColors.green,
                 AppColors.green,
                 'Limited Time Discount',
-                "-\$${double.parse(details.priceAfterDiscount.toString()) - double.parse(details.price.toString())}",
+                "-${double.parse(details.priceAfterDiscount.toString()) - double.parse(details.price.toString())} EGP",
               )
               : const SizedBox.shrink(),
           5.verticalSpace,
@@ -337,7 +337,7 @@ Future<void> _openPaymentAndClose(String url) async {
             AppColors.black,
             AppColors.primary,
             'Total',
-            "\$${details.hasDiscount == true ? details.priceAfterDiscount : details.price}",
+            "${details.hasDiscount == true ? details.priceAfterDiscount : details.price} EGP",
             textStyle: AppsStyles.s14Bold,
           ),
           10.verticalSpace,
@@ -459,8 +459,8 @@ Navigator.of(context).pop();            },
           _installmentTypeCard(
             selected: isTwoMonths,
             title: '2 Months Plan',
-            subtitle: '\$${_fmt(twoMonthsMonthly)} / month',
-            trailing: 'Total \$${_fmt(total)}',
+            subtitle: '${_fmt(twoMonthsMonthly)} EGP / month',
+            trailing: 'Total ${_fmt(total)} EGP',
             onTap:
                 () => setState(
                   () => _installmentType = InstallmentType.twoMonths,
@@ -473,9 +473,9 @@ Navigator.of(context).pop();            },
             title: 'Multiple Months',
             subtitle:
                 !isTwoMonths
-                    ? '\$${_fmt(multiMonthly.toDouble())} / month'
+                    ? '${_fmt(multiMonthly.toDouble())} EGP / month'
                     : 'Choose the number of months',
-            trailing: !isTwoMonths ? 'Total \$${_fmt(total)}' : null,
+            trailing: !isTwoMonths ? 'Total ${_fmt(total)} EGP' : null,
             onTap:
                 () => setState(
                   () => _installmentType = InstallmentType.multiMonths,

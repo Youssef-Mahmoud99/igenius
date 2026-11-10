@@ -102,9 +102,20 @@ class _UpcomingPageState extends State<UpcomingPage>
         ),
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          IconButton(
+            onPressed: () => AppNavaigation.pop(),
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            color: Colors.white,
+            iconSize: 20,
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.white.withOpacity(0.18),
+            ),
+          ),
+          const SizedBox(height: 8),
+
           Text(
             'Upcoming',
             style: TextStyle(
@@ -132,6 +143,8 @@ class _UpcomingPageState extends State<UpcomingPage>
         borderRadius: BorderRadius.circular(14),
       ),
       child: TabBar(
+        indicatorSize: TabBarIndicatorSize.tab, // 👈 على قد الـ tab كله
+
         controller: _tabController,
         dividerColor: Colors.transparent,
         indicator: BoxDecoration(
@@ -284,19 +297,17 @@ class _ScheduleCard extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: () {
         if (type != "lesson") {
-                  AppNavaigation.pushToPageWithParams(AppRoutes.assignmentViewScreen, {
-          "isExam": type == "exam",
-          "id": itemId,
-          "unitTitle": '',
-        });
-
-        }
-        else{
-                  AppNavaigation.pushToPageWithParams(AppRoutes.lessonViewScreen, {
-          "lessonId": itemId,
-          "unitTitle": '',
-          "isOwned": true,
-        });
+          AppNavaigation.pushToPageWithParams(AppRoutes.assignmentViewScreen, {
+            "isExam": type == "exam",
+            "id": itemId,
+            "unitTitle": '',
+          });
+        } else {
+          AppNavaigation.pushToPageWithParams(AppRoutes.lessonViewScreen, {
+            "lessonId": itemId,
+            "unitTitle": '',
+            "isOwned": true,
+          });
         }
       },
       child: Container(

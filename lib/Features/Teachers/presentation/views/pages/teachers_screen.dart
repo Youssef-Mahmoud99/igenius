@@ -58,6 +58,7 @@ class _TeachersScreenState extends State<TeachersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
+        showBack: false,
         centerTitle: true,
         title: 'Our Teachers',
       ),

@@ -48,7 +48,7 @@ class CourseCard extends StatelessWidget {
                                 course.image != null
                                     ? DecorationImage(
                                       image: NetworkImage(course.image ?? ''),
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.cover,
                                     )
                                     : null,
                             color: AppColors.primary,
@@ -238,7 +238,7 @@ class CourseCard extends StatelessWidget {
     return course.priceAfterDiscount != null
         ? RichText(
           text: TextSpan(
-            text: '\$',
+            text: '',
             style: AppsStyles.s14Bold.copyWith(color: AppColors.primary),
             children: [
               TextSpan(
@@ -256,7 +256,7 @@ class CourseCard extends StatelessWidget {
           ),
         )
         : AppText(
-          text: '\$' + course.price.toString(),
+          text: course.price.toString() + ' EGP',
           style: AppsStyles.s14Bold.copyWith(color: AppColors.primary),
         );
   }
